@@ -4,26 +4,22 @@
    ============================================================ */
 
 :host {
-  /* Superficies claras */
   --lienzo: #f4f4f4;
   --lienzo-borde: #ececec;
   --pie-fondo: #f0f0f0;
   --pie-borde: #e4e4e4;
 
-  /* Marca */
   --vino: #6b1538;
   --vino-oscuro: #4d0e28;
   --vino-profundo: #3f0a1f;
   --oro: #c8a96e;
 
-  /* Texto */
   --texto-fuerte: #2a2a2a;
   --texto: #3a3a3a;
   --texto-suave: #5f5f5f;
   --texto-tenue: #8a8a8a;
   --texto-vino-suave: #d8c3cb;
 
-  /* Tarjeta */
   --tarjeta-borde: #e6e6e6;
   --campo-borde: #e2e2e2;
   --error: #c62839;
@@ -31,18 +27,13 @@
   /* Geometría de la composición */
   --alto-pie: clamp(52px, 6.5vh, 68px);
   --cuna-inicio: 56%;
-  /* altura donde nace la diagonal vino */
   --cuna-inicio-oro: 54.6%;
-  /* diferencia mínima = hairline fina */
   --cuna-fin: 92%;
   --cuna-fin-oro: 94.9%;
-  /* dónde muere la punta vino */
 
-  /* Desplazamiento de la composición */
   --margen-izq: clamp(2.5rem, 17vw, 17rem);
   --margen-der: clamp(2rem, 11vw, 11rem);
 
-  /* Escala */
   --fs-bienvenida: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
   --fs-descripcion: clamp(1rem, 0.9rem + 0.35vw, 1.15rem);
   --fs-titulo-tarjeta: clamp(1.5rem, 1.15rem + 1vw, 2.05rem);
@@ -55,23 +46,19 @@
   color: var(--texto);
 }
 
-/* ============================================================
-   1. Lienzo y cuñas
-   ============================================================ */
+/* 1. Lienzo y cuñas */
 
 .acceso {
   position: relative;
   min-height: 100dvh;
   display: grid;
   grid-template-columns: 1fr;
-  /* una sola columna: evita columnas implícitas */
   grid-template-rows: 1fr auto auto;
   overflow: hidden;
   background:
     radial-gradient(120% 120% at 20% 25%, #fafafa 0%, var(--lienzo) 45%, var(--lienzo-borde) 100%);
 }
 
-/* Contenedor de las cuñas: termina justo donde empieza el pie */
 .acceso__lienzo {
   position: absolute;
   inset: 0 0 var(--alto-pie) 0;
@@ -83,8 +70,6 @@
   inset: 0;
 }
 
-/* La dorada va detrás y nace apenas más arriba: el grosor de la
-   hairline es exactamente la diferencia entre ambos porcentajes. */
 .acceso__cuna--oro {
   background: linear-gradient(100deg, #d8bb82 0%, var(--oro) 55%, #b08f52 100%);
   clip-path: polygon(0 var(--cuna-inicio-oro), 0 100%, 100% 100%);
@@ -100,16 +85,13 @@
   clip-path: polygon(0 var(--cuna-inicio-oro), 0 100%, var(--cuna-fin-oro) 100%);
 }
 
-/* ============================================================
-   2. Rejilla principal
-   ============================================================ */
+/* 2. Rejilla principal */
 
 .acceso__contenido {
   position: relative;
   z-index: 2;
   grid-column: 1;
   grid-row: 1 / 3;
-  /* ocupa todo el alto: centrado real */
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -118,13 +100,10 @@
   padding: clamp(2rem, 5vh, 3.5rem) var(--margen-der) clamp(2rem, 5vh, 3.5rem) var(--margen-izq);
 }
 
-/* ============================================================
-   3. Columna de marca
-   ============================================================ */
+/* 3. Columna de marca */
 
 .marca {
   align-self: center;
-  /* se eleva respecto al centro para no invadir la cuña */
   margin-bottom: clamp(4rem, 15vh, 9rem);
   max-width: 560px;
 }
@@ -161,9 +140,7 @@
   color: var(--texto-suave);
 }
 
-/* ============================================================
-   4. Tarjeta de acceso
-   ============================================================ */
+/* 4. Tarjeta de acceso */
 
 .acceso__panel {
   display: flex;
@@ -231,9 +208,7 @@
   text-align: center;
 }
 
-/* ============================================================
-   5. Campos
-   ============================================================ */
+/* 5. Campos */
 
 .campo {
   width: 100%;
@@ -335,9 +310,7 @@
   color: var(--error);
 }
 
-/* ============================================================
-   6. Recordarme / recuperar
-   ============================================================ */
+/* 6. Recordarme / recuperar */
 
 .utilidades {
   display: flex;
@@ -416,9 +389,7 @@
   text-decoration: underline;
 }
 
-/* ============================================================
-   7. Botones
-   ============================================================ */
+/* 7. Botones */
 
 .boton {
   display: flex;
@@ -489,9 +460,7 @@
   outline-offset: 3px;
 }
 
-/* ============================================================
-   8. Separador
-   ============================================================ */
+/* 8. Separador */
 
 .separador {
   display: flex;
@@ -514,9 +483,7 @@
   color: var(--texto-tenue);
 }
 
-/* ============================================================
-   9. Ventajas — dentro de la cuña vino, abajo a la izquierda
-   ============================================================ */
+/* 9. Ventajas — dentro de la cuña vino, abajo a la izquierda */
 
 .ventajas {
   position: relative;
@@ -566,9 +533,7 @@
   color: var(--texto-vino-suave);
 }
 
-/* ============================================================
-   10. Pie — una sola fila, texto a los extremos
-   ============================================================ */
+/* 10. Pie — una sola fila, texto a los extremos */
 
 .pie {
   position: relative;
@@ -594,11 +559,8 @@
   white-space: nowrap;
 }
 
-/* ============================================================
-   11. Responsive
-   ============================================================ */
+/* 11. Responsive */
 
-/* Laptop */
 @media (max-width: 1300px) {
   :host {
     --margen-izq: clamp(2.5rem, 9vw, 8rem);
@@ -618,14 +580,12 @@
   }
 }
 
-/* El texto del pie se parte antes de desbordar */
 @media (max-width: 1100px) {
   .pie__texto {
     white-space: normal;
   }
 }
 
-/* Tablet y móvil: todo apilado y en flujo normal */
 @media (max-width: 900px) {
   :host {
     --margen-izq: clamp(1.15rem, 5vw, 2.5rem);
@@ -681,7 +641,6 @@
 
   .tarjeta {
     width: min(100%, 500px);
-    /* antes: 480px */
   }
 
   .ventajas {

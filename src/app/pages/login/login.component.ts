@@ -1,10 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -34,7 +29,6 @@ export class LoginComponent {
     this.verContrasena = !this.verContrasena;
   }
 
-  /** Un control se marca en rojo sólo cuando el usuario ya interactuó con él. */
   esInvalido(control: string): boolean {
     const campo = this.formulario.get(control);
     return !!campo && campo.invalid && (campo.touched || campo.dirty);
@@ -67,9 +61,6 @@ export class LoginComponent {
     this.cargando = true;
     const { usuario, contrasena, recordarme } = this.formulario.getRawValue();
 
-    // TODO: reemplazar por AuthService.login(usuario, contrasena, recordarme)
-    // contra la API NestJS. `recordarme` decide si el token va a
-    // localStorage (persistente) o a sessionStorage (sólo esta pestaña).
     setTimeout(() => {
       this.cargando = false;
 
