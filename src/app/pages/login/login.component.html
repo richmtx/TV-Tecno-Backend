@@ -1,0 +1,117 @@
+<div class="acceso">
+
+  <!-- ===== Capa decorativa del fondo ===== -->
+  <div class="acceso__decoracion" aria-hidden="true">
+    <span class="acceso__diagonal acceso__diagonal--principal"></span>
+    <span class="acceso__diagonal acceso__diagonal--secundaria"></span>
+    <span class="acceso__linea acceso__linea--uno"></span>
+    <span class="acceso__linea acceso__linea--dos"></span>
+    <span class="acceso__trama"></span>
+  </div>
+
+  <main class="acceso__contenido">
+
+    <!-- ===== Columna de marca ===== -->
+    <section class="marca">
+      <img class="marca__logo" src="assets/LogoTVHorizontal.png" alt="TV Tecno 16.1 XHITD" />
+      <p class="marca__leyenda">Administrador Sitio Web TV Tecno</p>
+    </section>
+
+    <span class="acceso__separador-vertical" aria-hidden="true"></span>
+
+    <!-- ===== Columna del formulario ===== -->
+    <section class="acceso__panel">
+      <form class="tarjeta" [formGroup]="formulario" (ngSubmit)="iniciarSesion()" novalidate>
+
+        <!-- Avatar -->
+        <svg class="tarjeta__avatar" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" />
+          <circle cx="32" cy="25" r="9" />
+          <path d="M17 49a15 15 0 0 1 30 0" />
+        </svg>
+
+        <h1 class="tarjeta__titulo">Iniciar sesión</h1>
+        <p class="tarjeta__subtitulo">Accede al administrador del sitio web</p>
+
+        <!-- Usuario -->
+        <div class="campo">
+          <div class="campo__caja" [class.campo__caja--error]="esInvalido('usuario')">
+            <svg class="campo__icono" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M5 20a7 7 0 0 1 14 0" />
+            </svg>
+            <input class="campo__entrada" id="usuario" type="text" formControlName="usuario" placeholder="Usuario"
+              autocomplete="username" spellcheck="false" [attr.aria-invalid]="esInvalido('usuario')" />
+            <label class="campo__etiqueta" for="usuario">Usuario</label>
+          </div>
+          @if (esInvalido('usuario')) {
+          <p class="campo__mensaje" role="alert">{{ mensajeError('usuario') }}</p>
+          }
+        </div>
+
+        <!-- Contraseña -->
+        <div class="campo">
+          <div class="campo__caja" [class.campo__caja--error]="esInvalido('contrasena')">
+            <svg class="campo__icono" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="10.5" width="14" height="10" rx="2.5" />
+              <path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3" />
+              <circle cx="12" cy="15.5" r="1.4" class="campo__icono-relleno" />
+            </svg>
+            <input class="campo__entrada" id="contrasena" [type]="verContrasena ? 'text' : 'password'"
+              formControlName="contrasena" placeholder="Contraseña" autocomplete="current-password"
+              [attr.aria-invalid]="esInvalido('contrasena')" />
+            <label class="campo__etiqueta" for="contrasena">Contraseña</label>
+
+            <button class="campo__accion" type="button" (click)="alternarContrasena()"
+              [attr.aria-label]="verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+              [attr.aria-pressed]="verContrasena">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+                <circle cx="12" cy="12" r="3.2" />
+                @if (!verContrasena) {
+                <line x1="4" y1="20" x2="20" y2="4" />
+                }
+              </svg>
+            </button>
+          </div>
+          @if (esInvalido('contrasena')) {
+          <p class="campo__mensaje" role="alert">{{ mensajeError('contrasena') }}</p>
+          }
+        </div>
+
+        <!-- Error general -->
+        @if (errorGeneral) {
+        <p class="tarjeta__alerta" role="alert">{{ errorGeneral }}</p>
+        }
+
+        <!-- Botón -->
+        <button class="boton" type="submit" [disabled]="cargando">
+          {{ cargando ? 'Verificando…' : 'Iniciar sesión' }}
+        </button>
+
+        <!-- Separador -->
+        <div class="separador" aria-hidden="true">
+          <span class="separador__texto">o</span>
+        </div>
+
+        <!-- Sello -->
+        <p class="sello">
+          <svg class="sello__icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.5 20 6v6c0 5-3.4 8.3-8 9.5-4.6-1.2-8-4.5-8-9.5V6Z" />
+            <path d="m8.5 12 2.5 2.5 4.5-5" />
+          </svg>
+          Acceso seguro
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="pie">
+    <svg class="pie__escudo" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2.2 20 5.6v6.6c0 5.1-3.4 8.6-8 9.6-4.6-1-8-4.5-8-9.6V5.6Z" />
+      <text x="12" y="15.2" text-anchor="middle">TP</text>
+    </svg>
+    <span>© {{ anio }} TV Tecno. Todos los derechos reservados.</span>
+  </footer>
+</div>
