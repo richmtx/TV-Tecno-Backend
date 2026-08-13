@@ -1,109 +1,103 @@
 /* ============================================================
    LOGIN · Administrador TV Tecno 16.1 (XHITD)
+   Tema claro con cuña diagonal vino + hairline dorada
    ============================================================ */
 
 :host {
-  /* Paleta */
-  --tv-vino-profundo: #4b0410;
-  --tv-vino: #6b1538;
-  --tv-vino-claro: #7d1b40;
-  --tv-negro: #1a0308;
-  --tv-oro: #c8a96e;
-  --tv-oro-apagado: #be9967;
-  --tv-oro-claro: #e8c88a;
-  --tv-blanco: #ffffff;
-  --tv-texto-suave: #e6d4d9;
-  --tv-error: #ff9aa5;
+  /* Superficies claras */
+  --lienzo: #f4f4f4;
+  --lienzo-borde: #ececec;
+  --pie-fondo: #f0f0f0;
+  --pie-borde: #e4e4e4;
 
-  /* Escala tipográfica fluida */
-  --fs-titulo: clamp(1.75rem, 1.2rem + 1.5vw, 2.35rem);
-  --fs-subtitulo: clamp(0.95rem, 0.8rem + 0.45vw, 1.15rem);
-  --fs-campo: clamp(0.95rem, 0.85rem + 0.35vw, 1.1rem);
-  --fs-boton: clamp(1.05rem, 0.9rem + 0.5vw, 1.3rem);
-  --fs-leyenda: clamp(1.05rem, 0.85rem + 0.7vw, 1.4rem);
+  /* Marca */
+  --vino: #6b1538;
+  --vino-oscuro: #4d0e28;
+  --vino-profundo: #3f0a1f;
+  --oro: #c8a96e;
 
-  /* Ritmo */
-  --radio-tarjeta: 28px;
-  --radio-campo: 14px;
-  --radio-boton: 12px;
-  --alto-control: clamp(56px, 4.4vw, 72px);
+  /* Texto */
+  --texto-fuerte: #2a2a2a;
+  --texto: #3a3a3a;
+  --texto-suave: #5f5f5f;
+  --texto-tenue: #8a8a8a;
+  --texto-vino-suave: #d8c3cb;
+
+  /* Tarjeta */
+  --tarjeta-borde: #e6e6e6;
+  --campo-borde: #e2e2e2;
+  --error: #c62839;
+
+  /* Geometría de la composición */
+  --alto-pie: clamp(52px, 6.5vh, 68px);
+  --cuna-inicio: 56%;
+  /* altura donde nace la diagonal vino */
+  --cuna-inicio-oro: 54.6%;
+  /* diferencia mínima = hairline fina */
+  --cuna-fin: 92%;
+  --cuna-fin-oro: 94.9%;
+  /* dónde muere la punta vino */
+
+  /* Desplazamiento de la composición */
+  --margen-izq: clamp(2.5rem, 17vw, 17rem);
+  --margen-der: clamp(2rem, 11vw, 11rem);
+
+  /* Escala */
+  --fs-bienvenida: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+  --fs-descripcion: clamp(1rem, 0.9rem + 0.35vw, 1.15rem);
+  --fs-titulo-tarjeta: clamp(1.5rem, 1.15rem + 1vw, 2.05rem);
+  --fs-subtitulo: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+  --fs-campo: clamp(0.92rem, 0.88rem + 0.18vw, 1rem);
+  --alto-control: clamp(48px, 3.2vw, 54px);
 
   display: block;
-  font-family: 'Outfit', 'Raleway', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-cuerpo, 'Raleway', system-ui, sans-serif);
+  color: var(--texto);
 }
 
 /* ============================================================
-   1. Lienzo y fondo
+   1. Lienzo y cuñas
    ============================================================ */
 
 .acceso {
   position: relative;
-  min-height: 100vh;
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  /* una sola columna: evita columnas implícitas */
+  grid-template-rows: 1fr auto auto;
   overflow: hidden;
   background:
-    radial-gradient(120% 110% at 22% 45%, var(--tv-vino) 0%, #4a0d24 38%, #2a0714 68%, var(--tv-negro) 100%);
-  color: var(--tv-blanco);
+    radial-gradient(120% 120% at 20% 25%, #fafafa 0%, var(--lienzo) 45%, var(--lienzo-borde) 100%);
 }
 
-.acceso__decoracion {
+/* Contenedor de las cuñas: termina justo donde empieza el pie */
+.acceso__lienzo {
   position: absolute;
-  inset: 0;
+  inset: 0 0 var(--alto-pie) 0;
   pointer-events: none;
 }
 
-/* Franjas diagonales de la esquina superior izquierda */
-.acceso__diagonal {
+.acceso__cuna {
   position: absolute;
   inset: 0;
 }
 
-.acceso__diagonal--principal {
-  background: linear-gradient(135deg, #1c0409 0%, #2e0712 100%);
-  clip-path: polygon(0 0, 22% 0, 0 42%);
+/* La dorada va detrás y nace apenas más arriba: el grosor de la
+   hairline es exactamente la diferencia entre ambos porcentajes. */
+.acceso__cuna--oro {
+  background: linear-gradient(100deg, #d8bb82 0%, var(--oro) 55%, #b08f52 100%);
+  clip-path: polygon(0 var(--cuna-inicio-oro), 0 100%, 100% 100%);
 }
 
-.acceso__diagonal--secundaria {
-  background: linear-gradient(135deg, #3d0a1c 0%, #55102a 100%);
-  clip-path: polygon(0 0, 30% 0, 0 55%);
-  opacity: 0.55;
-  z-index: -1;
+.acceso__cuna--vino {
+  background: linear-gradient(115deg, #5e1230 0%, var(--vino-oscuro) 55%, var(--vino-profundo) 100%);
+  clip-path: polygon(0 var(--cuna-inicio), 0 100%, var(--cuna-fin) 100%);
 }
 
-/* Hairlines doradas paralelas a la diagonal */
-.acceso__linea {
-  position: absolute;
-  top: -20%;
-  width: 1px;
-  height: 90%;
-  background: linear-gradient(to bottom, transparent, var(--tv-oro), transparent);
-  transform-origin: top center;
-  transform: rotate(-42deg);
-}
-
-.acceso__linea--uno {
-  left: 20%;
-  opacity: 0.55;
-}
-
-.acceso__linea--dos {
-  left: 27%;
-  opacity: 0.3;
-}
-
-/* Trama de puntos de la esquina inferior izquierda */
-.acceso__trama {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 26%;
-  height: 45%;
-  background-image: radial-gradient(rgba(200, 169, 110, 0.55) 1px, transparent 1px);
-  background-size: 14px 14px;
-  opacity: 0.3;
-  clip-path: polygon(0 100%, 0 20%, 85% 100%);
+.acceso__cuna--oro {
+  background: linear-gradient(100deg, #d8bb82 0%, var(--oro) 55%, #b08f52 100%);
+  clip-path: polygon(0 var(--cuna-inicio-oro), 0 100%, var(--cuna-fin-oro) 100%);
 }
 
 /* ============================================================
@@ -112,21 +106,16 @@
 
 .acceso__contenido {
   position: relative;
-  flex: 1;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  /* ocupa todo el alto: centrado real */
   display: grid;
-  grid-template-columns: 1fr 1px 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: clamp(2rem, 5vw, 5.5rem);
-  width: min(1500px, 100%);
-  margin-inline: auto;
-  padding: clamp(2rem, 5vh, 4.5rem) clamp(1.25rem, 5vw, 5rem);
-}
-
-.acceso__separador-vertical {
-  justify-self: center;
-  width: 1px;
-  height: 62%;
-  background: linear-gradient(to bottom, transparent, rgba(200, 169, 110, 0.5), transparent);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  width: 100%;
+  padding: clamp(2rem, 5vh, 3.5rem) var(--margen-der) clamp(2rem, 5vh, 3.5rem) var(--margen-izq);
 }
 
 /* ============================================================
@@ -134,26 +123,42 @@
    ============================================================ */
 
 .marca {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: clamp(1rem, 2.2vw, 1.75rem);
+  align-self: center;
+  /* se eleva respecto al centro para no invadir la cuña */
+  margin-bottom: clamp(4rem, 15vh, 9rem);
+  max-width: 560px;
 }
 
 .marca__logo {
-  width: min(100%, 460px);
+  width: min(100%, 420px);
   height: auto;
-  display: block;
-  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.45));
+  margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
 }
 
-.marca__leyenda {
-  margin: 0;
-  font-size: var(--fs-leyenda);
+.marca__titulo {
+  margin: 0 0 clamp(0.75rem, 1.6vh, 1.25rem);
+  font-family: var(--font-titulo, 'Raleway', system-ui, sans-serif);
+  font-size: var(--fs-bienvenida);
+  line-height: 1.18;
+  display: flex;
+  flex-direction: column;
+}
+
+.marca__titulo-suave {
   font-weight: 400;
-  letter-spacing: 0.01em;
-  color: var(--tv-oro);
+  color: var(--texto);
+}
+
+.marca__titulo-fuerte {
+  font-weight: 700;
+  color: var(--vino);
+}
+
+.marca__descripcion {
+  margin: 0;
+  font-size: var(--fs-descripcion);
+  line-height: 1.5;
+  color: var(--texto-suave);
 }
 
 /* ============================================================
@@ -162,56 +167,67 @@
 
 .acceso__panel {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  align-self: center;
 }
 
 .tarjeta {
-  width: min(100%, 560px);
+  width: min(100%, 700px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(2rem, 3.4vw, 3.5rem) clamp(1.5rem, 3.2vw, 3.25rem);
-  border: 1px solid rgba(200, 169, 110, 0.22);
-  border-radius: var(--radio-tarjeta);
-  background: rgba(107, 21, 56, 0.34);
-  backdrop-filter: blur(2px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  padding: clamp(1.75rem, 2.4vw, 2.35rem) clamp(2rem, 3.4vw, 3.5rem);
+  border: 1px solid var(--tarjeta-borde);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    0 20px 50px rgba(0, 0, 0, 0.09);
 }
 
 .tarjeta__avatar {
-  width: clamp(72px, 6vw, 96px);
-  height: clamp(72px, 6vw, 96px);
+  display: grid;
+  place-items: center;
+  width: clamp(62px, 4.4vw, 72px);
+  height: clamp(62px, 4.4vw, 72px);
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--vino) 0%, var(--vino-oscuro) 100%);
+}
+
+.tarjeta__avatar svg {
+  width: 52%;
+  height: 52%;
   fill: none;
-  stroke: var(--tv-oro);
-  stroke-width: 2.2;
+  stroke: var(--oro);
+  stroke-width: 1.6;
   stroke-linecap: round;
 }
 
 .tarjeta__titulo {
-  margin: clamp(1rem, 1.8vw, 1.6rem) 0 0;
-  font-size: var(--fs-titulo);
+  margin: 0.85rem 0 0;
+  font-family: var(--font-titulo, 'Raleway', system-ui, sans-serif);
+  font-size: var(--fs-titulo-tarjeta);
   font-weight: 700;
-  letter-spacing: -0.015em;
-  color: var(--tv-blanco);
+  letter-spacing: -0.01em;
+  color: var(--texto-fuerte);
 }
 
 .tarjeta__subtitulo {
-  margin: 0.5rem 0 clamp(1.75rem, 2.8vw, 2.5rem);
+  margin: 0.3rem 0 1.35rem;
   font-size: var(--fs-subtitulo);
-  font-weight: 400;
-  color: var(--tv-oro);
+  color: var(--texto-suave);
   text-align: center;
 }
 
 .tarjeta__alerta {
   width: 100%;
-  margin: 0 0 1rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid rgba(255, 154, 165, 0.35);
-  border-radius: 10px;
-  background: rgba(120, 12, 30, 0.4);
-  font-size: 0.9rem;
-  color: var(--tv-error);
+  margin: 0.8rem 0 0;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(198, 40, 57, 0.28);
+  border-radius: 9px;
+  background: rgba(198, 40, 57, 0.06);
+  font-size: 0.82rem;
+  color: var(--error);
   text-align: center;
 }
 
@@ -224,54 +240,47 @@
 }
 
 .campo+.campo {
-  margin-top: clamp(0.9rem, 1.4vw, 1.25rem);
+  margin-top: 0.7rem;
 }
 
 .campo__caja {
-  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.8rem;
   height: var(--alto-control);
-  padding-inline: clamp(1.1rem, 1.6vw, 1.6rem);
-  border: 1px solid rgba(200, 169, 110, 0.3);
-  border-radius: var(--radio-campo);
-  background: rgba(75, 4, 16, 0.18);
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  padding-inline: clamp(0.95rem, 1.3vw, 1.25rem);
+  border: 1px solid var(--campo-borde);
+  border-radius: 10px;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .campo__caja:hover {
-  border-color: rgba(200, 169, 110, 0.5);
+  border-color: #cfcfcf;
 }
 
 .campo__caja:focus-within {
-  border-color: var(--tv-oro);
-  background: rgba(75, 4, 16, 0.32);
-  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.16);
+  border-color: var(--vino);
+  box-shadow: 0 0 0 3px rgba(107, 21, 56, 0.1);
 }
 
 .campo__caja--error {
-  border-color: rgba(255, 154, 165, 0.65);
+  border-color: var(--error);
 }
 
 .campo__caja--error:focus-within {
-  box-shadow: 0 0 0 3px rgba(255, 154, 165, 0.16);
+  box-shadow: 0 0 0 3px rgba(198, 40, 57, 0.12);
 }
 
 .campo__icono {
   flex: none;
-  width: clamp(20px, 1.6vw, 24px);
-  height: clamp(20px, 1.6vw, 24px);
+  width: 20px;
+  height: 20px;
   fill: none;
-  stroke: var(--tv-oro);
+  stroke: #4a4a4a;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.campo__icono-relleno {
-  fill: var(--tv-oro);
-  stroke: none;
 }
 
 .campo__entrada {
@@ -282,51 +291,32 @@
   background: transparent;
   font: inherit;
   font-size: var(--fs-campo);
-  color: var(--tv-blanco);
+  color: var(--texto-fuerte);
   outline: none;
 }
 
 .campo__entrada::placeholder {
-  color: var(--tv-texto-suave);
-  opacity: 0.75;
-}
-
-.campo__entrada:-webkit-autofill,
-.campo__entrada:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--tv-blanco);
-  transition: background-color 9999s ease-in-out 0s;
-}
-
-/* Etiqueta accesible, no visible (la referencia sólo usa placeholder) */
-.campo__etiqueta {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  color: var(--texto-tenue);
 }
 
 .campo__accion {
   flex: none;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: var(--tv-oro);
+  color: #6a6a6a;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .campo__accion svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
@@ -334,241 +324,411 @@
 }
 
 .campo__accion:hover {
-  color: var(--tv-oro-claro);
-  background: rgba(200, 169, 110, 0.12);
-}
-
-.campo__accion:focus-visible {
-  outline: 2px solid var(--tv-oro);
-  outline-offset: 2px;
+  color: var(--vino);
+  background: rgba(107, 21, 56, 0.06);
 }
 
 .campo__mensaje {
-  margin: 0.5rem 0 0;
-  padding-left: 0.35rem;
-  font-size: 0.85rem;
-  color: var(--tv-error);
+  margin: 0.35rem 0 0;
+  padding-left: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--error);
 }
 
 /* ============================================================
-   6. Botón principal
+   6. Recordarme / recuperar
+   ============================================================ */
+
+.utilidades {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+}
+
+.recordar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  color: var(--texto-suave);
+}
+
+.recordar__casilla {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.recordar__marca {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  background: #ffffff;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.recordar__marca svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.recordar:hover .recordar__marca {
+  border-color: var(--vino);
+}
+
+.recordar__casilla:checked+.recordar__marca {
+  border-color: var(--vino);
+  background: var(--vino);
+}
+
+.recordar__casilla:checked+.recordar__marca svg {
+  opacity: 1;
+}
+
+.recordar__casilla:focus-visible+.recordar__marca {
+  outline: 2px solid var(--vino);
+  outline-offset: 2px;
+}
+
+.utilidades__enlace {
+  color: var(--vino);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.utilidades__enlace:hover {
+  color: var(--vino-oscuro);
+  text-decoration: underline;
+}
+
+/* ============================================================
+   7. Botones
    ============================================================ */
 
 .boton {
-  width: 100%;
-  height: var(--alto-control);
-  margin-top: clamp(1.5rem, 2.4vw, 2.25rem);
-  border: 0;
-  border-radius: var(--radio-boton);
-  background: linear-gradient(100deg, #e9cb8f 0%, #d9b36f 48%, #c49a55 100%);
-  font: inherit;
-  font-size: var(--fs-boton);
-  font-weight: 700;
-  color: var(--tv-vino-profundo);
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
-}
-
-.boton:hover:not(:disabled) {
-  filter: brightness(1.07);
-  box-shadow: 0 10px 26px rgba(200, 169, 110, 0.24);
-}
-
-.boton:active:not(:disabled) {
-  transform: translateY(1px);
-  filter: brightness(0.96);
-  box-shadow: none;
-}
-
-.boton:focus-visible {
-  outline: 2px solid var(--tv-oro-claro);
-  outline-offset: 3px;
-}
-
-.boton:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-  filter: saturate(0.75);
-}
-
-/* ============================================================
-   7. Separador y sello
-   ============================================================ */
-
-.separador {
-  position: relative;
-  width: 100%;
-  margin: clamp(1.5rem, 2.4vw, 2.25rem) 0;
-  text-align: center;
-}
-
-.separador::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(200, 169, 110, 0.28);
-}
-
-.separador__texto {
-  position: relative;
-  padding-inline: 1rem;
-  background: #601331;
-  font-size: 0.95rem;
-  color: var(--tv-oro-apagado);
-}
-
-.sello {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  margin: 0;
-  font-size: var(--fs-subtitulo);
-  color: var(--tv-oro);
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  height: var(--alto-control);
+  border-radius: 8px;
+  font-family: var(--font-titulo, 'Raleway', system-ui, sans-serif);
+  font-size: clamp(0.95rem, 0.9rem + 0.22vw, 1.05rem);
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.12s ease,
+    border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.sello__icono {
-  width: clamp(22px, 1.8vw, 28px);
-  height: clamp(22px, 1.8vw, 28px);
+.boton--primario {
+  margin-top: 1.15rem;
+  border: 0;
+  background: linear-gradient(120deg, var(--vino) 0%, var(--vino-oscuro) 100%);
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.boton--primario:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.boton--primario:active:not(:disabled) {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+}
+
+.boton--primario:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.boton--secundario {
+  border: 1px solid var(--campo-borde);
+  border-radius: 10px;
+  background: #ffffff;
+  font-weight: 600;
+  color: var(--texto-fuerte);
+}
+
+.boton--secundario:hover {
+  border-color: var(--vino);
+  background: rgba(107, 21, 56, 0.03);
+}
+
+.boton--secundario:active {
+  transform: translateY(1px);
+}
+
+.boton__icono {
+  width: 19px;
+  height: 19px;
   fill: none;
-  stroke: var(--tv-oro);
+  stroke: var(--vino);
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
+.boton:focus-visible {
+  outline: 2px solid var(--vino);
+  outline-offset: 3px;
+}
+
 /* ============================================================
-   8. Pie de página
+   8. Separador
+   ============================================================ */
+
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.separador::before,
+.separador::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e8e8e8;
+}
+
+.separador__texto {
+  font-size: 0.85rem;
+  color: var(--texto-tenue);
+}
+
+/* ============================================================
+   9. Ventajas — dentro de la cuña vino, abajo a la izquierda
+   ============================================================ */
+
+.ventajas {
+  position: relative;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  width: min(52%, 700px);
+  margin: 0;
+  padding: 0 1.5rem clamp(1.5rem, 4vh, 2.5rem) clamp(1.5rem, 4vw, 3.5rem);
+  list-style: none;
+}
+
+.ventaja {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.ventaja__icono {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--oro);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ventaja__titulo {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-titulo, 'Raleway', system-ui, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.ventaja__detalle {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--texto-vino-suave);
+}
+
+/* ============================================================
+   10. Pie — una sola fila, texto a los extremos
    ============================================================ */
 
 .pie {
   position: relative;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 3;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  padding: 0 1.25rem clamp(1.25rem, 3vh, 2.25rem);
-  font-size: clamp(0.85rem, 0.75rem + 0.3vw, 1rem);
-  color: var(--tv-texto-suave);
-  text-align: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: var(--alto-pie);
+  padding-block: 0.75rem;
+  padding-inline: clamp(1.5rem, 4vw, 3.5rem);
+  border-top: 1px solid var(--pie-borde);
+  background: var(--pie-fondo);
+  font-size: clamp(0.76rem, 0.72rem + 0.16vw, 0.85rem);
+  line-height: 1.4;
+  color: var(--texto-suave);
 }
 
-.pie__escudo {
-  flex: none;
-  width: 28px;
-  height: 28px;
-  fill: none;
-  stroke: var(--tv-oro);
-  stroke-width: 1.4;
-}
-
-.pie__escudo text {
-  fill: var(--tv-oro);
-  stroke: none;
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+.pie__texto {
+  margin: 0;
+  white-space: nowrap;
 }
 
 /* ============================================================
-   9. Responsive
+   11. Responsive
    ============================================================ */
 
-/* Laptop: se comprimen los espacios, no los componentes */
-@media (max-width: 1200px) {
-  .acceso__contenido {
-    gap: clamp(1.5rem, 3.5vw, 3rem);
+/* Laptop */
+@media (max-width: 1300px) {
+  :host {
+    --margen-izq: clamp(2.5rem, 9vw, 8rem);
+    --margen-der: clamp(1.5rem, 4vw, 4rem);
+    --cuna-inicio: 59%;
+    --cuna-inicio-oro: 57.6%;
+    --cuna-fin-oro: 95.1%;
   }
 
   .marca__logo {
-    width: min(100%, 380px);
+    width: min(100%, 350px);
+  }
+
+  .ventajas {
+    width: min(58%, 620px);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
   }
 }
 
-/* Tablet: una sola columna, marca arriba y separador horizontal */
+/* El texto del pie se parte antes de desbordar */
+@media (max-width: 1100px) {
+  .pie__texto {
+    white-space: normal;
+  }
+}
+
+/* Tablet y móvil: todo apilado y en flujo normal */
 @media (max-width: 900px) {
-  .acceso__contenido {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1px 1fr;
-    align-content: center;
-    gap: clamp(1.5rem, 4vh, 2.75rem);
-    padding-block: clamp(2rem, 6vh, 3.5rem);
+  :host {
+    --margen-izq: clamp(1.15rem, 5vw, 2.5rem);
+    --margen-der: clamp(1.15rem, 5vw, 2.5rem);
+    --cuna-fin: 100%;
   }
 
-  .acceso__separador-vertical {
-    width: min(420px, 80%);
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(200, 169, 110, 0.5), transparent);
+  .acceso {
+    grid-template-rows: auto auto auto;
+  }
+
+  .acceso__lienzo {
+    inset: auto 0 var(--alto-pie) 0;
+    height: clamp(250px, 40vh, 360px);
+  }
+
+  .acceso__cuna--oro {
+    clip-path: polygon(0 43.5%, 100% 11.5%, 100% 100%, 0 100%);
+  }
+
+  .acceso__cuna--vino {
+    clip-path: polygon(0 46%, 100% 14%, 100% 100%, 0 100%);
+  }
+
+  .acceso__contenido {
+    grid-row: 1;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: clamp(2rem, 5vh, 3rem);
+    padding-block: clamp(2.5rem, 6vh, 4rem);
+  }
+
+  .marca {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .marca__logo {
-    width: min(80%, 340px);
+    width: min(80%, 320px);
+  }
+
+  .marca__titulo {
+    align-items: center;
+  }
+
+  .acceso__panel {
+    justify-content: center;
+    width: 100%;
   }
 
   .tarjeta {
-    width: min(100%, 520px);
+    width: min(100%, 500px);
+    /* antes: 480px */
   }
 
-  .acceso__trama {
-    opacity: 0.18;
+  .ventajas {
+    justify-self: stretch;
+    justify-content: center;
+    width: 100%;
+    gap: clamp(1.5rem, 5vw, 3rem);
+    padding: clamp(2rem, 5vh, 3rem) 1.5rem clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .ventaja {
+    flex: 1 1 190px;
+    max-width: 230px;
   }
 }
 
-/* Mobile: la tarjeta pierde el marco y ocupa el ancho útil */
 @media (max-width: 600px) {
   :host {
-    --alto-control: 56px;
-    --radio-tarjeta: 22px;
-  }
-
-  .acceso__contenido {
-    padding-inline: 1.15rem;
-    gap: 1.5rem;
-  }
-
-  .marca__leyenda {
-    font-size: 1.05rem;
+    --alto-control: 50px;
+    --alto-pie: auto;
   }
 
   .tarjeta {
-    padding: 1.75rem 1.35rem 2rem;
-    background: rgba(107, 21, 56, 0.28);
+    padding: 1.6rem 1.25rem 1.85rem;
+    border-radius: 18px;
   }
 
-  .separador {
-    margin: 1.35rem 0;
+  .utilidades {
+    font-size: 0.84rem;
   }
 
-  .separador__texto {
-    background: #5c1230;
+  .ventajas {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
   }
 
-  .acceso__linea--dos,
-  .acceso__diagonal--secundaria {
-    display: none;
+  .ventaja {
+    max-width: none;
   }
 
   .pie {
-    gap: 0.5rem;
-    font-size: 0.8rem;
-  }
-
-  .pie__escudo {
-    width: 22px;
-    height: 22px;
-  }
-}
-
-/* Pantallas muy bajas: se recorta el aire vertical */
-@media (max-height: 680px) and (min-width: 901px) {
-  .acceso__contenido {
-    padding-block: 1.5rem;
-  }
-
-  .marca__logo {
-    width: min(100%, 340px);
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-block: 0.9rem;
+    text-align: center;
+    font-size: 0.74rem;
   }
 }
 

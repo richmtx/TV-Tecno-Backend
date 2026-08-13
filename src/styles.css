@@ -1,0 +1,291 @@
+/* ===========================================
+   TV TECNO · ADMIN — Estilos globales
+   Derivado del styles.css del frontend público.
+   Misma tipografía y paleta de marca, superficies
+   adaptadas al tema oscuro del administrador.
+   =========================================== */
+
+/* ===========================================
+   Tipografía — Google Fonts
+   Raleway (títulos y cuerpo)
+   =========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap');
+
+/* ===========================================
+   Variables globales
+   =========================================== */
+:root {
+    /* Tipografías */
+    --font-titulo: 'Raleway', system-ui, sans-serif;
+    --font-cuerpo: 'Raleway', system-ui, sans-serif;
+
+    /* Paleta TV Tecno (idéntica al frontend) */
+    --tv-wine: #6b1538;
+    --tv-wine-dark: #4d0e28;
+    --tv-pink: #b03a63;
+    --tv-live: #e23744;
+
+    /* Acento dorado */
+    --tv-gold: #c8a96e;
+    --tv-gold-soft: #be9967;
+    --tv-gold-light: #e8c88a;
+    --tv-gold-dark: #854f0b;
+    --tv-gold-ink: #412402;
+
+    /* --- Extensiones propias del admin --- */
+
+    /* Vinos profundos para fondos oscuros */
+    --tv-wine-deep: #2a0714;
+    --tv-wine-black: #1a0308;
+
+    /* Superficies del panel */
+    --tv-surface: #ffffff;
+    /* tarjetas de contenido (tablas, formularios) */
+    --tv-surface-alt: #faf7f8;
+    /* filas alternas, fondos suaves */
+    --tv-surface-dark: #3a0a1e;
+    /* sidebar / topbar */
+    --tv-border: #ececec;
+    --tv-border-dark: rgba(200, 169, 110, 0.22);
+
+    /* Bandas cálidas heredadas del frontend */
+    --tv-cream: #faf1ec;
+    --tv-cream-border: #f0dcd8;
+
+    /* Texto sobre claro */
+    --tv-text: #1f1f1f;
+    --tv-text-soft: #555555;
+    --tv-text-mute: #8a8a8a;
+
+    /* Texto sobre oscuro */
+    --tv-text-invert: #ffffff;
+    --tv-text-invert-soft: #e6d4d9;
+
+    /* Estados */
+    --tv-ok: #1e8e5a;
+    --tv-warn: #c9821a;
+    --tv-error: #c62839;
+    --tv-error-soft: #ff9aa5;
+
+    /* Radios */
+    --tv-radio-sm: 8px;
+    --tv-radio-md: 12px;
+    --tv-radio-lg: 18px;
+    --tv-radio-xl: 22px;
+
+    /* Sombras */
+    --tv-sombra-sm: 0 1px 3px rgba(31, 31, 31, 0.08);
+    --tv-sombra-md: 0 6px 18px rgba(31, 31, 31, 0.1);
+    --tv-sombra-lg: 0 16px 40px rgba(31, 31, 31, 0.14);
+
+    /* Layout del panel */
+    --tv-topbar-alto: 64px;
+    --tv-sidebar-ancho: 260px;
+    --tv-contenedor-max: 1280px;
+    --tv-transicion: 0.2s ease;
+}
+
+/* ===========================================
+   Reset básico
+   =========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-cuerpo);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--tv-text);
+    background: var(--tv-surface-alt);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* En el admin NO hay navbar fija global: sin padding-top.
+   Cada layout (login, dashboard) define su propio alto. */
+
+/* ===========================================
+   Títulos → Raleway
+   =========================================== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    line-height: 1.2;
+    color: inherit;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.6rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+h4 {
+    font-size: 1.1rem;
+}
+
+/* ===========================================
+   Enlaces base
+   =========================================== */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--tv-wine);
+}
+
+/* ===========================================
+   Formularios — heredan la tipografía
+   =========================================== */
+input,
+textarea,
+select,
+button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    cursor: not-allowed;
+}
+
+/* Quita las flechas de los inputs numéricos */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+img,
+svg,
+video {
+    max-width: 100%;
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* ===========================================
+   Accesibilidad
+   =========================================== */
+:focus-visible {
+    outline: 2px solid var(--tv-gold);
+    outline-offset: 2px;
+}
+
+.tv-solo-lectores {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* ===========================================
+   Utilidades de layout
+   =========================================== */
+.tv-contenedor {
+    width: min(var(--tv-contenedor-max), 100%);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3vw, 2rem);
+}
+
+.tv-panel {
+    background: var(--tv-surface);
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-lg);
+    box-shadow: var(--tv-sombra-sm);
+}
+
+/* ===========================================
+   Scrollbar en tono de marca
+   =========================================== */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--tv-gold-soft) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--tv-gold-soft);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--tv-gold);
+    background-clip: padding-box;
+}
+
+/* ===========================================
+   Selección de texto
+   =========================================== */
+::selection {
+    background: var(--tv-gold);
+    color: var(--tv-gold-ink);
+}
+
+/* ===========================================
+   Movimiento reducido
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

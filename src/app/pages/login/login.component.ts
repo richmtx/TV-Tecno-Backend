@@ -1,16 +1,16 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -27,6 +27,7 @@ export class LoginComponent {
   readonly formulario: FormGroup = this.fb.nonNullable.group({
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     contrasena: ['', [Validators.required, Validators.minLength(6)]],
+    recordarme: [false],
   });
 
   alternarContrasena(): void {
@@ -64,9 +65,11 @@ export class LoginComponent {
     }
 
     this.cargando = true;
-    const { usuario, contrasena } = this.formulario.getRawValue();
+    const { usuario, contrasena, recordarme } = this.formulario.getRawValue();
 
-    // TODO: reemplazar por AuthService.login(usuario, contrasena) contra la API NestJS.
+    // TODO: reemplazar por AuthService.login(usuario, contrasena, recordarme)
+    // contra la API NestJS. `recordarme` decide si el token va a
+    // localStorage (persistente) o a sessionStorage (sólo esta pestaña).
     setTimeout(() => {
       this.cargando = false;
 
