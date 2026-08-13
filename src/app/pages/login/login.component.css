@@ -27,19 +27,20 @@
   /* Geometría de la composición */
   --alto-pie: clamp(52px, 6.5vh, 68px);
   --cuna-inicio: 56%;
-  --cuna-inicio-oro: 54.6%;
+  --cuna-inicio-oro: 55.3%;
   --cuna-fin: 92%;
-  --cuna-fin-oro: 94.9%;
+  --cuna-fin-oro: 93.5%;
 
-  --margen-izq: clamp(2.5rem, 17vw, 17rem);
-  --margen-der: clamp(2rem, 11vw, 11rem);
+  --margen-izq: clamp(2.5rem, 19vw, 19rem);
+  --margen-der: clamp(2rem, 13vw, 13rem);
 
   --fs-bienvenida: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
   --fs-descripcion: clamp(1rem, 0.9rem + 0.35vw, 1.15rem);
   --fs-titulo-tarjeta: clamp(1.5rem, 1.15rem + 1vw, 2.05rem);
   --fs-subtitulo: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
-  --fs-campo: clamp(0.92rem, 0.88rem + 0.18vw, 1rem);
-  --alto-control: clamp(48px, 3.2vw, 54px);
+  --fs-campo: clamp(0.98rem, 0.92rem + 0.22vw, 1.1rem);
+  --alto-control: clamp(52px, 3.8vw, 62px);
+  --alto-campos: calc(2 * var(--alto-control) + 0.75rem + 3.7rem);
 
   display: block;
   font-family: var(--font-cuerpo, 'Raleway', system-ui, sans-serif);
@@ -109,7 +110,7 @@
 }
 
 .marca__logo {
-  width: min(100%, 420px);
+  width: min(100%, 450px);
   height: auto;
   margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
 }
@@ -149,11 +150,11 @@
 }
 
 .tarjeta {
-  width: min(100%, 700px);
+  width: min(100%, 740px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(1.75rem, 2.4vw, 2.35rem) clamp(2rem, 3.4vw, 3.5rem);
+  padding: clamp(1.75rem, 2.4vw, 2.35rem) clamp(1.5rem, 2vw, 2rem);
   border: 1px solid var(--tarjeta-borde);
   border-radius: 22px;
   background: #ffffff;
@@ -162,22 +163,10 @@
     0 20px 50px rgba(0, 0, 0, 0.09);
 }
 
-.tarjeta__avatar {
-  display: grid;
-  place-items: center;
-  width: clamp(62px, 4.4vw, 72px);
-  height: clamp(62px, 4.4vw, 72px);
-  border-radius: 50%;
-  background: linear-gradient(150deg, var(--vino) 0%, var(--vino-oscuro) 100%);
-}
-
-.tarjeta__avatar svg {
-  width: 52%;
-  height: 52%;
-  fill: none;
-  stroke: var(--oro);
-  stroke-width: 1.6;
-  stroke-linecap: round;
+.tarjeta__isotipo {
+  width: clamp(108px, 8.5vw, 140px);
+  height: auto;
+  object-fit: contain;
 }
 
 .tarjeta__titulo {
@@ -210,12 +199,23 @@
 
 /* 5. Campos */
 
-.campo {
+.campos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
   width: 100%;
+  min-height: var(--alto-campos);
 }
 
-.campo+.campo {
-  margin-top: 0.7rem;
+.campo {
+  width: 100%;
+  position: relative;
+  padding-bottom: 0;
+}
+
+.campo + .campo {
+  margin-top: 0;
 }
 
 .campo__caja {
@@ -223,7 +223,7 @@
   align-items: center;
   gap: 0.8rem;
   height: var(--alto-control);
-  padding-inline: clamp(0.95rem, 1.3vw, 1.25rem);
+  padding-inline: clamp(1.1rem, 1.5vw, 1.5rem);
   border: 1px solid var(--campo-borde);
   border-radius: 10px;
   background: #ffffff;
@@ -249,8 +249,8 @@
 
 .campo__icono {
   flex: none;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: #4a4a4a;
   stroke-width: 1.6;
@@ -278,8 +278,8 @@
   flex: none;
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -290,8 +290,8 @@
 }
 
 .campo__accion svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
@@ -304,9 +304,11 @@
 }
 
 .campo__mensaje {
-  margin: 0.35rem 0 0;
+  position: static;
+  margin: 0.45rem 0 0;
   padding-left: 0.25rem;
   font-size: 0.8rem;
+  line-height: 1.25;
   color: var(--error);
 }
 
@@ -318,7 +320,7 @@
   justify-content: space-between;
   gap: 1rem;
   width: 100%;
-  margin-top: 0.9rem;
+  margin-top: 1rem;
   font-size: 0.9rem;
 }
 
@@ -400,7 +402,7 @@
   height: var(--alto-control);
   border-radius: 8px;
   font-family: var(--font-titulo, 'Raleway', system-ui, sans-serif);
-  font-size: clamp(0.95rem, 0.9rem + 0.22vw, 1.05rem);
+  font-size: clamp(1rem, 0.94rem + 0.26vw, 1.15rem);
   cursor: pointer;
   transition: filter 0.2s ease, transform 0.12s ease,
     border-color 0.2s ease, background-color 0.2s ease;
@@ -566,8 +568,8 @@
     --margen-izq: clamp(2.5rem, 9vw, 8rem);
     --margen-der: clamp(1.5rem, 4vw, 4rem);
     --cuna-inicio: 59%;
-    --cuna-inicio-oro: 57.6%;
-    --cuna-fin-oro: 95.1%;
+    --cuna-inicio-oro: 58.3%;
+    --cuna-fin-oro: 93.6%;
   }
 
   .marca__logo {
@@ -661,6 +663,7 @@
   :host {
     --alto-control: 50px;
     --alto-pie: auto;
+    --alto-campos: calc(2 * var(--alto-control) + 0.75rem + 5.5rem);
   }
 
   .tarjeta {

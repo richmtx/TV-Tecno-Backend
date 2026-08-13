@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +14,8 @@ import { Router, RouterLink } from '@angular/router';
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly ruta = inject(ActivatedRoute);
+  private readonly auth = inject(AuthService);
 
   readonly anio = new Date().getFullYear();
 
@@ -40,9 +44,7 @@ export class LoginComponent {
 
     const etiqueta = control === 'usuario' ? 'usuario' : 'contraseña';
 
-    if (campo.errors['required']) {
-      return `Escribe tu ${etiqueta}.`;
-    }
+    if (campo.errors['required']) return `Escribe tu ${etiqueta}.`;
     if (campo.errors['minlength']) {
       const min = campo.errors['minlength'].requiredLength;
       return `La ${etiqueta} necesita al menos ${min} caracteres.`;
@@ -61,16 +63,29 @@ export class LoginComponent {
     this.cargando = true;
     const { usuario, contrasena, recordarme } = this.formulario.getRawValue();
 
-    setTimeout(() => {
-      this.cargando = false;
+    this.auth.login(usuario, contrasena, recordarme).subscribe({
+      next: () => {
+        const destino = this.ruta.snapshot.queryParamMap.get('regresar') ?? '/dashboard';
+        this.router.navigateByUrl(destino);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.cargando = false;
+        this.errorGeneral = this.traducirError(err);
+        this.formulario.get('contrasena')?.reset();
+      },
+    });
+  }
 
-      if (usuario === 'admin' && contrasena === 'tvtecno161') {
-        this.router.navigate(['/dashboard']);
-        return;
-      }
-
-      this.errorGeneral = 'Usuario o contraseña incorrectos.';
-      this.formulario.get('contrasena')?.reset();
-    }, 900);
+  private traducirError(err: HttpErrorResponse): string {
+    if (err.status === 0) {
+      return 'No se pudo conectar con el servidor. Verifica que la API esté corriendo.';
+    }
+    if (err.status === 401) {
+      return 'Usuario o contraseña incorrectos.';
+    }
+    if (err.status === 400) {
+      return 'Revisa los datos ingresados.';
+    }
+    return 'Ocurrió un error inesperado. Intenta de nuevo.';
   }
 }

@@ -27,59 +27,57 @@
     <section class="acceso__panel">
       <form class="tarjeta" [formGroup]="formulario" (ngSubmit)="iniciarSesion()" novalidate>
 
-        <span class="tarjeta__avatar">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="8.5" r="3.6" />
-            <path d="M5.5 19.5a6.5 6.5 0 0 1 13 0" />
-          </svg>
-        </span>
+        <img class="tarjeta__isotipo" src="assets/LogoIsotipo.png" alt="TV Tecno 16.1" />
 
         <h2 class="tarjeta__titulo">Iniciar sesión</h2>
         <p class="tarjeta__subtitulo">Accede al administrador del sitio web</p>
 
-        <!-- Usuario -->
-        <div class="campo">
-          <div class="campo__caja" [class.campo__caja--error]="esInvalido('usuario')">
-            <svg class="campo__icono" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="8" r="3.8" />
-              <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
-            </svg>
-            <input class="campo__entrada" id="usuario" type="text" formControlName="usuario" placeholder="Usuario"
-              autocomplete="username" spellcheck="false" [attr.aria-invalid]="esInvalido('usuario')" />
-            <label class="tv-solo-lectores" for="usuario">Usuario</label>
-          </div>
-          @if (esInvalido('usuario')) {
-          <p class="campo__mensaje" role="alert">{{ mensajeError('usuario') }}</p>
-          }
-        </div>
 
-        <!-- Contraseña -->
-        <div class="campo">
-          <div class="campo__caja" [class.campo__caja--error]="esInvalido('contrasena')">
-            <svg class="campo__icono" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="5" y="10.5" width="14" height="9.5" rx="2.4" />
-              <path d="M8.5 10.5V7.6a3.5 3.5 0 0 1 7 0v2.9" />
-            </svg>
-            <input class="campo__entrada" id="contrasena" [type]="verContrasena ? 'text' : 'password'"
-              formControlName="contrasena" placeholder="Contraseña" autocomplete="current-password"
-              [attr.aria-invalid]="esInvalido('contrasena')" />
-            <label class="tv-solo-lectores" for="contrasena">Contraseña</label>
-
-            <button class="campo__accion" type="button" (click)="alternarContrasena()"
-              [attr.aria-label]="verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-              [attr.aria-pressed]="verContrasena">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M2.6 12S6.2 5.8 12 5.8 21.4 12 21.4 12 17.8 18.2 12 18.2 2.6 12 2.6 12Z" />
-                <circle cx="12" cy="12" r="3.1" />
-                @if (!verContrasena) {
-                <line x1="4.2" y1="19.8" x2="19.8" y2="4.2" />
-                }
+        <div class="campos">
+          <!-- Usuario -->
+          <div class="campo">
+            <div class="campo__caja" [class.campo__caja--error]="esInvalido('usuario')">
+              <svg class="campo__icono" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.8" />
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
               </svg>
-            </button>
+              <input class="campo__entrada" id="usuario" type="text" formControlName="usuario" placeholder="Usuario"
+                autocomplete="username" spellcheck="false" [attr.aria-invalid]="esInvalido('usuario')" />
+              <label class="tv-solo-lectores" for="usuario">Usuario</label>
+            </div>
+            @if (esInvalido('usuario')) {
+            <p class="campo__mensaje" role="alert">{{ mensajeError('usuario') }}</p>
+            }
           </div>
-          @if (esInvalido('contrasena')) {
-          <p class="campo__mensaje" role="alert">{{ mensajeError('contrasena') }}</p>
-          }
+
+          <!-- Contraseña -->
+          <div class="campo">
+            <div class="campo__caja" [class.campo__caja--error]="esInvalido('contrasena')">
+              <svg class="campo__icono" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="5" y="10.5" width="14" height="9.5" rx="2.4" />
+                <path d="M8.5 10.5V7.6a3.5 3.5 0 0 1 7 0v2.9" />
+              </svg>
+              <input class="campo__entrada" id="contrasena" [type]="verContrasena ? 'text' : 'password'"
+                formControlName="contrasena" placeholder="Contraseña" autocomplete="current-password"
+                [attr.aria-invalid]="esInvalido('contrasena')" />
+              <label class="tv-solo-lectores" for="contrasena">Contraseña</label>
+
+              <button class="campo__accion" type="button" (click)="alternarContrasena()"
+                [attr.aria-label]="verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                [attr.aria-pressed]="verContrasena">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2.6 12S6.2 5.8 12 5.8 21.4 12 21.4 12 17.8 18.2 12 18.2 2.6 12 2.6 12Z" />
+                  <circle cx="12" cy="12" r="3.1" />
+                  @if (!verContrasena) {
+                  <line x1="4.2" y1="19.8" x2="19.8" y2="4.2" />
+                  }
+                </svg>
+              </button>
+            </div>
+            @if (esInvalido('contrasena')) {
+            <p class="campo__mensaje" role="alert">{{ mensajeError('contrasena') }}</p>
+            }
+          </div>
         </div>
 
         <!-- Utilidades -->
