@@ -112,7 +112,7 @@
     <nav class="sidebar__nav">
 
         <!-- Dashboard -->
-        <a routerLink="/admin/dashboard" routerLinkActive="sidebar__link--active"
+        <a routerLink="/dashboard" routerLinkActive="sidebar__link--active" [routerLinkActiveOptions]="{ exact: true }"
             class="sidebar__link sidebar__link--dashboard">
             <svg class="sidebar__icon">
                 <use href="#icon-dashboard" />

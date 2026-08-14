@@ -369,3 +369,7 @@
     justify-content: center;
     padding: 0.6rem 0;
 }
+
+:host(.sidebar-host--colapsado) .sidebar__nav {
+    margin-top: 1rem;
+}

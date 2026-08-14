@@ -1,4 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -22,6 +23,7 @@ const CLAVE_USUARIO = 'tvtecno_usuario';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
   private readonly baseUrl = `${environment.apiUrl}/auth`;
 
   private readonly _usuario = signal<UsuarioSesion | null>(this.restaurarSesion());
@@ -47,6 +49,7 @@ export class AuthService {
   logout(): void {
     this.limpiarAlmacenamiento();
     this._usuario.set(null);
+    this.router.navigate(['/login']);
   }
 
   obtenerToken(): string | null {
