@@ -15,5 +15,29 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
   },
+  {
+    path: 'inicio',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/inicio/inicio.component').then((m) => m.InicioComponent),
+  },
+  {
+    path: 'programacion',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/programacion/programacion.component').then((m) => m.ProgramacionComponent),
+  },
+  {
+    path: 'videoteca',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/videoteca/videoteca.component').then((m) => m.VideotecaComponent),
+  },
+  {
+    path: 'galeria',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/galeria/galeria.component').then((m) => m.GaleriaComponent),
+  },
   { path: '**', redirectTo: 'login' },
 ];
