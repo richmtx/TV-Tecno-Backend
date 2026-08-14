@@ -14,11 +14,15 @@ interface NavItem {
   standalone: true,
   imports: [RouterLink, RouterLinkActive, NgOptimizedImage],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
+  host: {
+    '[class.sidebar-host--colapsado]': 'colapsado()',
+  },
 })
 export class SidebarComponent {
 
   userMenuOpen = signal(false);
+  colapsado = signal(false);
 
   readonly seccionesSitio: NavItem[] = [
     { label: 'Inicio', route: '/admin/inicio', icon: 'home' },
@@ -36,6 +40,10 @@ export class SidebarComponent {
     { label: 'SEO y Redes', route: '/admin/seo', icon: 'share' },
     { label: 'Menú y Navegación', route: '/admin/menu', icon: 'menu' },
   ];
+
+  toggleSidebar(): void {
+    this.colapsado.update(v => !v);
+  }
 
   constructor(public authService: AuthService) { }
 
