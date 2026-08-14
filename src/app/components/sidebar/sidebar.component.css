@@ -1,0 +1,254 @@
+/* ══════════════════════════════════════════════
+   Sidebar · TV Tecno Admin
+   Paleta: guinda #6b1538 · dorado #c8a96e
+   Tipografía: Raleway (texto) · Outfit (numerales)
+   ══════════════════════════════════════════════ */
+
+:host {
+    display: block;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar {
+    --guinda: #6b1538;
+    --guinda-oscuro: #1a060f;
+    --guinda-medio: #3d0c22;
+    --dorado: #c8a96e;
+    --texto: #f5eef1;
+    --texto-suave: rgba(245, 238, 241, 0.62);
+    --texto-titulo: rgba(245, 238, 241, 0.45);
+
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 100vh;
+    padding: 1.5rem 1rem 1.25rem;
+    background: linear-gradient(170deg,
+            var(--guinda-oscuro) 0%,
+            #240914 45%,
+            var(--guinda-medio) 100%);
+    font-family: 'Raleway', sans-serif;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(200, 169, 110, 0.25) transparent;
+}
+
+/* ─────────── Logo ─────────── */
+
+.sidebar__logo {
+    display: flex;
+    justify-content: center;
+    padding: 0.25rem 0 1.75rem;
+}
+
+.sidebar__logo-img {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ─────────── Navegación ─────────── */
+
+.sidebar__nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar__section-title {
+    margin: 1.5rem 0 0.5rem;
+    padding: 0 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--texto-titulo);
+}
+
+.sidebar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.75rem;
+    border-radius: 0.6rem;
+    font-size: 0.925rem;
+    font-weight: 500;
+    color: var(--texto-suave);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar__link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--texto);
+}
+
+.sidebar__link--active {
+    background: linear-gradient(90deg, rgba(107, 21, 56, 0.85), rgba(107, 21, 56, 0.45));
+    color: var(--texto);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(200, 169, 110, 0.18);
+}
+
+.sidebar__link--active .sidebar__icon {
+    color: var(--dorado);
+}
+
+.sidebar__link--dashboard {
+    margin-bottom: 0.25rem;
+}
+
+.sidebar__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    color: currentColor;
+}
+
+.sidebar__divider {
+    margin: 1.25rem 0.5rem 0;
+    border: none;
+    border-top: 1px solid rgba(245, 238, 241, 0.12);
+}
+
+/* ─────────── Tarjeta de usuario ─────────── */
+
+.sidebar__user-wrapper {
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.sidebar__user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(200, 169, 110, 0.2);
+    border-radius: 0.9rem;
+    background: linear-gradient(135deg, rgba(107, 21, 56, 0.55), rgba(61, 12, 34, 0.75));
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    font-family: inherit;
+    text-align: left;
+}
+
+.sidebar__user:hover,
+.sidebar__user--open {
+    border-color: rgba(200, 169, 110, 0.45);
+}
+
+.sidebar__user-avatar {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--guinda);
+    border: 1.5px solid var(--dorado);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--dorado);
+}
+
+.sidebar__user-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.sidebar__user-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--texto);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar__user-role {
+    font-size: 0.75rem;
+    color: var(--texto-suave);
+}
+
+.sidebar__user-chevron {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--texto-suave);
+    transition: transform 0.25s ease;
+}
+
+.sidebar__user--open .sidebar__user-chevron {
+    transform: rotate(180deg);
+}
+
+/* Menú desplegable (cerrar sesión) */
+
+.sidebar__user-menu {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    padding: 0.4rem;
+    border: 1px solid rgba(200, 169, 110, 0.25);
+    border-radius: 0.75rem;
+    background: #2a0a18;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    animation: menu-in 0.18s ease;
+}
+
+@keyframes menu-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar__user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--texto-suave);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar__user-menu-item:hover {
+    background-color: rgba(107, 21, 56, 0.6);
+    color: var(--texto);
+}
+
+/* ─────────── Responsive ─────────── */
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 240px;
+    }
+}
