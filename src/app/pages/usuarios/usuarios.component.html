@@ -1,1 +1,260 @@
-<app-sidebar></app-sidebar>>
+<app-sidebar></app-sidebar>
+
+<main class="usuarios">
+    <header class="usuarios__encabezado">
+        <div>
+            <h1 class="usuarios__titulo">Usuarios</h1>
+            <p class="usuarios__subtitulo">
+                Administra quién puede entrar al panel y qué puede hacer
+            </p>
+        </div>
+        <button type="button" class="btn btn--primario" (click)="abrirModalCrear()">
+            Nuevo usuario
+        </button>
+    </header>
+
+    @if (error()) {
+    <div class="alerta alerta--error">{{ error() }}</div>
+    }
+
+    @if (estadisticas(); as stats) {
+    <section class="metricas">
+        <article class="metrica">
+            <p class="metrica__etiqueta">Total de usuarios</p>
+            <p class="metrica__valor">{{ stats.total }}</p>
+        </article>
+        <article class="metrica">
+            <p class="metrica__etiqueta">Administradores</p>
+            <p class="metrica__valor">{{ stats.admins }}</p>
+        </article>
+        <article class="metrica">
+            <p class="metrica__etiqueta">Editores</p>
+            <p class="metrica__valor">{{ stats.editores }}</p>
+        </article>
+        <article class="metrica">
+            <p class="metrica__etiqueta">Inactivos</p>
+            <p class="metrica__valor">{{ stats.inactivos }}</p>
+        </article>
+    </section>
+    }
+
+    <section class="filtros">
+        <input type="search" class="campo campo--busqueda" placeholder="Buscar por nombre, usuario o correo"
+            [ngModel]="buscar()" (ngModelChange)="buscar.set($event)" />
+
+        <select class="campo campo--select" [ngModel]="filtroRol()" (ngModelChange)="filtroRol.set($event)">
+            <option value="">Todos los roles</option>
+            <option value="admin">Administrador</option>
+            <option value="editor">Editor</option>
+        </select>
+    </section>
+
+    <section class="tv-panel tabla-envoltura">
+        @if (cargando()) {
+        <p class="tabla__estado">Cargando usuarios…</p>
+        } @else if (usuariosFiltrados().length === 0) {
+        <p class="tabla__estado">No hay usuarios que coincidan con la búsqueda</p>
+        } @else {
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Último acceso</th>
+                    <th class="tabla__col-acciones">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (u of usuariosFiltrados(); track u.id) {
+                <tr [class.fila--inactiva]="!u.activo">
+                    <td>
+                        <div class="celda-usuario">
+                            <span class="avatar" [class.avatar--admin]="u.rol === 'admin'">
+                                {{ iniciales(u.nombreCompleto) }}
+                            </span>
+                            <div class="celda-usuario__datos">
+                                <p class="celda-usuario__nombre">
+                                    {{ u.nombreCompleto }}
+                                    @if (!u.activo) {
+                                    <span class="etiqueta etiqueta--inactivo">Inactivo</span>
+                                    }
+                                </p>
+                                <p class="celda-usuario__correo">{{ u.correo }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge" [class.badge--admin]="u.rol === 'admin'">
+                            {{ u.rol === 'admin' ? 'Administrador' : 'Editor' }}
+                        </span>
+                    </td>
+                    <td class="celda-fecha">
+                        {{ u.ultimoAcceso ? (u.ultimoAcceso | date:'dd MMM, HH:mm') : 'Nunca' }}
+                    </td>
+                    <td class="tabla__col-acciones">
+                        <div class="acciones">
+                            <button type="button" class="btn btn--texto" (click)="abrirModalEditar(u)">
+                                Editar
+                            </button>
+                            <button type="button" class="btn btn--texto" (click)="resetearPassword(u)">
+                                Resetear
+                            </button>
+                            @if (u.activo) {
+                            <button type="button" class="btn btn--texto btn--peligro"
+                                (click)="pedirConfirmacionBaja(u)">
+                                Desactivar
+                            </button>
+                            } @else {
+                            <button type="button" class="btn btn--texto" (click)="reactivar(u)">
+                                Reactivar
+                            </button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        }
+    </section>
+
+    <h2 class="seccion__titulo">Permisos por rol</h2>
+    <section class="tv-panel tabla-envoltura">
+        <table class="tabla tabla--permisos">
+            <thead>
+                <tr>
+                    <th>Puede</th>
+                    <th class="col-centro">Administrador</th>
+                    <th class="col-centro">Editor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (p of permisos; track p.accion) {
+                <tr>
+                    <td>{{ p.accion }}</td>
+                    <td class="col-centro">
+                        <span [class]="p.admin ? 'marca marca--si' : 'marca marca--no'">
+                            {{ p.admin ? '✓' : '✕' }}
+                        </span>
+                    </td>
+                    <td class="col-centro">
+                        <span [class]="p.editor ? 'marca marca--si' : 'marca marca--no'">
+                            {{ p.editor ? '✓' : '✕' }}
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</main>
+
+@if (modalAbierto()) {
+<div class="modal-fondo" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <h2 class="modal__titulo">
+            {{ usuarioEditando() ? 'Editar usuario' : 'Nuevo usuario' }}
+        </h2>
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        @if (!usuarioEditando()) {
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Usuario</span>
+            <input type="text" class="campo" [(ngModel)]="formulario.usuario" placeholder="jorge.carrillo"
+                autocomplete="off" />
+        </label>
+        }
+
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Nombre completo</span>
+            <input type="text" class="campo" [(ngModel)]="formulario.nombreCompleto" placeholder="Jorge Carrillo" />
+        </label>
+
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Correo</span>
+            <input type="email" class="campo" [(ngModel)]="formulario.correo" placeholder="jorge.c@tvtecno.itd.mx" />
+        </label>
+
+        <fieldset class="campo-grupo campo-grupo--roles">
+            <legend class="campo-grupo__etiqueta">Rol</legend>
+            <label class="opcion-rol">
+                <input type="radio" name="rol" value="editor" [(ngModel)]="formulario.rol" />
+                <span>
+                    <strong>Editor</strong>
+                    <small>Publica y edita contenido del sitio</small>
+                </span>
+            </label>
+            <label class="opcion-rol">
+                <input type="radio" name="rol" value="admin" [(ngModel)]="formulario.rol" />
+                <span>
+                    <strong>Administrador</strong>
+                    <small>Control total, incluyendo usuarios</small>
+                </span>
+            </label>
+        </fieldset>
+
+        @if (!usuarioEditando()) {
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Contraseña</span>
+            <input type="text" class="campo" [(ngModel)]="formulario.password"
+                placeholder="Déjalo vacío para generar una automáticamente" />
+        </label>
+        }
+
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" (click)="cerrarModal()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : (usuarioEditando() ? 'Guardar cambios' : 'Crear usuario') }}
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+@if (passwordGenerada(); as pass) {
+<div class="modal-fondo" (click)="cerrarAvisoPassword()">
+    <div class="modal modal--angosto" (click)="$event.stopPropagation()">
+        <h2 class="modal__titulo">Contraseña generada</h2>
+        <p class="modal__texto">
+            Entrega esta contraseña a {{ nombreDePassword() }}.
+            No se volverá a mostrar.
+        </p>
+        <div class="password-caja">
+            <code>{{ pass }}</code>
+            <button type="button" class="btn btn--secundario" (click)="copiarPassword()">
+                Copiar
+            </button>
+        </div>
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--primario" (click)="cerrarAvisoPassword()">
+                Listo
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+@if (confirmandoBaja(); as objetivo) {
+<div class="modal-fondo" (click)="cancelarBaja()">
+    <div class="modal modal--angosto" (click)="$event.stopPropagation()">
+        <h2 class="modal__titulo">Desactivar cuenta</h2>
+        <p class="modal__texto">
+            {{ objetivo.nombreCompleto }} ya no podrá entrar al panel.
+            Puedes reactivar la cuenta más adelante.
+        </p>
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" (click)="cancelarBaja()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--peligro-solido" (click)="confirmarBaja()">
+                Desactivar
+            </button>
+        </div>
+    </div>
+</div>
+}
