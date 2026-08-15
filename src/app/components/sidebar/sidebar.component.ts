@@ -25,24 +25,25 @@ export class SidebarComponent {
   colapsado = signal(false);
 
   readonly seccionesSitio: NavItem[] = [
-    { label: 'Inicio', route: '/admin/inicio', icon: 'home' },
-    { label: 'Programación', route: '/admin/programacion', icon: 'calendar' },
-    { label: 'Videoteca', route: '/admin/videoteca', icon: 'video' },
-    { label: 'Galería', route: '/admin/galeria', icon: 'image' },
-    { label: 'Contacto', route: '/admin/contacto', icon: 'mail' },
-    { label: 'Acerca de', route: '/admin/acerca-de', icon: 'info' },
-    { label: 'En Vivo Ahora', route: '/admin/en-vivo', icon: 'live' },
+    { label: 'Inicio', route: '/inicio', icon: 'home' },
+    { label: 'Programación', route: '/programacion', icon: 'calendar' },
+    { label: 'Videoteca', route: '/videoteca', icon: 'video' },
+    { label: 'Galería', route: '/galeria', icon: 'image' },
+    // Descomenta cada uno cuando crees su página y su ruta:
+    // { label: 'Contacto', route: '/contacto', icon: 'mail' },
+    // { label: 'Acerca de', route: '/acerca-de', icon: 'info' },
+    // { label: 'En Vivo Ahora', route: '/en-vivo', icon: 'live' },
   ];
 
   readonly configuracion: NavItem[] = [
-    { label: 'Usuarios', route: '/admin/usuarios', icon: 'users' },
+    { label: 'Usuarios', route: '/usuarios', icon: 'users' },
   ];
+
+  constructor(public authService: AuthService) { }
 
   toggleSidebar(): void {
     this.colapsado.update(v => !v);
   }
-
-  constructor(public authService: AuthService) { }
 
   get userName(): string {
     return this.authService.usuario()?.nombreCompleto ?? 'TV Tecno Admin';

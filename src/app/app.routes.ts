@@ -39,5 +39,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/galeria/galeria.component').then((m) => m.GaleriaComponent),
   },
+  {
+    path: 'usuarios',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/usuarios/usuarios.component').then((m) => m.UsuariosComponent),
+  },
   { path: '**', redirectTo: 'login' },
 ];
