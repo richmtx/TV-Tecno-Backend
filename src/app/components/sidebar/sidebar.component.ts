@@ -36,9 +36,6 @@ export class SidebarComponent {
 
   readonly configuracion: NavItem[] = [
     { label: 'Usuarios', route: '/admin/usuarios', icon: 'users' },
-    { label: 'Ajustes Generales', route: '/admin/ajustes', icon: 'settings' },
-    { label: 'SEO y Redes', route: '/admin/seo', icon: 'share' },
-    { label: 'Menú y Navegación', route: '/admin/menu', icon: 'menu' },
   ];
 
   toggleSidebar(): void {
