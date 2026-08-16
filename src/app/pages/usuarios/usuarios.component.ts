@@ -1,4 +1,6 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+  Component, HostListener, OnInit, computed, inject, signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
@@ -11,6 +13,11 @@ interface FilaPermiso {
   accion: string;
   admin: boolean;
   editor: boolean;
+}
+
+interface OpcionRol {
+  valor: Rol | '';
+  etiqueta: string;
 }
 
 @Component({
@@ -41,6 +48,20 @@ export class UsuariosComponent implements OnInit {
 
   readonly confirmandoBaja = signal<Usuario | null>(null);
 
+  /* --- Desplegable de roles --- */
+  readonly dropdownAbierto = signal(false);
+
+  readonly opcionesRol: OpcionRol[] = [
+    { valor: '', etiqueta: 'Todos los roles' },
+    { valor: 'admin', etiqueta: 'Administrador' },
+    { valor: 'editor', etiqueta: 'Editor' },
+  ];
+
+  readonly etiquetaRolActual = computed(() => {
+    const actual = this.filtroRol();
+    return this.opcionesRol.find((o) => o.valor === actual)?.etiqueta ?? 'Todos los roles';
+  });
+
   formulario: CrearUsuarioPayload = this.formularioVacio();
 
   readonly permisos: FilaPermiso[] = [
@@ -68,6 +89,28 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargar();
+  }
+
+  /* Cierra el desplegable al hacer clic fuera.
+     Los clics dentro no llegan aquí: el contenedor
+     `.desplegable` detiene la propagación. */
+  @HostListener('document:click')
+  cerrarDropdown(): void {
+    if (this.dropdownAbierto()) this.dropdownAbierto.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  cerrarDropdownConEscape(): void {
+    this.cerrarDropdown();
+  }
+
+  alternarDropdown(): void {
+    this.dropdownAbierto.update((v) => !v);
+  }
+
+  seleccionarRol(valor: Rol | ''): void {
+    this.filtroRol.set(valor);
+    this.dropdownAbierto.set(false);
   }
 
   cargar(): void {

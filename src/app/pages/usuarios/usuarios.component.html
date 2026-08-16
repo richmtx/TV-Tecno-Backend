@@ -42,11 +42,34 @@
         <input type="search" class="campo campo--busqueda" placeholder="Buscar por nombre, usuario o correo"
             [ngModel]="buscar()" (ngModelChange)="buscar.set($event)" />
 
-        <select class="campo campo--select" [ngModel]="filtroRol()" (ngModelChange)="filtroRol.set($event)">
-            <option value="">Todos los roles</option>
-            <option value="admin">Administrador</option>
-            <option value="editor">Editor</option>
-        </select>
+        <!-- Desplegable personalizado (sustituye al <select> nativo) -->
+        <div class="desplegable" (click)="$event.stopPropagation()">
+            <button type="button" class="desplegable__boton" [class.desplegable__boton--activo]="dropdownAbierto()"
+                [attr.aria-expanded]="dropdownAbierto()" aria-haspopup="listbox" (click)="alternarDropdown()">
+                <span>{{ etiquetaRolActual() }}</span>
+                <svg class="desplegable__flecha" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </button>
+
+            @if (dropdownAbierto()) {
+            <ul class="desplegable__panel" role="listbox" aria-label="Filtrar por rol">
+                @for (op of opcionesRol; track op.valor) {
+                <li>
+                    <button type="button" class="desplegable__opcion"
+                        [class.desplegable__opcion--activa]="filtroRol() === op.valor" role="option"
+                        [attr.aria-selected]="filtroRol() === op.valor" (click)="seleccionarRol(op.valor)">
+                        <span>{{ op.etiqueta }}</span>
+                        @if (filtroRol() === op.valor) {
+                        <span class="desplegable__palomita" aria-hidden="true">✓</span>
+                        }
+                    </button>
+                </li>
+                }
+            </ul>
+            }
+        </div>
     </section>
 
     <section class="tv-panel tabla-envoltura">
@@ -56,12 +79,18 @@
         <p class="tabla__estado">No hay usuarios que coincidan con la búsqueda</p>
         } @else {
         <table class="tabla tabla--usuarios">
+            <colgroup>
+                <col />
+                <col style="width: 180px" />
+                <col style="width: 170px" />
+                <col style="width: 290px" />
+            </colgroup>
             <thead>
                 <tr>
-                    <th class="col-usuario">Usuario</th>
-                    <th class="col-rol col-centro">Rol</th>
-                    <th class="col-fecha">Último acceso</th>
-                    <th class="tabla__col-acciones col-centro">Acciones</th>
+                    <th>Usuario</th>
+                    <th class="col-centro">Rol</th>
+                    <th>Último acceso</th>
+                    <th class="col-centro">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,7 +120,7 @@
                     <td class="celda-fecha">
                         {{ u.ultimoAcceso ? (u.ultimoAcceso | date:'dd MMM, HH:mm') : 'Nunca' }}
                     </td>
-                    <td class="tabla__col-acciones col-centro">
+                    <td class="col-centro">
                         <div class="acciones">
                             <button type="button" class="btn btn--texto" (click)="abrirModalEditar(u)">
                                 Editar
@@ -121,9 +150,14 @@
     <h2 class="seccion__titulo">Permisos por rol</h2>
     <section class="tv-panel tabla-envoltura">
         <table class="tabla tabla--permisos">
+            <colgroup>
+                <col />
+                <col style="width: 220px" />
+                <col style="width: 220px" />
+            </colgroup>
             <thead>
                 <tr>
-                    <th class="col-accion">Puede</th>
+                    <th>Puede</th>
                     <th class="col-centro">Administrador</th>
                     <th class="col-centro">Editor</th>
                 </tr>
