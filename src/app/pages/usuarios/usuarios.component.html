@@ -55,13 +55,13 @@
         } @else if (usuariosFiltrados().length === 0) {
         <p class="tabla__estado">No hay usuarios que coincidan con la búsqueda</p>
         } @else {
-        <table class="tabla">
+        <table class="tabla tabla--usuarios">
             <thead>
                 <tr>
-                    <th>Usuario</th>
-                    <th>Rol</th>
-                    <th>Último acceso</th>
-                    <th class="tabla__col-acciones">Acciones</th>
+                    <th class="col-usuario">Usuario</th>
+                    <th class="col-rol col-centro">Rol</th>
+                    <th class="col-fecha">Último acceso</th>
+                    <th class="tabla__col-acciones col-centro">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td class="col-centro">
                         <span class="badge" [class.badge--admin]="u.rol === 'admin'">
                             {{ u.rol === 'admin' ? 'Administrador' : 'Editor' }}
                         </span>
@@ -91,7 +91,7 @@
                     <td class="celda-fecha">
                         {{ u.ultimoAcceso ? (u.ultimoAcceso | date:'dd MMM, HH:mm') : 'Nunca' }}
                     </td>
-                    <td class="tabla__col-acciones">
+                    <td class="tabla__col-acciones col-centro">
                         <div class="acciones">
                             <button type="button" class="btn btn--texto" (click)="abrirModalEditar(u)">
                                 Editar
@@ -123,7 +123,7 @@
         <table class="tabla tabla--permisos">
             <thead>
                 <tr>
-                    <th>Puede</th>
+                    <th class="col-accion">Puede</th>
                     <th class="col-centro">Administrador</th>
                     <th class="col-centro">Editor</th>
                 </tr>

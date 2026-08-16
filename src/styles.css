@@ -81,6 +81,11 @@
     --tv-sidebar-ancho: 260px;
     --tv-contenedor-max: 1280px;
     --tv-transicion: 0.2s ease;
+
+    /* Fondo de página y superficies del contenido */
+    --tv-page-bg: #ffffff;    
+    --tv-card: #f5f4f5;       
+    --tv-card-head: #ebe9eb;  
 }
 
 /* Reset básico */
@@ -101,7 +106,7 @@ body {
     font-size: 1rem;
     line-height: 1.6;
     color: var(--tv-text);
-    background: var(--tv-surface-alt);
+    background: var(--tv-page-bg);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -211,7 +216,7 @@ table {
 }
 
 .tv-panel {
-    background: var(--tv-surface);
+    background: var(--tv-card);     
     border: 1px solid var(--tv-border);
     border-radius: var(--tv-radio-lg);
     box-shadow: var(--tv-sombra-sm);

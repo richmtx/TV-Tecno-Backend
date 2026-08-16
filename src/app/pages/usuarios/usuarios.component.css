@@ -8,7 +8,6 @@
     flex: 1;
     min-width: 0;
     padding: clamp(1.5rem, 3vw, 2.5rem);
-    max-width: var(--tv-contenedor-max);
 }
 
 .usuarios__encabezado {
@@ -95,7 +94,7 @@
 }
 
 .metrica {
-    background: var(--tv-surface);
+    background: var(--tv-card);
     border: 1px solid var(--tv-border);
     border-radius: var(--tv-radio-md);
     padding: 1rem 1.15rem;
@@ -125,7 +124,7 @@
     padding: 0.6rem 0.85rem;
     border: 1px solid var(--tv-border);
     border-radius: var(--tv-radio-sm);
-    background: var(--tv-surface);
+    background: var(--tv-card);
     font-size: 0.9rem;
     transition: var(--tv-transicion);
 }
@@ -152,10 +151,12 @@
 
 .tabla {
     font-size: 0.88rem;
+    table-layout: fixed;   /* clave: respeta los anchos declarados */
+    width: 100%;
 }
 
 .tabla thead th {
-    background: var(--tv-surface-alt);
+    background: var(--tv-card-head);
     color: var(--tv-text-soft);
     font-weight: 600;
     font-size: 0.8rem;
@@ -174,12 +175,17 @@
     border-bottom: none;
 }
 
-.tabla tbody tr:hover {
-    background: var(--tv-surface-alt);
+/* Columna Acciones centrada, encabezado y contenido */
+.tabla th.tabla__col-acciones,
+.tabla td.tabla__col-acciones {
+    text-align: center;
+    width: 260px;
 }
 
-.tabla__col-acciones {
-    text-align: right;
+.acciones {
+    display: flex;
+    gap: 0.15rem;
+    justify-content: center;
 }
 
 .tabla__estado {
@@ -227,6 +233,11 @@
 .celda-usuario__correo {
     font-size: 0.8rem;
     color: var(--tv-text-mute);
+    overflow-wrap: anywhere;
+}
+
+.celda-usuario__datos {
+    min-width: 0;
 }
 
 .celda-fecha {
@@ -258,12 +269,6 @@
     color: var(--tv-text-mute);
 }
 
-.acciones {
-    display: flex;
-    gap: 0.15rem;
-    justify-content: flex-end;
-}
-
 /* Permisos */
 .seccion__titulo {
     font-size: 1.15rem;
@@ -271,12 +276,53 @@
     margin-bottom: 0.75rem;
 }
 
-.col-centro {
+/* Centrado: aplica igual a th y td, gana a `.tabla thead th` */
+.tabla th.col-centro,
+.tabla td.col-centro {
     text-align: center;
+}
+
+
+/* --- Anchos: tabla de usuarios --- */
+.tabla--usuarios .col-usuario {
+    width: auto;
+}
+
+.tabla--usuarios .col-rol {
+    width: 180px;
+}
+
+.tabla--usuarios .col-fecha {
+    width: 170px;
+}
+
+.tabla--usuarios .tabla__col-acciones {
+    width: 290px;
+}
+
+/* --- Anchos: tabla de permisos --- */
+.tabla--permisos .col-accion {
+    width: auto;
+}
+
+.tabla--permisos .col-centro {
+    width: 220px;
+}
+
+.acciones {
+    display: flex;
+    gap: 0.15rem;
+    justify-content: center;
+}
+
+.tabla--permisos th.col-centro,
+.tabla--permisos td.col-centro {
+    width: 200px;
 }
 
 .marca {
     font-weight: 700;
+    font-size: 1rem;
 }
 
 .marca--si {
@@ -284,7 +330,7 @@
 }
 
 .marca--no {
-    color: var(--tv-text-mute);
+    color: var(--tv-error);
 }
 
 /* Alertas */
