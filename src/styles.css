@@ -244,12 +244,6 @@ table {
     background-clip: padding-box;
 }
 
-/* Selección de texto */
-::selection {
-    background: var(--tv-gold);
-    color: var(--tv-gold-ink);
-}
-
 /* Movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
 
