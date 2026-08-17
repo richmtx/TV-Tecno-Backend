@@ -1,10 +1,11 @@
 import {
-  Component, HostListener, OnInit, computed, inject, signal,
+  Component, HostListener, OnInit, OnDestroy, computed, inject, signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { UsuariosService } from '../../core/services/usuarios.service';
+import { AuthService } from '../../services/auth.service';
 import type {
   Usuario, EstadisticasUsuarios, Rol, CrearUsuarioPayload,
 } from '../../core/models/usuario.model';
@@ -20,6 +21,16 @@ interface OpcionRol {
   etiqueta: string;
 }
 
+type TipoNotificacion = 'exito' | 'error';
+
+interface Notificacion {
+  id: number;
+  tipo: TipoNotificacion;
+  texto: string;
+}
+
+const DURACION_NOTIFICACION = 4000;
+
 @Component({
   selector: 'app-usuarios',
   standalone: true,
@@ -27,13 +38,16 @@ interface OpcionRol {
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css',
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
   private readonly usuariosService = inject(UsuariosService);
+  private readonly authService = inject(AuthService);
+
+  /** Solo los administradores ven y gestionan la lista de cuentas. */
+  readonly esAdmin = this.authService.esAdmin;
 
   readonly usuarios = signal<Usuario[]>([]);
   readonly estadisticas = signal<EstadisticasUsuarios | null>(null);
   readonly cargando = signal(true);
-  readonly error = signal<string | null>(null);
 
   readonly buscar = signal('');
   readonly filtroRol = signal<Rol | ''>('');
@@ -41,12 +55,21 @@ export class UsuariosComponent implements OnInit {
   readonly modalAbierto = signal(false);
   readonly guardando = signal(false);
   readonly errorFormulario = signal<string | null>(null);
-  readonly usuarioEditando = signal<Usuario | null>(null);
 
   readonly passwordGenerada = signal<string | null>(null);
   readonly nombreDePassword = signal('');
+  readonly passwordCopiada = signal(false);
 
-  readonly confirmandoBaja = signal<Usuario | null>(null);
+  readonly confirmandoEliminacion = signal<Usuario | null>(null);
+  readonly eliminando = signal(false);
+
+  readonly notificaciones = signal<Notificacion[]>([]);
+
+  private contadorNotificaciones = 0;
+  private readonly temporizadores = new Set<ReturnType<typeof setTimeout>>();
+
+  /** Id de la sesión actual: su fila no muestra el botón Eliminar. */
+  readonly idSesion = computed(() => this.authService.usuario()?.id ?? null);
 
   /* --- Desplegable de roles --- */
   readonly dropdownAbierto = signal(false);
@@ -70,7 +93,6 @@ export class UsuariosComponent implements OnInit {
     { accion: 'Publicar o despublicar', admin: true, editor: true },
     { accion: 'Eliminar contenido de forma permanente', admin: true, editor: false },
     { accion: 'Crear y eliminar usuarios', admin: true, editor: false },
-    { accion: 'Restablecer contraseñas de otros', admin: true, editor: false },
   ];
 
   readonly usuariosFiltrados = computed(() => {
@@ -81,19 +103,47 @@ export class UsuariosComponent implements OnInit {
       const coincideRol = !rol || u.rol === rol;
       const coincideTexto = !texto
         || u.nombreCompleto.toLowerCase().includes(texto)
-        || u.correo.toLowerCase().includes(texto)
         || u.usuario.toLowerCase().includes(texto);
       return coincideRol && coincideTexto;
     });
   });
 
   ngOnInit(): void {
-    this.cargar();
+    // Un editor no tiene permiso sobre estos endpoints: ni siquiera se piden.
+    if (this.esAdmin()) {
+      this.cargar();
+    } else {
+      this.cargando.set(false);
+    }
   }
 
-  /* Cierra el desplegable al hacer clic fuera.
-     Los clics dentro no llegan aquí: el contenedor
-     `.desplegable` detiene la propagación. */
+  ngOnDestroy(): void {
+    this.temporizadores.forEach((t) => clearTimeout(t));
+    this.temporizadores.clear();
+  }
+
+  /* ===========================================
+     Notificaciones
+     =========================================== */
+  notificar(texto: string, tipo: TipoNotificacion = 'exito'): void {
+    const id = ++this.contadorNotificaciones;
+    this.notificaciones.update((lista) => [...lista, { id, tipo, texto }]);
+
+    const temporizador = setTimeout(() => {
+      this.cerrarNotificacion(id);
+      this.temporizadores.delete(temporizador);
+    }, DURACION_NOTIFICACION);
+
+    this.temporizadores.add(temporizador);
+  }
+
+  cerrarNotificacion(id: number): void {
+    this.notificaciones.update((lista) => lista.filter((n) => n.id !== id));
+  }
+
+  /* ===========================================
+     Desplegable
+     =========================================== */
   @HostListener('document:click')
   cerrarDropdown(): void {
     if (this.dropdownAbierto()) this.dropdownAbierto.set(false);
@@ -113,9 +163,11 @@ export class UsuariosComponent implements OnInit {
     this.dropdownAbierto.set(false);
   }
 
+  /* ===========================================
+     Datos
+     =========================================== */
   cargar(): void {
     this.cargando.set(true);
-    this.error.set(null);
 
     this.usuariosService.listar().subscribe({
       next: (data) => {
@@ -123,8 +175,8 @@ export class UsuariosComponent implements OnInit {
         this.cargando.set(false);
       },
       error: () => {
-        this.error.set('No se pudieron cargar los usuarios');
         this.cargando.set(false);
+        this.notificar('No se pudieron cargar los usuarios', 'error');
       },
     });
 
@@ -135,20 +187,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   abrirModalCrear(): void {
-    this.usuarioEditando.set(null);
     this.formulario = this.formularioVacio();
-    this.errorFormulario.set(null);
-    this.modalAbierto.set(true);
-  }
-
-  abrirModalEditar(usuario: Usuario): void {
-    this.usuarioEditando.set(usuario);
-    this.formulario = {
-      usuario: usuario.usuario,
-      nombreCompleto: usuario.nombreCompleto,
-      correo: usuario.correo,
-      rol: usuario.rol,
-    };
     this.errorFormulario.set(null);
     this.modalAbierto.set(true);
   }
@@ -164,31 +203,9 @@ export class UsuariosComponent implements OnInit {
     this.guardando.set(true);
     this.errorFormulario.set(null);
 
-    const editando = this.usuarioEditando();
-
-    if (editando) {
-      this.usuariosService.actualizar(editando.id, {
-        nombreCompleto: this.formulario.nombreCompleto.trim(),
-        correo: this.formulario.correo.trim(),
-        rol: this.formulario.rol,
-      }).subscribe({
-        next: () => {
-          this.guardando.set(false);
-          this.cerrarModal();
-          this.cargar();
-        },
-        error: (e) => {
-          this.guardando.set(false);
-          this.errorFormulario.set(e?.error?.message ?? 'No se pudo actualizar el usuario');
-        },
-      });
-      return;
-    }
-
     const payload: CrearUsuarioPayload = {
       usuario: this.formulario.usuario.trim(),
       nombreCompleto: this.formulario.nombreCompleto.trim(),
-      correo: this.formulario.correo.trim(),
       rol: this.formulario.rol,
     };
 
@@ -200,10 +217,14 @@ export class UsuariosComponent implements OnInit {
       next: (creado) => {
         this.guardando.set(false);
         this.cerrarModal();
+        this.notificar(`Se creó la cuenta de ${creado.nombreCompleto}`);
+
         if (creado.passwordGenerada) {
           this.nombreDePassword.set(creado.nombreCompleto);
+          this.passwordCopiada.set(false);
           this.passwordGenerada.set(creado.passwordGenerada);
         }
+
         this.cargar();
       },
       error: (e) => {
@@ -213,57 +234,58 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  pedirConfirmacionBaja(usuario: Usuario): void {
-    this.confirmandoBaja.set(usuario);
+  pedirConfirmacionEliminar(usuario: Usuario): void {
+    this.confirmandoEliminacion.set(usuario);
   }
 
-  cancelarBaja(): void {
-    this.confirmandoBaja.set(null);
+  cancelarEliminacion(): void {
+    this.confirmandoEliminacion.set(null);
   }
 
-  confirmarBaja(): void {
-    const usuario = this.confirmandoBaja();
+  confirmarEliminacion(): void {
+    const usuario = this.confirmandoEliminacion();
     if (!usuario) return;
+
+    this.eliminando.set(true);
 
     this.usuariosService.eliminar(usuario.id).subscribe({
       next: () => {
-        this.confirmandoBaja.set(null);
+        this.eliminando.set(false);
+        this.confirmandoEliminacion.set(null);
+        this.notificar(`Se eliminó la cuenta de ${usuario.nombreCompleto}`);
         this.cargar();
       },
       error: (e) => {
-        this.confirmandoBaja.set(null);
-        this.error.set(e?.error?.message ?? 'No se pudo desactivar la cuenta');
+        this.eliminando.set(false);
+        this.confirmandoEliminacion.set(null);
+        this.notificar(e?.error?.message ?? 'No se pudo eliminar la cuenta', 'error');
       },
-    });
-  }
-
-  reactivar(usuario: Usuario): void {
-    this.usuariosService.reactivar(usuario.id).subscribe({
-      next: () => this.cargar(),
-      error: (e) => this.error.set(e?.error?.message ?? 'No se pudo reactivar la cuenta'),
-    });
-  }
-
-  resetearPassword(usuario: Usuario): void {
-    this.usuariosService.resetearPassword(usuario.id).subscribe({
-      next: (r) => {
-        if (r.passwordGenerada) {
-          this.nombreDePassword.set(usuario.nombreCompleto);
-          this.passwordGenerada.set(r.passwordGenerada);
-        }
-      },
-      error: (e) => this.error.set(e?.error?.message ?? 'No se pudo restablecer la contraseña'),
     });
   }
 
   cerrarAvisoPassword(): void {
     this.passwordGenerada.set(null);
     this.nombreDePassword.set('');
+    this.passwordCopiada.set(false);
   }
 
   copiarPassword(): void {
     const valor = this.passwordGenerada();
-    if (valor) navigator.clipboard?.writeText(valor);
+    if (!valor) return;
+
+    const copia = navigator.clipboard?.writeText(valor);
+
+    if (!copia) {
+      this.notificar('El navegador no permite copiar automáticamente', 'error');
+      return;
+    }
+
+    // El aviso permanece visible hasta que se cierra el modal.
+    copia.then(() => {
+      this.passwordCopiada.set(true);
+    }).catch(() => {
+      this.notificar('No se pudo copiar la contraseña', 'error');
+    });
   }
 
   iniciales(nombre: string): string {
@@ -274,27 +296,20 @@ export class UsuariosComponent implements OnInit {
   private formularioValido(): boolean {
     const f = this.formulario;
 
-    if (!this.usuarioEditando()) {
-      if (f.usuario.trim().length < 4) {
-        this.errorFormulario.set('El usuario debe tener al menos 4 caracteres');
-        return false;
-      }
-      if (!/^[a-zA-Z0-9._-]+$/.test(f.usuario.trim())) {
-        this.errorFormulario.set('El usuario solo admite letras, números, punto, guion y guion bajo');
-        return false;
-      }
-      if (f.password?.trim() && f.password.trim().length < 8) {
-        this.errorFormulario.set('La contraseña debe tener al menos 8 caracteres');
-        return false;
-      }
-    }
-
-    if (f.nombreCompleto.trim().length < 3) {
-      this.errorFormulario.set('Escribe el nombre completo');
+    if (f.usuario.trim().length < 4) {
+      this.errorFormulario.set('El usuario debe tener al menos 4 caracteres');
       return false;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.correo.trim())) {
-      this.errorFormulario.set('El correo no tiene un formato válido');
+    if (!/^[a-zA-Z0-9._-]+$/.test(f.usuario.trim())) {
+      this.errorFormulario.set('El usuario solo admite letras, números, punto, guion y guion bajo');
+      return false;
+    }
+    if (f.password?.trim() && f.password.trim().length < 8) {
+      this.errorFormulario.set('La contraseña debe tener al menos 8 caracteres');
+      return false;
+    }
+    if (f.nombreCompleto.trim().length < 3) {
+      this.errorFormulario.set('Escribe el nombre completo');
       return false;
     }
 
@@ -302,6 +317,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   private formularioVacio(): CrearUsuarioPayload {
-    return { usuario: '', nombreCompleto: '', correo: '', rol: 'editor', password: '' };
+    return { usuario: '', nombreCompleto: '', rol: 'editor', password: '' };
   }
 }

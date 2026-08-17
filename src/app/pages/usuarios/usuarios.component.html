@@ -5,17 +5,21 @@
         <div>
             <h1 class="usuarios__titulo">Usuarios</h1>
             <p class="usuarios__subtitulo">
+                @if (esAdmin()) {
                 Administra quién puede entrar al panel y qué puede hacer
+                } @else {
+                Consulta qué puede hacer cada rol dentro del panel
+                }
             </p>
         </div>
+        @if (esAdmin()) {
         <button type="button" class="btn btn--primario" (click)="abrirModalCrear()">
             Nuevo usuario
         </button>
+        }
     </header>
 
-    @if (error()) {
-    <div class="alerta alerta--error">{{ error() }}</div>
-    }
+    @if (esAdmin()) {
 
     @if (estadisticas(); as stats) {
     <section class="metricas">
@@ -31,15 +35,11 @@
             <p class="metrica__etiqueta">Editores</p>
             <p class="metrica__valor">{{ stats.editores }}</p>
         </article>
-        <article class="metrica">
-            <p class="metrica__etiqueta">Inactivos</p>
-            <p class="metrica__valor">{{ stats.inactivos }}</p>
-        </article>
     </section>
     }
 
     <section class="filtros">
-        <input type="search" class="campo campo--busqueda" placeholder="Buscar por nombre, usuario o correo"
+        <input type="search" class="campo campo--busqueda" placeholder="Buscar por nombre o usuario"
             [ngModel]="buscar()" (ngModelChange)="buscar.set($event)" />
 
         <!-- Desplegable personalizado (sustituye al <select> nativo) -->
@@ -83,7 +83,7 @@
                 <col />
                 <col style="width: 180px" />
                 <col style="width: 170px" />
-                <col style="width: 290px" />
+                <col style="width: 160px" />
             </colgroup>
             <thead>
                 <tr>
@@ -95,7 +95,7 @@
             </thead>
             <tbody>
                 @for (u of usuariosFiltrados(); track u.id) {
-                <tr [class.fila--inactiva]="!u.activo">
+                <tr>
                     <td>
                         <div class="celda-usuario">
                             <span class="avatar" [class.avatar--admin]="u.rol === 'admin'">
@@ -104,11 +104,11 @@
                             <div class="celda-usuario__datos">
                                 <p class="celda-usuario__nombre">
                                     {{ u.nombreCompleto }}
-                                    @if (!u.activo) {
-                                    <span class="etiqueta etiqueta--inactivo">Inactivo</span>
+                                    @if (u.id === idSesion()) {
+                                    <span class="etiqueta etiqueta--tu">Tú</span>
                                     }
                                 </p>
-                                <p class="celda-usuario__correo">{{ u.correo }}</p>
+                                <p class="celda-usuario__alias">&#64;{{ u.usuario }}</p>
                             </div>
                         </div>
                     </td>
@@ -122,21 +122,13 @@
                     </td>
                     <td class="col-centro">
                         <div class="acciones">
-                            <button type="button" class="btn btn--texto" (click)="abrirModalEditar(u)">
-                                Editar
-                            </button>
-                            <button type="button" class="btn btn--texto" (click)="resetearPassword(u)">
-                                Resetear
-                            </button>
-                            @if (u.activo) {
+                            @if (u.id !== idSesion()) {
                             <button type="button" class="btn btn--texto btn--peligro"
-                                (click)="pedirConfirmacionBaja(u)">
-                                Desactivar
+                                (click)="pedirConfirmacionEliminar(u)">
+                                Eliminar
                             </button>
                             } @else {
-                            <button type="button" class="btn btn--texto" (click)="reactivar(u)">
-                                Reactivar
-                            </button>
+                            <span class="acciones__vacio">—</span>
                             }
                         </div>
                     </td>
@@ -146,6 +138,8 @@
         </table>
         }
     </section>
+
+    }
 
     <h2 class="seccion__titulo">Permisos por rol</h2>
     <section class="tv-panel tabla-envoltura">
@@ -183,33 +177,57 @@
     </section>
 </main>
 
+<!-- ===========================================
+     Notificaciones
+     =========================================== -->
+<div class="notificaciones" aria-live="polite" aria-atomic="false">
+    @for (n of notificaciones(); track n.id) {
+    <div class="notificacion" [class.notificacion--error]="n.tipo === 'error'" role="status">
+        <span class="notificacion__icono" aria-hidden="true">
+            @if (n.tipo === 'exito') {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="13" />
+                <line x1="12" y1="16.5" x2="12.01" y2="16.5" />
+            </svg>
+            }
+        </span>
+        <p class="notificacion__texto">{{ n.texto }}</p>
+        <button type="button" class="notificacion__cerrar" aria-label="Cerrar aviso" (click)="cerrarNotificacion(n.id)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+    </div>
+    }
+</div>
+
 @if (modalAbierto()) {
 <div class="modal-fondo" (click)="cerrarModal()">
     <div class="modal" (click)="$event.stopPropagation()">
-        <h2 class="modal__titulo">
-            {{ usuarioEditando() ? 'Editar usuario' : 'Nuevo usuario' }}
-        </h2>
+        <h2 class="modal__titulo">Nuevo usuario</h2>
 
         @if (errorFormulario()) {
         <div class="alerta alerta--error">{{ errorFormulario() }}</div>
         }
 
-        @if (!usuarioEditando()) {
         <label class="campo-grupo">
             <span class="campo-grupo__etiqueta">Usuario</span>
             <input type="text" class="campo" [(ngModel)]="formulario.usuario" placeholder="jorge.carrillo"
                 autocomplete="off" />
         </label>
-        }
 
         <label class="campo-grupo">
             <span class="campo-grupo__etiqueta">Nombre completo</span>
             <input type="text" class="campo" [(ngModel)]="formulario.nombreCompleto" placeholder="Jorge Carrillo" />
-        </label>
-
-        <label class="campo-grupo">
-            <span class="campo-grupo__etiqueta">Correo</span>
-            <input type="email" class="campo" [(ngModel)]="formulario.correo" placeholder="jorge.c@tvtecno.itd.mx" />
         </label>
 
         <fieldset class="campo-grupo campo-grupo--roles">
@@ -230,20 +248,18 @@
             </label>
         </fieldset>
 
-        @if (!usuarioEditando()) {
         <label class="campo-grupo">
             <span class="campo-grupo__etiqueta">Contraseña</span>
             <input type="text" class="campo" [(ngModel)]="formulario.password"
                 placeholder="Déjalo vacío para generar una automáticamente" />
         </label>
-        }
 
         <div class="modal__acciones">
             <button type="button" class="btn btn--secundario" (click)="cerrarModal()">
                 Cancelar
             </button>
             <button type="button" class="btn btn--primario" [disabled]="guardando()" (click)="guardar()">
-                {{ guardando() ? 'Guardando…' : (usuarioEditando() ? 'Guardar cambios' : 'Crear usuario') }}
+                {{ guardando() ? 'Guardando…' : 'Crear usuario' }}
             </button>
         </div>
     </div>
@@ -256,14 +272,30 @@
         <h2 class="modal__titulo">Contraseña generada</h2>
         <p class="modal__texto">
             Entrega esta contraseña a {{ nombreDePassword() }}.
-            No se volverá a mostrar.
+            No se volverá a mostrar y no hay forma de recuperarla desde el panel.
         </p>
         <div class="password-caja">
             <code>{{ pass }}</code>
-            <button type="button" class="btn btn--secundario" (click)="copiarPassword()">
+            <button type="button" class="btn btn--secundario btn--con-icono" (click)="copiarPassword()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
                 Copiar
             </button>
         </div>
+
+        @if (passwordCopiada()) {
+        <div class="password-copiada" role="status">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span>Contraseña copiada en el portapapeles</span>
+        </div>
+        }
+
         <div class="modal__acciones">
             <button type="button" class="btn btn--primario" (click)="cerrarAvisoPassword()">
                 Listo
@@ -273,20 +305,22 @@
 </div>
 }
 
-@if (confirmandoBaja(); as objetivo) {
-<div class="modal-fondo" (click)="cancelarBaja()">
+@if (confirmandoEliminacion(); as objetivo) {
+<div class="modal-fondo" (click)="cancelarEliminacion()">
     <div class="modal modal--angosto" (click)="$event.stopPropagation()">
-        <h2 class="modal__titulo">Desactivar cuenta</h2>
+        <h2 class="modal__titulo">Eliminar cuenta</h2>
         <p class="modal__texto">
-            {{ objetivo.nombreCompleto }} ya no podrá entrar al panel.
-            Puedes reactivar la cuenta más adelante.
+            Se eliminará permanentemente la cuenta de
+            <strong>{{ objetivo.nombreCompleto }}</strong> (&#64;{{ objetivo.usuario }}).
+            Esta acción no se puede deshacer.
         </p>
         <div class="modal__acciones">
-            <button type="button" class="btn btn--secundario" (click)="cancelarBaja()">
+            <button type="button" class="btn btn--secundario" (click)="cancelarEliminacion()">
                 Cancelar
             </button>
-            <button type="button" class="btn btn--peligro-solido" (click)="confirmarBaja()">
-                Desactivar
+            <button type="button" class="btn btn--peligro-solido" [disabled]="eliminando()"
+                (click)="confirmarEliminacion()">
+                {{ eliminando() ? 'Eliminando…' : 'Eliminar' }}
             </button>
         </div>
     </div>

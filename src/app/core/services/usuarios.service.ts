@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import type {
     Usuario, EstadisticasUsuarios, CrearUsuarioPayload,
-    ActualizarUsuarioPayload, UsuarioCreado, RespuestaMensaje, Rol,
+    UsuarioCreado, RespuestaMensaje, Rol,
 } from '../models/usuario.model';
 
 @Injectable({ providedIn: 'root' })
@@ -27,23 +27,8 @@ export class UsuariosService {
         return this.http.post<UsuarioCreado>(this.url, payload);
     }
 
-    actualizar(id: number, payload: ActualizarUsuarioPayload): Observable<Usuario> {
-        return this.http.patch<Usuario>(`${this.url}/${id}`, payload);
-    }
-
     eliminar(id: number): Observable<RespuestaMensaje> {
         return this.http.delete<RespuestaMensaje>(`${this.url}/${id}`);
-    }
-
-    reactivar(id: number): Observable<RespuestaMensaje> {
-        return this.http.patch<RespuestaMensaje>(`${this.url}/${id}/reactivar`, {});
-    }
-
-    resetearPassword(id: number, passwordNueva?: string): Observable<RespuestaMensaje> {
-        return this.http.patch<RespuestaMensaje>(
-            `${this.url}/${id}/resetear-password`,
-            passwordNueva ? { passwordNueva } : {},
-        );
     }
 
     cambiarMiPassword(passwordActual: string, passwordNueva: string): Observable<RespuestaMensaje> {

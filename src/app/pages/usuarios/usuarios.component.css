@@ -78,6 +78,10 @@
     text-decoration: underline;
 }
 
+.btn--peligro {
+    color: var(--tv-error);
+}
+
 .btn--peligro:hover {
     color: var(--tv-error);
 }
@@ -85,6 +89,22 @@
 .btn--peligro-solido {
     background: var(--tv-error);
     color: var(--tv-text-invert);
+}
+
+.btn--peligro-solido:disabled {
+    opacity: 0.6;
+}
+
+.btn--con-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn--con-icono svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
 }
 
 /* ===========================================
@@ -305,15 +325,16 @@
     justify-content: center;
 }
 
+.acciones__vacio {
+    color: var(--tv-text-mute);
+    font-size: 0.9rem;
+}
+
 .tabla__estado {
     padding: 2.5rem;
     text-align: center;
     color: var(--tv-text-mute);
     font-size: 0.9rem;
-}
-
-.fila--inactiva {
-    opacity: 0.55;
 }
 
 /* Celda de usuario */
@@ -352,9 +373,10 @@
     gap: 0.4rem;
 }
 
-.celda-usuario__correo {
+.celda-usuario__alias {
     font-size: 0.8rem;
     color: var(--tv-text-mute);
+    font-family: ui-monospace, monospace;
     overflow-wrap: anywhere;
 }
 
@@ -379,12 +401,12 @@
     color: var(--tv-gold-dark);
 }
 
-.etiqueta--inactivo {
+.etiqueta--tu {
     font-size: 0.68rem;
     font-weight: 600;
     padding: 0.1rem 0.45rem;
     border-radius: 999px;
-    background: #eee;
+    background: var(--tv-card-head);
     color: var(--tv-text-mute);
 }
 
@@ -411,7 +433,7 @@
 }
 
 /* ===========================================
-   Alertas
+   Alertas dentro de formularios
    =========================================== */
 .alerta {
     padding: 0.7rem 1rem;
@@ -427,12 +449,110 @@
 }
 
 /* ===========================================
+   Notificaciones flotantes
+   z-index por encima de los modales (100)
+   =========================================== */
+.notificaciones {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: min(360px, calc(100vw - 2.5rem));
+    pointer-events: none;
+}
+
+.notificacion {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.85rem 0.9rem;
+    background: var(--tv-surface);
+    border: 1px solid var(--tv-border);
+    border-left: 4px solid var(--tv-ok);
+    border-radius: var(--tv-radio-md);
+    box-shadow: var(--tv-sombra-lg);
+    animation: notificacion-entrada 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.notificacion--error {
+    border-left-color: var(--tv-error);
+}
+
+.notificacion__icono {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(30, 142, 90, 0.12);
+    color: var(--tv-ok);
+}
+
+.notificacion--error .notificacion__icono {
+    background: rgba(198, 40, 57, 0.12);
+    color: var(--tv-error);
+}
+
+.notificacion__icono svg {
+    width: 13px;
+    height: 13px;
+}
+
+.notificacion__texto {
+    flex: 1;
+    font-size: 0.87rem;
+    line-height: 1.45;
+    color: var(--tv-text);
+}
+
+.notificacion__cerrar {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--tv-text-mute);
+    transition: var(--tv-transicion);
+}
+
+.notificacion__cerrar:hover {
+    background: var(--tv-card-head);
+    color: var(--tv-wine);
+}
+
+.notificacion__cerrar svg {
+    width: 13px;
+    height: 13px;
+}
+
+@keyframes notificacion-entrada {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===========================================
    Modales
    =========================================== */
 .modal-fondo {
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.15);
+    background: transparent;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     display: grid;
@@ -465,6 +585,10 @@
     color: var(--tv-text-soft);
     font-size: 0.9rem;
     margin-bottom: 1.1rem;
+}
+
+.modal__texto strong {
+    color: var(--tv-text);
 }
 
 .campo-grupo {
@@ -536,6 +660,39 @@
     word-break: break-all;
 }
 
+.password-copiada {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    background: rgba(30, 142, 90, 0.08);
+    border: 1px solid rgba(30, 142, 90, 0.28);
+    border-radius: var(--tv-radio-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--tv-ok);
+    animation: copiada-entrada 0.2s ease;
+}
+
+.password-copiada svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
+}
+
+@keyframes copiada-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ===========================================
    Responsivo
    =========================================== */
@@ -556,5 +713,13 @@
 
     .desplegable {
         width: 100%;
+    }
+
+    .notificaciones {
+        top: auto;
+        bottom: 1rem;
+        left: 1rem;
+        right: 1rem;
+        width: auto;
     }
 }

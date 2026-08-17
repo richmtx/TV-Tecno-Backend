@@ -83,9 +83,9 @@
     --tv-transicion: 0.2s ease;
 
     /* Fondo de página y superficies del contenido */
-    --tv-page-bg: #ffffff;    
-    --tv-card: #f5f4f5;       
-    --tv-card-head: #ebe9eb;  
+    --tv-page-bg: #f0f2f5;    
+    --tv-card: #ffffff;       
+    --tv-card-head: #fafafa;  
 }
 
 /* Reset básico */

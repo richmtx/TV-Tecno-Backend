@@ -8,7 +8,6 @@ export interface UsuarioSesion {
   id: number;
   usuario: string;
   nombreCompleto: string;
-  correo: string | null;
   rol: 'admin' | 'editor';
 }
 
