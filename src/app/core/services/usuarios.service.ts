@@ -30,11 +30,4 @@ export class UsuariosService {
     eliminar(id: number): Observable<RespuestaMensaje> {
         return this.http.delete<RespuestaMensaje>(`${this.url}/${id}`);
     }
-
-    cambiarMiPassword(passwordActual: string, passwordNueva: string): Observable<RespuestaMensaje> {
-        return this.http.patch<RespuestaMensaje>(
-            `${this.url}/mi-password`,
-            { passwordActual, passwordNueva },
-        );
-    }
 }

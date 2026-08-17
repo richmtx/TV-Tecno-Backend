@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { UsuariosService } from '../../core/services/usuarios.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 import type {
   Usuario, EstadisticasUsuarios, Rol, CrearUsuarioPayload,
 } from '../../core/models/usuario.model';
