@@ -1,6 +1,4 @@
-import {
-  Component, HostListener, OnInit, OnDestroy, computed, inject, signal,
-} from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, computed, inject, signal, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
