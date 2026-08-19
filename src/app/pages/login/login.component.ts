@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,7 +11,7 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly ruta = inject(ActivatedRoute);
@@ -53,7 +53,7 @@ export class LoginComponent {
   }
 
   iniciarSesion(): void {
-    this.errorGeneral = '';
+    this.limpiarError();
 
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
@@ -70,7 +70,7 @@ export class LoginComponent {
       },
       error: (err: HttpErrorResponse) => {
         this.cargando = false;
-        this.errorGeneral = this.traducirError(err);
+        this.mostrarError(this.traducirError(err));
         this.formulario.get('contrasena')?.reset();
       },
     });
@@ -87,5 +87,25 @@ export class LoginComponent {
       return 'Revisa los datos ingresados.';
     }
     return 'Ocurrió un error inesperado. Intenta de nuevo.';
+  }
+
+  private temporizadorAlerta?: ReturnType<typeof setTimeout>;
+
+  private mostrarError(mensaje: string): void {
+    this.limpiarError();
+    this.errorGeneral = mensaje;
+    this.temporizadorAlerta = setTimeout(() => {
+      this.errorGeneral = '';
+    }, 6000);
+  }
+
+  private limpiarError(): void {
+    clearTimeout(this.temporizadorAlerta);
+    this.temporizadorAlerta = undefined;
+    this.errorGeneral = '';
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.temporizadorAlerta);
   }
 }

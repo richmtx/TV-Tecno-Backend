@@ -97,7 +97,14 @@
 
         <!-- Error general -->
         @if (errorGeneral) {
-        <p class="tarjeta__alerta" role="alert">{{ errorGeneral }}</p>
+        <p class="tarjeta__alerta" role="alert" aria-live="assertive">
+          <svg class="tarjeta__alerta-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 7.5v5" />
+            <path d="M12 16.3h.01" />
+          </svg>
+          {{ errorGeneral }}
+        </p>
         }
 
         <!-- Acción principal -->
