@@ -19,6 +19,9 @@ export interface RespuestaLogin {
 const CLAVE_TOKEN = 'tvtecno_token';
 const CLAVE_USUARIO = 'tvtecno_usuario';
 
+/** La sesión vive solo mientras la pestaña/navegador esté abierto. */
+const almacen = sessionStorage;
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -31,7 +34,7 @@ export class AuthService {
   readonly autenticado = computed(() => this._usuario() !== null);
   readonly esAdmin = computed(() => this._usuario()?.rol === 'admin');
 
-  login(usuario: string, contrasena: string, recordarme: boolean): Observable<RespuestaLogin> {
+  login(usuario: string, contrasena: string): Observable<RespuestaLogin> {
     return this.http
       .post<RespuestaLogin>(`${this.baseUrl}/login`, {
         usuario,
@@ -39,7 +42,7 @@ export class AuthService {
       })
       .pipe(
         tap((res) => {
-          this.guardarSesion(res, recordarme);
+          this.guardarSesion(res);
           this._usuario.set(res.usuario);
         }),
       );
@@ -52,11 +55,10 @@ export class AuthService {
   }
 
   obtenerToken(): string | null {
-    return localStorage.getItem(CLAVE_TOKEN) ?? sessionStorage.getItem(CLAVE_TOKEN);
+    return almacen.getItem(CLAVE_TOKEN);
   }
 
-  private guardarSesion(res: RespuestaLogin, recordarme: boolean): void {
-    const almacen = recordarme ? localStorage : sessionStorage;
+  private guardarSesion(res: RespuestaLogin): void {
     almacen.setItem(CLAVE_TOKEN, res.access_token);
     almacen.setItem(CLAVE_USUARIO, JSON.stringify(res.usuario));
   }
@@ -82,8 +84,7 @@ export class AuthService {
   }
 
   private leerUsuarioGuardado(): UsuarioSesion | null {
-    const crudo =
-      localStorage.getItem(CLAVE_USUARIO) ?? sessionStorage.getItem(CLAVE_USUARIO);
+    const crudo = almacen.getItem(CLAVE_USUARIO);
     if (!crudo) return null;
     try {
       return JSON.parse(crudo) as UsuarioSesion;
@@ -93,9 +94,7 @@ export class AuthService {
   }
 
   private limpiarAlmacenamiento(): void {
-    localStorage.removeItem(CLAVE_TOKEN);
-    localStorage.removeItem(CLAVE_USUARIO);
-    sessionStorage.removeItem(CLAVE_TOKEN);
-    sessionStorage.removeItem(CLAVE_USUARIO);
+    almacen.removeItem(CLAVE_TOKEN);
+    almacen.removeItem(CLAVE_USUARIO);
   }
 }

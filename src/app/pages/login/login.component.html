@@ -80,21 +80,6 @@
           </div>
         </div>
 
-        <!-- Utilidades -->
-        <div class="utilidades">
-          <label class="recordar">
-            <input class="recordar__casilla" type="checkbox" formControlName="recordarme" />
-            <span class="recordar__marca" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="m5 12.5 4.5 4.5L19 7" />
-              </svg>
-            </span>
-            <span class="recordar__texto">Recordarme</span>
-          </label>
-
-          <a class="utilidades__enlace" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
-        </div>
-
         <!-- Error general -->
         @if (errorGeneral) {
         <p class="tarjeta__alerta" role="alert" aria-live="assertive">
@@ -110,19 +95,6 @@
         <!-- Acción principal -->
         <button class="boton boton--primario" type="submit" [disabled]="cargando">
           {{ cargando ? 'Verificando…' : 'Iniciar sesión' }}
-        </button>
-
-        <div class="separador" aria-hidden="true">
-          <span class="separador__texto">o</span>
-        </div>
-
-        <!-- Acción secundaria -->
-        <button class="boton boton--secundario" type="button">
-          <svg class="boton__icono" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2.6 19.5 5.9v6.3c0 4.8-3.2 8-7.5 9.2-4.3-1.2-7.5-4.4-7.5-9.2V5.9Z" />
-            <path d="m8.7 12 2.4 2.4 4.2-4.8" />
-          </svg>
-          Acceso seguro
         </button>
       </form>
     </section>

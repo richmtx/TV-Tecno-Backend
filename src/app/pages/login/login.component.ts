@@ -1,13 +1,13 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -23,10 +23,11 @@ export class LoginComponent implements OnDestroy {
   cargando = false;
   errorGeneral = '';
 
+  private temporizadorAlerta?: ReturnType<typeof setTimeout>;
+
   readonly formulario: FormGroup = this.fb.nonNullable.group({
     usuario: ['', [Validators.required, Validators.minLength(4)]],
     contrasena: ['', [Validators.required, Validators.minLength(6)]],
-    recordarme: [false],
   });
 
   alternarContrasena(): void {
@@ -61,9 +62,9 @@ export class LoginComponent implements OnDestroy {
     }
 
     this.cargando = true;
-    const { usuario, contrasena, recordarme } = this.formulario.getRawValue();
+    const { usuario, contrasena } = this.formulario.getRawValue();
 
-    this.auth.login(usuario, contrasena, recordarme).subscribe({
+    this.auth.login(usuario, contrasena).subscribe({
       next: () => {
         const destino = this.ruta.snapshot.queryParamMap.get('regresar') ?? '/dashboard';
         this.router.navigateByUrl(destino);
@@ -88,8 +89,6 @@ export class LoginComponent implements OnDestroy {
     }
     return 'Ocurrió un error inesperado. Intenta de nuevo.';
   }
-
-  private temporizadorAlerta?: ReturnType<typeof setTimeout>;
 
   private mostrarError(mensaje: string): void {
     this.limpiarError();

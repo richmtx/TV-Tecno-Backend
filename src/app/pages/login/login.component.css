@@ -72,11 +72,6 @@
   inset: 0;
 }
 
-.acceso__cuna--oro {
-  background: linear-gradient(100deg, #d8bb82 0%, var(--oro) 55%, #b08f52 100%);
-  clip-path: polygon(0 var(--cuna-inicio-oro), 0 100%, 100% 100%);
-}
-
 .acceso__cuna--vino {
   background: linear-gradient(115deg, #5e1230 0%, var(--vino-oscuro) 55%, var(--vino-profundo) 100%);
   clip-path: polygon(0 var(--cuna-inicio), 0 100%, var(--cuna-fin) 100%);
@@ -152,17 +147,18 @@
 
 .tarjeta {
   position: relative;
-  width: min(100%, 740px);
+  width: min(100%, 560px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(1.75rem, 2.4vw, 2.35rem) clamp(1.5rem, 2vw, 2rem);
+  padding: clamp(2rem, 2.8vw, 2.75rem) clamp(1.75rem, 2.4vw, 2.5rem);
   border: 1px solid var(--tarjeta-borde);
   border-radius: 22px;
   background: #ffffff;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.04),
     0 20px 50px rgba(0, 0, 0, 0.09);
+  overflow: hidden;
 }
 
 .tarjeta__isotipo {
@@ -181,7 +177,7 @@
 }
 
 .tarjeta__subtitulo {
-  margin: 0.3rem 0 1.9rem;
+  margin: 0.3rem 0 2.1rem;
   font-size: var(--fs-subtitulo);
   color: var(--texto-suave);
   text-align: center;
@@ -236,7 +232,6 @@
 .campos {
   display: flex;
   flex-direction: column;
-  gap: 0;
   width: 100%;
 }
 
@@ -244,10 +239,6 @@
   position: relative;
   width: 100%;
   padding-bottom: var(--alto-mensaje);
-}
-
-.campo+.campo {
-  margin-top: 0;
 }
 
 .campo__caja {
@@ -347,177 +338,51 @@
   color: var(--error);
 }
 
-/* 6. Recordarme / recuperar */
-
-.utilidades {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  margin-top: 1.6rem;
-  font-size: 0.9rem;
-}
-
-.recordar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  cursor: pointer;
-  color: var(--texto-suave);
-}
-
-.recordar__casilla {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.recordar__marca {
-  display: grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  background: #ffffff;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.recordar__marca svg {
-  width: 12px;
-  height: 12px;
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 2.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-.recordar:hover .recordar__marca {
-  border-color: var(--vino);
-}
-
-.recordar__casilla:checked+.recordar__marca {
-  border-color: var(--vino);
-  background: var(--vino);
-}
-
-.recordar__casilla:checked+.recordar__marca svg {
-  opacity: 1;
-}
-
-.recordar__casilla:focus-visible+.recordar__marca {
-  outline: 2px solid var(--vino);
-  outline-offset: 2px;
-}
-
-.utilidades__enlace {
-  color: var(--vino);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.utilidades__enlace:hover {
-  color: var(--vino-oscuro);
-  text-decoration: underline;
-}
-
-/* 7. Botones */
+/* 7. Botón */
 
 .boton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
   width: 100%;
   height: var(--alto-control);
-  border-radius: 8px;
+  border-radius: 10px;
   font-family: var(--font-titulo, 'Raleway', system-ui, sans-serif);
   font-size: clamp(1rem, 0.94rem + 0.26vw, 1.15rem);
   cursor: pointer;
-  transition: filter 0.2s ease, transform 0.12s ease,
-    border-color 0.2s ease, background-color 0.2s ease;
+  transition: filter 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
 }
 
 .boton--primario {
-  margin-top: 1.15rem;
+  margin-top: 0.5rem;
   border: 0;
   background: linear-gradient(120deg, var(--vino) 0%, var(--vino-oscuro) 100%);
   font-weight: 700;
+  letter-spacing: 0.01em;
   color: #ffffff;
+  box-shadow: 0 8px 20px rgba(107, 21, 56, 0.22);
 }
 
 .boton--primario:hover:not(:disabled) {
-  filter: brightness(1.12);
+  filter: brightness(1.1);
+  box-shadow: 0 12px 26px rgba(107, 21, 56, 0.3);
 }
 
 .boton--primario:active:not(:disabled) {
   transform: translateY(1px);
   filter: brightness(0.95);
+  box-shadow: 0 4px 12px rgba(107, 21, 56, 0.2);
 }
 
 .boton--primario:disabled {
   cursor: not-allowed;
   opacity: 0.6;
-}
-
-.boton--secundario {
-  border: 1px solid var(--campo-borde);
-  border-radius: 10px;
-  background: #ffffff;
-  font-weight: 600;
-  color: var(--texto-fuerte);
-}
-
-.boton--secundario:hover {
-  border-color: var(--vino);
-  background: rgba(107, 21, 56, 0.03);
-}
-
-.boton--secundario:active {
-  transform: translateY(1px);
-}
-
-.boton__icono {
-  width: 19px;
-  height: 19px;
-  fill: none;
-  stroke: var(--vino);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  box-shadow: none;
 }
 
 .boton:focus-visible {
   outline: 2px solid var(--vino);
   outline-offset: 3px;
-}
-
-/* 8. Separador */
-
-.separador {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  width: 100%;
-  margin: 1rem 0;
-}
-
-.separador::before,
-.separador::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #e8e8e8;
-}
-
-.separador__texto {
-  font-size: 0.85rem;
-  color: var(--texto-tenue);
 }
 
 /* 9. Ventajas — dentro de la cuña vino, abajo a la izquierda */
@@ -711,10 +576,6 @@
   .tarjeta {
     padding: 1.6rem 1.25rem 1.85rem;
     border-radius: 18px;
-  }
-
-  .utilidades {
-    font-size: 0.84rem;
   }
 
   .ventajas {
