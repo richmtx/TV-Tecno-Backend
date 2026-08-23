@@ -43,12 +43,14 @@ export class LoginComponent implements OnDestroy {
     const campo = this.formulario.get(control);
     if (!campo?.errors) return '';
 
-    const etiqueta = control === 'usuario' ? 'usuario' : 'contraseña';
+    const esUsuario = control === 'usuario';
+    const tuCampo = esUsuario ? 'tu usuario' : 'tu contraseña';
+    const elCampo = esUsuario ? 'El usuario' : 'La contraseña';
 
-    if (campo.errors['required']) return `Escribe tu ${etiqueta}.`;
+    if (campo.errors['required']) return `Escribe ${tuCampo}.`;
     if (campo.errors['minlength']) {
       const min = campo.errors['minlength'].requiredLength;
-      return `La ${etiqueta} necesita al menos ${min} caracteres.`;
+      return `${elCampo} necesita al menos ${min} caracteres.`;
     }
     return 'Revisa este dato.';
   }
@@ -105,6 +107,6 @@ export class LoginComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearTimeout(this.temporizadorAlerta);
+    this.limpiarError();
   }
 }

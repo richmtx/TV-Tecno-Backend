@@ -40,8 +40,8 @@
   --fs-subtitulo: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
   --fs-campo: clamp(0.98rem, 0.92rem + 0.22vw, 1.1rem);
   --alto-control: clamp(52px, 3.8vw, 62px);
-  --alto-mensaje: 1.45rem;
-  --alerta-separacion: 0.85rem;
+  --alto-mensaje: 1.4rem;  
+  --reserva-mensajes: calc(var(--alto-mensaje) * 2);
 
   display: block;
   font-family: var(--font-cuerpo, 'Raleway', system-ui, sans-serif);
@@ -161,6 +161,22 @@
   overflow: hidden;
 }
 
+.tarjeta::after {
+  content: '';
+  width: 100%;
+  height: var(--reserva-mensajes);
+}
+
+/* Un mensaje visible → cede 1.4rem */
+.tarjeta:has(.campo__mensaje) {
+  --reserva-mensajes: var(--alto-mensaje);
+}
+
+/* Dos mensajes visibles → cede todo */
+.tarjeta:has(.campo:nth-child(1) .campo__mensaje):has(.campo:nth-child(2) .campo__mensaje) {
+  --reserva-mensajes: 0px;
+}
+
 .tarjeta__isotipo {
   width: clamp(108px, 8.5vw, 140px);
   height: auto;
@@ -232,13 +248,12 @@
 .campos {
   display: flex;
   flex-direction: column;
+  gap: 0.9rem;
   width: 100%;
 }
 
 .campo {
-  position: relative;
   width: 100%;
-  padding-bottom: var(--alto-mensaje);
 }
 
 .campo__caja {
@@ -327,15 +342,18 @@
 }
 
 .campo__mensaje {
-  position: absolute;
-  left: 0.25rem;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  padding-top: 0.3rem;
+  margin: 0.4rem 0 0 0.25rem;
   font-size: 0.8rem;
   line-height: 1.25;
   color: var(--error);
+  animation: mensaje-entra 0.18s ease-out both;
+}
+
+@keyframes mensaje-entra {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
 }
 
 /* 7. Botón */
@@ -354,7 +372,7 @@
 }
 
 .boton--primario {
-  margin-top: 0.5rem;
+  margin-top: 1.4rem;
   border: 0;
   background: linear-gradient(120deg, var(--vino) 0%, var(--vino-oscuro) 100%);
   font-weight: 700;
@@ -570,7 +588,6 @@
   :host {
     --alto-control: 50px;
     --alto-pie: auto;
-    --alto-mensaje: 1.5rem;
   }
 
   .tarjeta {
