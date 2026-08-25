@@ -1,0 +1,201 @@
+<section class="tv-panel seccion">
+
+    <header class="seccion__cabecera">
+        <div class="seccion__identidad">
+            <span class="seccion__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+            </span>
+            <div>
+                <h2 class="seccion__titulo">Programación destacada</h2>
+                <p class="seccion__descripcion">
+                    Administra el contenido del carrusel de programación destacada.
+                </p>
+            </div>
+        </div>
+
+        @if (!cargando() && sinImagen() > 0) {
+        <span class="aviso-imagenes">
+            {{ sinImagen() }} sin imagen
+        </span>
+        }
+    </header>
+
+    <div class="seccion__cuerpo">
+
+        @if (cargando()) {
+        <p class="seccion__estado">Cargando programación…</p>
+        } @else if (error()) {
+        <div class="seccion__estado">
+            <p>{{ error() }}</p>
+            <button type="button" class="btn btn--texto" (click)="cargar()">Reintentar</button>
+        </div>
+        } @else {
+
+        <ul class="tarjetas">
+            @for (programa of programas(); track programa.id; let i = $index) {
+            <li class="tarjeta">
+                <span class="tarjeta__arrastre" aria-hidden="true" title="Arrastra para reordenar">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="9" cy="6" r="1.4" />
+                        <circle cx="15" cy="6" r="1.4" />
+                        <circle cx="9" cy="12" r="1.4" />
+                        <circle cx="15" cy="12" r="1.4" />
+                        <circle cx="9" cy="18" r="1.4" />
+                        <circle cx="15" cy="18" r="1.4" />
+                    </svg>
+                </span>
+
+                <div class="tarjeta__cuerpo">
+                    <div class="tarjeta__imagen">
+                        @if (imagen(programa); as src) {
+                        <img [src]="src" [alt]="programa.imagenAlt || programa.titulo" />
+                        } @else {
+                        <div class="tarjeta__sin-imagen">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+                                <circle cx="8.5" cy="9.5" r="1.5" />
+                                <path d="M3.5 17l5-5 4 4 3.5-3.5 4.5 4.5" />
+                            </svg>
+                            <span>Falta imagen</span>
+                        </div>
+                        }
+                    </div>
+
+                    <div class="tarjeta__datos">
+                        <p class="tarjeta__etiqueta">
+                            <span class="tarjeta__punto" [style.background]="color(i)" aria-hidden="true"></span>
+                            {{ programa.etiqueta }}
+                        </p>
+                        <h3 class="tarjeta__titulo">{{ programa.titulo }}</h3>
+                        <p class="tarjeta__horario">{{ horario(programa) }}</p>
+                    </div>
+
+                    <button type="button" class="btn btn--secundario btn--con-icono tarjeta__editar"
+                        (click)="abrirModalEditar(programa)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+                        </svg>
+                        Editar
+                    </button>
+                </div>
+            </li>
+            }
+        </ul>
+
+        <p class="seccion__pie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v5" stroke-linecap="round" />
+                <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>Arrastra los programas para cambiar el orden.</span>
+        </p>
+
+        }
+    </div>
+</section>
+
+<!-- ===========================================
+     Modal de edición
+     =========================================== -->
+@if (editando(); as programa) {
+<div class="modal-fondo" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <h2 class="modal__titulo">Editar programa</h2>
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        <!-- Imagen -->
+        <div class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Imagen de fondo</span>
+
+            <div class="imagen-editor">
+                <div class="imagen-editor__previa">
+                    @if (imagenModal(); as src) {
+                    <img [src]="src" alt="Vista previa" />
+                    } @else {
+                    <div class="imagen-editor__vacia">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+                            <circle cx="8.5" cy="9.5" r="1.5" />
+                            <path d="M3.5 17l5-5 4 4 3.5-3.5 4.5 4.5" />
+                        </svg>
+                        <span>Sin imagen</span>
+                    </div>
+                    }
+                </div>
+
+                <div class="imagen-editor__acciones">
+                    <label class="btn btn--secundario imagen-editor__boton">
+                        {{ programa.imagenUrl ? 'Cambiar imagen' : 'Subir imagen' }}
+                        <input type="file" accept="image/jpeg,image/png,image/webp" (change)="alElegirArchivo($event)"
+                            hidden />
+                    </label>
+
+                    @if (archivo(); as elegido) {
+                    <p class="imagen-editor__nombre">{{ elegido.name }}</p>
+                    <button type="button" class="btn btn--texto" (click)="quitarSeleccion()">
+                        Descartar
+                    </button>
+                    }
+
+                    <p class="imagen-editor__ayuda">JPG, PNG o WEBP · máx. 3 MB</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datos -->
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Título</span>
+            <input type="text" class="campo" maxlength="120" [formControl]="formulario.controls.titulo"
+                placeholder="Noticiero Tecnológico" />
+        </label>
+
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Categoría</span>
+            <input type="text" class="campo" maxlength="40" [formControl]="formulario.controls.etiqueta"
+                placeholder="NOTICIAS" />
+        </label>
+
+        <div class="campo-fila">
+            <label class="campo-grupo">
+                <span class="campo-grupo__etiqueta">Días</span>
+                <input type="text" class="campo" maxlength="60" [formControl]="formulario.controls.dias"
+                    placeholder="Lun – Vie" />
+            </label>
+
+            <label class="campo-grupo campo-grupo--hora">
+                <span class="campo-grupo__etiqueta">Hora</span>
+                <input type="time" class="campo" [formControl]="formulario.controls.horaInicio" />
+            </label>
+        </div>
+
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">
+                Descripción de la imagen <small>(para lectores de pantalla)</small>
+            </span>
+            <input type="text" class="campo" maxlength="150" [formControl]="formulario.controls.imagenAlt"
+                placeholder="Set de televisión con cámaras y pantallas" />
+        </label>
+
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando()" (click)="cerrarModal()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+            </button>
+        </div>
+    </div>
+</div>
+}
