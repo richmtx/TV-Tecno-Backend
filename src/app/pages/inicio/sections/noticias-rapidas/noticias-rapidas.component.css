@@ -1,0 +1,427 @@
+:host {
+    display: block;
+    margin-bottom: 1.75rem;
+}
+
+.seccion {
+    overflow: hidden;
+}
+
+/* ===========================================
+   Cabecera de la sección
+   =========================================== */
+.seccion__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.35rem;
+    border-bottom: 1px solid var(--tv-border);
+}
+
+.seccion__identidad {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.seccion__icono {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+}
+
+.seccion__icono svg {
+    width: 17px;
+    height: 17px;
+}
+
+.seccion__titulo {
+    font-size: 1rem;
+    color: var(--tv-text);
+}
+
+.seccion__descripcion {
+    font-size: 0.82rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.1rem;
+}
+
+.seccion__herramientas {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: none;
+}
+
+.contador {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--tv-text-mute);
+    font-variant-numeric: tabular-nums;
+}
+
+.contador--tope {
+    color: var(--tv-warn);
+}
+
+/* ===========================================
+   Cuerpo y estados
+   =========================================== */
+.seccion__cuerpo {
+    padding: 1.1rem 1.35rem 1.25rem;
+}
+
+.seccion__estado {
+    padding: 2.25rem 1rem;
+    text-align: center;
+    color: var(--tv-text-mute);
+    font-size: 0.9rem;
+}
+
+.seccion__pie {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+    font-size: 0.79rem;
+    color: var(--tv-text-mute);
+}
+
+.seccion__pie svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+}
+
+/* ===========================================
+   Filas
+   =========================================== */
+.lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.fila {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--tv-surface);
+    border-radius: var(--tv-radio-sm);
+    transition: opacity var(--tv-transicion);
+}
+
+/* La fila que se está moviendo se atenúa para que se note el hueco. */
+.fila--arrastrando {
+    opacity: 0.4;
+}
+
+.fila--arrastrando .fila__texto {
+    border-style: dashed;
+    border-color: var(--tv-gold);
+}
+
+.fila__arrastre {
+    flex: none;
+    width: 20px;
+    display: grid;
+    place-items: center;
+    color: var(--tv-text-mute);
+    cursor: grab;
+    transition: var(--tv-transicion);
+}
+
+.fila__arrastre:hover {
+    color: var(--tv-wine);
+}
+
+.fila__arrastre:active {
+    cursor: grabbing;
+}
+
+.fila__arrastre svg {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+/* Mientras se guarda el nuevo orden, la lista no acepta más interacción. */
+.lista--ocupada {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.fila__arrastre svg {
+    width: 18px;
+    height: 18px;
+}
+
+.fila__texto {
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-size: 0.89rem;
+    overflow-wrap: anywhere;
+}
+
+.fila__acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    flex: none;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.btn--secundario:disabled {
+    opacity: 0.55;
+}
+
+.btn--texto {
+    background: transparent;
+    color: var(--tv-wine);
+    padding: 0.3rem 0.5rem;
+    font-size: 0.84rem;
+    text-decoration: underline;
+}
+
+.btn--con-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn--con-icono svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+}
+
+.icono-btn {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    background: transparent;
+    color: var(--tv-text-mute);
+    transition: var(--tv-transicion);
+}
+
+.icono-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.icono-btn:hover:not(:disabled) {
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+}
+
+.icono-btn--peligro:hover:not(:disabled) {
+    background: #fdecee;
+    color: var(--tv-error);
+}
+
+.icono-btn:disabled {
+    opacity: 0.35;
+}
+
+/* ===========================================
+   Botón primario (modal)
+   =========================================== */
+.btn--primario {
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+.btn--primario:hover:not(:disabled) {
+    background: var(--tv-wine-dark);
+}
+
+.btn--primario:disabled {
+    opacity: 0.6;
+}
+
+/* ===========================================
+   Modal
+   =========================================== */
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    z-index: 100;
+}
+
+.modal {
+    background: var(--tv-surface);
+    border-radius: var(--tv-radio-lg);
+    box-shadow: var(--tv-sombra-lg);
+    padding: 1.75rem;
+    width: min(520px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal__titulo {
+    font-size: 1.25rem;
+    color: var(--tv-wine);
+    margin-bottom: 0.5rem;
+}
+
+.modal__texto {
+    color: var(--tv-text-soft);
+    font-size: 0.88rem;
+    margin-bottom: 1.1rem;
+}
+
+.modal__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+/* ===========================================
+   Campos del formulario
+   =========================================== */
+.campo-grupo {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.campo-grupo__cabecera {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.campo-grupo__etiqueta {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+}
+
+.campo-grupo__contador {
+    font-size: 0.76rem;
+    color: var(--tv-text-mute);
+    font-variant-numeric: tabular-nums;
+}
+
+.campo-grupo__contador--tope {
+    color: var(--tv-warn);
+    font-weight: 600;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-size: 0.9rem;
+    transition: var(--tv-transicion);
+}
+
+.campo:focus {
+    border-color: var(--tv-gold);
+    outline: none;
+}
+
+.campo--area {
+    resize: vertical;
+    min-height: 76px;
+    line-height: 1.5;
+}
+
+/* ===========================================
+   Alertas
+   =========================================== */
+.alerta {
+    padding: 0.7rem 1rem;
+    border-radius: var(--tv-radio-sm);
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+}
+
+.alerta--error {
+    background: #fdecee;
+    color: var(--tv-error);
+    border: 1px solid #f5c6cb;
+}
+
+.modal--angosto {
+    width: min(420px, 100%);
+}
+
+.modal__texto strong {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--tv-text);
+    overflow-wrap: anywhere;
+}
+
+.btn--peligro-solido {
+    background: var(--tv-error);
+    color: var(--tv-text-invert);
+}
+
+.btn--peligro-solido:disabled {
+    opacity: 0.6;
+}
+
+/* ===========================================
+   Responsivo
+   =========================================== */
+@media (max-width: 700px) {
+    .seccion__cabecera {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .seccion__herramientas {
+        justify-content: space-between;
+    }
+}

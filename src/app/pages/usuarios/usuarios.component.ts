@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit, OnDestroy, computed, inject, signal, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { UsuariosService } from '../../core/services/usuarios.service';
 import { AuthService } from '../../core/services/auth.service';
 import type {
@@ -32,7 +31,7 @@ const DURACION_NOTIFICACION = 4000;
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, ],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css',
 })

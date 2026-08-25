@@ -1,0 +1,22 @@
+:host {
+    display: block;
+}
+
+.inicio {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.inicio__encabezado {
+    margin-bottom: 1.75rem;
+}
+
+.inicio__titulo {
+    font-size: 1.75rem;
+    color: var(--tv-wine);
+}
+
+.inicio__subtitulo {
+    color: var(--tv-text-soft);
+    font-size: 0.9rem;
+    margin-top: 0.15rem;
+}
