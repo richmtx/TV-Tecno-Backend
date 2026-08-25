@@ -37,6 +37,14 @@ export class ProgramacionDestacadaComponent implements OnInit {
   readonly guardando = signal(false);
   readonly errorFormulario = signal<string | null>(null);
 
+  /* --- Reordenamiento --- */
+  readonly indiceArrastrado = signal<number | null>(null);
+  readonly puedeArrastrar = signal(false);
+  readonly reordenando = signal(false);
+
+  /** Orden previo al arrastre, para poder revertir si la API falla. */
+  private ordenOriginal: ProgramaDestacado[] = [];
+
   /** Archivo elegido y su vista previa (object URL) mientras no se guarda. */
   readonly archivo = signal<File | null>(null);
   readonly previa = signal<string | null>(null);
@@ -218,5 +226,88 @@ export class ProgramacionDestacadaComponent implements OnInit {
     return 'No se pudo guardar el programa.';
   }
 
-  // Fase 6 — reordenar
+  /* ===========================================
+   Reordenamiento (drag & drop nativo)
+   El atributo `draggable` solo se activa cuando
+   el puntero baja sobre el asa, para que no se
+   pueda arrastrar desde cualquier parte de la tarjeta.
+   =========================================== */
+  activarArrastre(): void {
+    if (!this.reordenando()) this.puedeArrastrar.set(true);
+  }
+
+  desactivarArrastre(): void {
+    this.puedeArrastrar.set(false);
+  }
+
+  alIniciarArrastre(indice: number, evento: DragEvent): void {
+    if (!this.puedeArrastrar()) {
+      evento.preventDefault();
+      return;
+    }
+
+    this.ordenOriginal = [...this.programas()];
+    this.indiceArrastrado.set(indice);
+
+    if (evento.dataTransfer) {
+      evento.dataTransfer.effectAllowed = 'move';
+      // Firefox no dispara el arrastre si no se escribe algo aquí.
+      evento.dataTransfer.setData('text/plain', String(indice));
+    }
+  }
+
+  alPasarSobre(indice: number, evento: DragEvent): void {
+    evento.preventDefault();
+
+    const origen = this.indiceArrastrado();
+    if (origen === null || origen === indice) return;
+
+    this.programas.update((lista) => {
+      const copia = [...lista];
+      const [movido] = copia.splice(origen, 1);
+      copia.splice(indice, 0, movido);
+      return copia;
+    });
+
+    this.indiceArrastrado.set(indice);
+  }
+
+  alSoltar(evento: DragEvent): void {
+    evento.preventDefault();
+  }
+
+  alTerminarArrastre(): void {
+    const habiaArrastre = this.indiceArrastrado() !== null;
+
+    this.indiceArrastrado.set(null);
+    this.puedeArrastrar.set(false);
+
+    if (!habiaArrastre) return;
+
+    const idsNuevos = this.programas().map((p) => p.id);
+    const idsPrevios = this.ordenOriginal.map((p) => p.id);
+
+    // Si se soltó en el mismo lugar, no hay nada que guardar.
+    if (idsNuevos.join() === idsPrevios.join()) return;
+
+    this.guardarOrden(idsNuevos);
+  }
+
+  private guardarOrden(ids: number[]): void {
+    this.reordenando.set(true);
+
+    this.service.reordenar({ ids }).subscribe({
+      next: (lista) => {
+        this.reordenando.set(false);
+        // El backend devuelve la lista con el campo `orden` recalculado.
+        this.programas.set(lista);
+        this.avisos.exito('Se actualizó el orden del carrusel.');
+      },
+      error: (e) => {
+        this.reordenando.set(false);
+        this.programas.set(this.ordenOriginal);
+        this.avisos.error(this.mensajeDeError(e));
+      },
+    });
+  }
 }

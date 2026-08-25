@@ -111,6 +111,27 @@
     align-items: center;
     gap: 0.5rem;
     flex: none;
+    transition: opacity var(--tv-transicion);
+}
+
+/* La tarjeta que se está moviendo se atenúa para que se note el hueco. */
+.tarjeta--arrastrando {
+    opacity: 0.4;
+}
+
+.tarjeta--arrastrando .tarjeta__cuerpo {
+    border-style: dashed;
+    border-color: var(--tv-gold);
+}
+
+.tarjeta__arrastre:active {
+    cursor: grabbing;
+}
+
+/* Mientras se guarda el nuevo orden, la lista no acepta más interacción. */
+.tarjetas--ocupada {
+    opacity: 0.6;
+    pointer-events: none;
 }
 
 .tarjeta__arrastre {

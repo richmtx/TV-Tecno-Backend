@@ -35,11 +35,15 @@
         </div>
         } @else {
 
-        <ul class="tarjetas">
+        <ul class="tarjetas" [class.tarjetas--ocupada]="reordenando()">
             @for (programa of programas(); track programa.id; let i = $index) {
-            <li class="tarjeta">
-                <span class="tarjeta__arrastre" aria-hidden="true" title="Arrastra para reordenar">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
+            <li class="tarjeta" [class.tarjeta--arrastrando]="indiceArrastrado() === i"
+                [attr.draggable]="puedeArrastrar()" (dragstart)="alIniciarArrastre(i, $event)"
+                (dragover)="alPasarSobre(i, $event)" (drop)="alSoltar($event)" (dragend)="alTerminarArrastre()">
+
+                <span class="tarjeta__arrastre" title="Arrastra para reordenar" (mousedown)="activarArrastre()"
+                    (touchstart)="activarArrastre()" (mouseup)="desactivarArrastre()">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <circle cx="9" cy="6" r="1.4" />
                         <circle cx="15" cy="6" r="1.4" />
                         <circle cx="9" cy="12" r="1.4" />
