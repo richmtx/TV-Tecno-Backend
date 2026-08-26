@@ -1,0 +1,659 @@
+:host {
+    display: block;
+    margin-bottom: 1.75rem;
+}
+
+.seccion {
+    overflow: hidden;
+}
+
+/* ===========================================
+   Cabecera
+   =========================================== */
+.seccion__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.35rem;
+    border-bottom: 1px solid var(--tv-border);
+}
+
+.seccion__identidad {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.seccion__icono {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+}
+
+.seccion__icono svg {
+    width: 17px;
+    height: 17px;
+}
+
+.seccion__titulo {
+    font-size: 1rem;
+    color: var(--tv-text);
+}
+
+.seccion__descripcion {
+    font-size: 0.82rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.1rem;
+}
+
+.seccion__avisos {
+    flex: none;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.aviso {
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.aviso--alerta {
+    background: rgba(201, 130, 26, 0.14);
+    color: var(--tv-warn);
+}
+
+.aviso--neutro {
+    background: var(--tv-card-head);
+    color: var(--tv-text-mute);
+}
+
+/* ===========================================
+   Cuerpo y estados
+   =========================================== */
+.seccion__cuerpo {
+    padding: 1.1rem 1.35rem 1.25rem;
+}
+
+.seccion__estado {
+    padding: 2.25rem 1rem;
+    text-align: center;
+    color: var(--tv-text-mute);
+    font-size: 0.9rem;
+}
+
+.seccion__pie {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+    font-size: 0.79rem;
+    color: var(--tv-text-mute);
+}
+
+.seccion__pie svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+}
+
+/* ===========================================
+   Tarjetas — carrusel horizontal
+   =========================================== */
+.tarjetas {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.tarjeta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+    transition: opacity var(--tv-transicion);
+}
+
+.tarjeta--arrastrando {
+    opacity: 0.4;
+}
+
+.tarjeta--arrastrando .tarjeta__cuerpo {
+    border-style: dashed;
+    border-color: var(--tv-gold);
+}
+
+.tarjetas--ocupada {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.tarjeta__arrastre {
+    flex: none;
+    width: 20px;
+    display: grid;
+    place-items: center;
+    color: var(--tv-text-mute);
+    cursor: grab;
+    transition: var(--tv-transicion);
+}
+
+.tarjeta__arrastre:hover {
+    color: var(--tv-wine);
+}
+
+.tarjeta__arrastre:active {
+    cursor: grabbing;
+}
+
+.tarjeta__arrastre svg {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.tarjeta__cuerpo {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.6rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-md);
+    background: var(--tv-card);
+}
+
+.tarjeta__imagen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--tv-radio-sm);
+    overflow: hidden;
+    background: var(--tv-card-head);
+}
+
+.tarjeta__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tarjeta__sin-imagen {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.3rem;
+    border: 1px dashed var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    color: var(--tv-text-mute);
+    font-size: 0.76rem;
+}
+
+.tarjeta__sin-imagen svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* La posición 1 es la que el sitio muestra en el panel grande. */
+.tarjeta__insignia {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: var(--tv-wine);
+    color: #fff;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.tarjeta__insignia svg {
+    width: 11px;
+    height: 11px;
+    color: var(--tv-gold);
+}
+
+.tarjeta__datos {
+    min-width: 0;
+}
+
+.tarjeta__etiqueta {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--tv-wine);
+}
+
+.tarjeta__titulo {
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+    overflow-wrap: anywhere;
+}
+
+.tarjeta__meta {
+    font-size: 0.82rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.1rem;
+}
+
+.tarjeta__editar {
+    width: 100%;
+    justify-content: center;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.btn--texto {
+    background: transparent;
+    color: var(--tv-wine);
+    padding: 0.3rem 0.5rem;
+    font-size: 0.84rem;
+    text-decoration: underline;
+}
+
+.btn--con-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn--con-icono svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+}
+
+.btn--primario {
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+.btn--primario:hover:not(:disabled) {
+    background: var(--tv-wine-dark);
+}
+
+.btn--primario:disabled,
+.btn--secundario:disabled {
+    opacity: 0.6;
+}
+
+/* ===========================================
+   Modal
+   =========================================== */
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    z-index: 100;
+}
+
+.modal {
+    background: var(--tv-surface);
+    border-radius: var(--tv-radio-lg);
+    box-shadow: var(--tv-sombra-lg);
+    padding: 1.75rem;
+    width: min(560px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* La edición de noticias necesita más ancho por el editor de texto. */
+.modal--ancho {
+    width: min(1060px, 100%);
+}
+
+.modal__titulo {
+    font-size: 1.25rem;
+    color: var(--tv-wine);
+    margin-bottom: 1.1rem;
+}
+
+.modal__columnas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.modal__columna {
+    min-width: 0;
+}
+
+.modal__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+/* ===========================================
+   Campos
+   =========================================== */
+.campo-grupo {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.campo-grupo__etiqueta {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+    margin-bottom: 0.35rem;
+}
+
+.campo-grupo__etiqueta small {
+    font-weight: 500;
+    color: var(--tv-text-mute);
+}
+
+.campo-fila {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.campo-fila .campo-grupo {
+    flex: 1;
+}
+
+.campo-grupo--fecha {
+    flex: 0 0 150px;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: var(--tv-transicion);
+}
+
+.campo:focus {
+    border-color: var(--tv-gold);
+    outline: none;
+}
+
+.campo--area {
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.campo-con-boton {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.campo-con-boton .campo {
+    flex: 1;
+    min-width: 0;
+}
+
+.campo-ayuda {
+    margin-top: 0.35rem;
+    font-size: 0.76rem;
+    color: var(--tv-text-mute);
+    overflow-wrap: anywhere;
+}
+
+.campo-ayuda--alerta {
+    color: var(--tv-warn);
+    font-weight: 600;
+}
+
+/* ===========================================
+   Sugerencias de categoría
+   =========================================== */
+.sugerencias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.45rem;
+}
+
+.sugerencias__opcion {
+    padding: 0.22rem 0.55rem;
+    border: 1px solid var(--tv-border);
+    border-radius: 999px;
+    background: var(--tv-card);
+    color: var(--tv-text-mute);
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: var(--tv-transicion);
+}
+
+.sugerencias__opcion:hover {
+    border-color: var(--tv-wine);
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+}
+
+/* ===========================================
+   Editor de texto (Quill)
+   =========================================== */
+.campo-grupo--editor {
+    margin-bottom: 0;
+}
+
+.editor {
+    display: block;
+}
+
+/* Quill inyecta su propio DOM: hay que alcanzarlo con ::ng-deep. */
+.editor ::ng-deep .ql-toolbar {
+    border-color: var(--tv-border);
+    border-radius: var(--tv-radio-sm) var(--tv-radio-sm) 0 0;
+    background: var(--tv-card-head);
+}
+
+.editor ::ng-deep .ql-container {
+    border-color: var(--tv-border);
+    border-radius: 0 0 var(--tv-radio-sm) var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.editor ::ng-deep .ql-editor {
+    min-height: 260px;
+    line-height: 1.7;
+}
+
+.editor ::ng-deep .ql-editor.ql-blank::before {
+    color: var(--tv-text-mute);
+    font-style: normal;
+}
+
+.editor ::ng-deep .ql-snow .ql-stroke {
+    stroke: var(--tv-text-soft);
+}
+
+.editor ::ng-deep .ql-snow .ql-fill {
+    fill: var(--tv-text-soft);
+}
+
+.editor ::ng-deep .ql-snow .ql-picker {
+    color: var(--tv-text-soft);
+}
+
+.editor ::ng-deep .ql-snow button:hover .ql-stroke,
+.editor ::ng-deep .ql-snow button.ql-active .ql-stroke {
+    stroke: var(--tv-wine);
+}
+
+.editor ::ng-deep .ql-snow button:hover .ql-fill,
+.editor ::ng-deep .ql-snow button.ql-active .ql-fill {
+    fill: var(--tv-wine);
+}
+
+/* ===========================================
+   Editor de imagen
+   =========================================== */
+.imagen-editor {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+}
+
+.imagen-editor__previa {
+    flex: none;
+    width: 190px;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--tv-radio-sm);
+    overflow: hidden;
+    background: var(--tv-card-head);
+}
+
+.imagen-editor__previa img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imagen-editor__vacia {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.3rem;
+    border: 1px dashed var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    color: var(--tv-text-mute);
+    font-size: 0.76rem;
+}
+
+.imagen-editor__vacia svg {
+    width: 22px;
+    height: 22px;
+}
+
+.imagen-editor__acciones {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+}
+
+.imagen-editor__boton {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.imagen-editor__nombre {
+    font-size: 0.79rem;
+    color: var(--tv-text-soft);
+    overflow-wrap: anywhere;
+}
+
+.imagen-editor__ayuda {
+    font-size: 0.75rem;
+    color: var(--tv-text-mute);
+    margin-top: auto;
+}
+
+/* ===========================================
+   Alertas
+   =========================================== */
+.alerta {
+    padding: 0.7rem 1rem;
+    border-radius: var(--tv-radio-sm);
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+}
+
+.alerta--error {
+    background: #fdecee;
+    color: var(--tv-error);
+    border: 1px solid #f5c6cb;
+}
+
+/* ===========================================
+   Responsivo
+   =========================================== */
+@media (max-width: 900px) {
+    .modal__columnas {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .campo-grupo--editor {
+        margin-bottom: 1rem;
+    }
+
+    .editor ::ng-deep .ql-editor {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 560px) {
+    .imagen-editor {
+        flex-direction: column;
+    }
+
+    .imagen-editor__previa {
+        width: 100%;
+    }
+
+    .campo-fila {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .campo-grupo--fecha {
+        flex: 1;
+        width: 100%;
+    }
+}
