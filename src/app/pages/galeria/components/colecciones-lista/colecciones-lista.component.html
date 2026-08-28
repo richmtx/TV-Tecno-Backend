@@ -1,41 +1,25 @@
 <section class="tv-panel seccion">
 
-    <header class="seccion__cabecera">
-        <div class="seccion__identidad">
-            <span class="seccion__icono" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <rect x="3" y="5" width="18" height="14" rx="2" />
-                    <circle cx="8.5" cy="10" r="1.5" />
-                    <path d="m4 17 4.5-4.5 3 3L15 12l5 5" />
-                </svg>
-            </span>
-            <div>
-                <h2 class="seccion__titulo">Galería</h2>
-                <p class="seccion__descripcion">
-                    Administra las colecciones y fotografías de la galería del ITD.
-                </p>
-            </div>
-        </div>
+    <!-- Pestañas de sección -->
+    @if (secciones().length > 0) {
+    <div class="cabecera-pestanas">
+        <nav class="pestanas" aria-label="Secciones de la galería">
+            @for (seccion of secciones(); track seccion.id) {
+            <button type="button" class="pestanas__boton"
+                [class.pestanas__boton--activa]="seccionActiva()?.id === seccion.id"
+                [attr.aria-current]="seccionActiva()?.id === seccion.id ? 'page' : null"
+                (click)="cambiarSeccion(seccion)">
+                {{ seccion.nombre }}
+            </button>
+            }
+        </nav>
 
         @if (!cargando() && borradores() > 0) {
         <span class="aviso-borradores">
             {{ borradores() }} sin publicar
         </span>
         }
-    </header>
-
-    <!-- Pestañas de sección -->
-    @if (secciones().length > 0) {
-    <nav class="pestanas" aria-label="Secciones de la galería">
-        @for (seccion of secciones(); track seccion.id) {
-        <button type="button" class="pestanas__boton"
-            [class.pestanas__boton--activa]="seccionActiva()?.id === seccion.id"
-            [attr.aria-current]="seccionActiva()?.id === seccion.id ? 'page' : null" (click)="cambiarSeccion(seccion)">
-            {{ seccion.nombre }}
-        </button>
-        }
-    </nav>
+    </div>
     }
 
     <div class="seccion__cuerpo">

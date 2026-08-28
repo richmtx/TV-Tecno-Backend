@@ -8,49 +8,53 @@
 }
 
 /* ===========================================
-   Cabecera
+   Pestañas de sección
+   El aviso de borradores acompaña a las pestañas, ya que el
+   título de la página vive fuera del panel.
    =========================================== */
-.seccion__cabecera {
+
+.cabecera-pestanas {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1.15rem 1.35rem;
+    padding: 0 1.35rem;
     border-bottom: 1px solid var(--tv-border);
 }
 
-.seccion__identidad {
+.pestanas {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    min-width: 0;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 
-.seccion__icono {
+.pestanas::-webkit-scrollbar {
+    display: none;
+}
+
+.pestanas__boton {
     flex: none;
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-    border-radius: var(--tv-radio-sm);
-    background: var(--tv-cream);
+    padding: 0.85rem 0.9rem;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--tv-text-mute);
+    font-size: 0.87rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: var(--tv-transicion);
+}
+
+.pestanas__boton:hover {
     color: var(--tv-wine);
 }
 
-.seccion__icono svg {
-    width: 17px;
-    height: 17px;
-}
-
-.seccion__titulo {
-    font-size: 1rem;
-    color: var(--tv-text);
-}
-
-.seccion__descripcion {
-    font-size: 0.82rem;
-    color: var(--tv-text-mute);
-    margin-top: 0.1rem;
+.pestanas__boton--activa,
+.pestanas__boton--activa:hover {
+    color: var(--tv-wine);
+    border-bottom-color: var(--tv-wine);
 }
 
 .aviso-borradores {

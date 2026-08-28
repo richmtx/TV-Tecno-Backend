@@ -1,3 +1,27 @@
 :host {
     display: block;
+    padding: 1.75rem 2rem;
+}
+
+/* Encabezado de página: vive sobre el fondo gris, fuera de los
+   paneles blancos, igual que en las demás secciones del panel. */
+.pagina__cabecera {
+    margin-bottom: 1.25rem;
+}
+
+.pagina__titulo {
+    font-size: 1.9rem;
+    color: var(--tv-wine);
+}
+
+.pagina__descripcion {
+    font-size: 0.9rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 640px) {
+    :host {
+        padding: 1.25rem 1rem;
+    }
 }
