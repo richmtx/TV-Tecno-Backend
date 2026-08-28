@@ -1,0 +1,79 @@
+<div class="cuadricula-panel">
+
+    @if (fotos().length > 0) {
+    <div class="barra-seleccion">
+        <label class="casilla">
+            <input type="checkbox" [checked]="todasSeleccionadas()" (change)="alternarTodas()" />
+            <span>
+                @if (totalSeleccionadas() > 0) {
+                {{ totalSeleccionadas() }} de {{ fotos().length }} seleccionadas
+                } @else {
+                Seleccionar todas
+                }
+            </span>
+        </label>
+
+        @if (totalSeleccionadas() > 0) {
+        <button type="button" class="btn btn--texto" (click)="limpiarSeleccion()">
+            Quitar selección
+        </button>
+        }
+    </div>
+    }
+
+    <ul class="cuadricula">
+        @for (foto of fotos(); track foto.id; let i = $index) {
+        <li class="celda" [class.celda--seleccionada]="estaSeleccionada(foto.id)"
+            [class.celda--portada]="portadaId() === foto.id">
+
+            <button type="button" class="celda__imagen" (click)="alternar(foto, i, $event)"
+                [attr.aria-pressed]="estaSeleccionada(foto.id)" [attr.aria-label]="foto.pie || 'Fotografía ' + (i + 1)">
+
+                @if (url(foto); as src) {
+                <img [src]="src" [alt]="foto.pie || ''" loading="lazy" />
+                }
+
+                <span class="celda__marca" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                </span>
+
+                @if (portadaId() === foto.id) {
+                <span class="celda__etiqueta">Portada</span>
+                }
+
+                @if (foto.anio) {
+                <span class="celda__anio">{{ foto.anio }}</span>
+                }
+            </button>
+
+            <div class="celda__acciones">
+                <button type="button" class="celda__accion" title="Editar pie y año" (click)="onEditar(foto, $event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+                    </svg>
+                </button>
+
+                @if (portadaId() !== foto.id) {
+                <button type="button" class="celda__accion" title="Usar como portada" (click)="onPortada(foto, $event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <polygon
+                            points="12 3 14.8 9.1 21.5 9.8 16.5 14.3 17.9 21 12 17.6 6.1 21 7.5 14.3 2.5 9.8 9.2 9.1" />
+                    </svg>
+                </button>
+                }
+            </div>
+
+            @if (foto.pie) {
+            <p class="celda__pie">{{ foto.pie }}</p>
+            }
+        </li>
+        }
+    </ul>
+
+</div>

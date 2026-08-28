@@ -1,0 +1,299 @@
+:host {
+    display: block;
+    margin-bottom: 1.75rem;
+}
+
+.seccion {
+    overflow: hidden;
+}
+
+/* ===========================================
+   Cabecera
+   =========================================== */
+.seccion__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.35rem;
+    border-bottom: 1px solid var(--tv-border);
+}
+
+.seccion__identidad {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.seccion__icono {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+}
+
+.seccion__icono svg {
+    width: 17px;
+    height: 17px;
+}
+
+.seccion__titulo {
+    font-size: 1rem;
+    color: var(--tv-text);
+}
+
+.seccion__descripcion {
+    font-size: 0.82rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.1rem;
+}
+
+.aviso-borradores {
+    flex: none;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(201, 130, 26, 0.14);
+    color: var(--tv-warn);
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ===========================================
+   Pestañas de sección
+   =========================================== */
+.pestanas {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0 1.35rem;
+    border-bottom: 1px solid var(--tv-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.pestanas::-webkit-scrollbar {
+    display: none;
+}
+
+.pestanas__boton {
+    flex: none;
+    padding: 0.75rem 0.9rem;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--tv-text-mute);
+    font-size: 0.87rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: var(--tv-transicion);
+}
+
+.pestanas__boton:hover {
+    color: var(--tv-wine);
+}
+
+.pestanas__boton--activa,
+.pestanas__boton--activa:hover {
+    color: var(--tv-wine);
+    border-bottom-color: var(--tv-wine);
+}
+
+/* ===========================================
+   Cuerpo y estados
+   =========================================== */
+.seccion__cuerpo {
+    padding: 1.1rem 1.35rem 1.25rem;
+}
+
+.seccion__estado {
+    padding: 2.25rem 1rem;
+    text-align: center;
+    color: var(--tv-text-mute);
+    font-size: 0.9rem;
+}
+
+.seccion__pie {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1rem;
+    font-size: 0.79rem;
+    color: var(--tv-text-mute);
+}
+
+.seccion__pie svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+}
+
+/* ===========================================
+   Herramientas
+   =========================================== */
+.herramientas {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+}
+
+.herramientas__busqueda {
+    position: relative;
+    flex: 1 1 220px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+}
+
+.herramientas__busqueda svg {
+    position: absolute;
+    left: 0.7rem;
+    width: 15px;
+    height: 15px;
+    color: var(--tv-text-mute);
+    pointer-events: none;
+}
+
+.herramientas__busqueda .campo {
+    padding-left: 2.1rem;
+}
+
+.herramientas__estados {
+    display: flex;
+    gap: 0.3rem;
+    flex: none;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-size: 0.88rem;
+    transition: var(--tv-transicion);
+}
+
+.campo:focus {
+    border-color: var(--tv-gold);
+    outline: none;
+}
+
+.chip {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--tv-border);
+    border-radius: 999px;
+    background: var(--tv-card);
+    color: var(--tv-text-mute);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: var(--tv-transicion);
+}
+
+.chip:hover {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.chip--activo,
+.chip--activo:hover {
+    border-color: var(--tv-wine);
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+/* ===========================================
+   Cuadrícula
+   =========================================== */
+.cuadricula {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 0.9rem;
+    align-items: stretch;
+}
+
+.cuadricula__celda {
+    display: block;
+    transition: opacity var(--tv-transicion);
+}
+
+/* La colección que se está moviendo se atenúa para que se note el hueco. */
+.cuadricula__celda--arrastrando {
+    opacity: 0.4;
+}
+
+/* Mientras se guarda el nuevo orden, la lista no acepta interacción. */
+.cuadricula--ocupada {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn--primario {
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+.btn--primario:hover:not(:disabled) {
+    background: var(--tv-wine-dark);
+}
+
+.btn--texto {
+    background: transparent;
+    color: var(--tv-wine);
+    padding: 0.3rem 0.5rem;
+    font-size: 0.84rem;
+    text-decoration: underline;
+}
+
+.btn--con-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn--con-icono svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+}
+
+/* ===========================================
+   Responsivo
+   =========================================== */
+@media (max-width: 640px) {
+    .herramientas {
+        gap: 0.5rem;
+    }
+
+    .herramientas__busqueda {
+        flex: 1 1 100%;
+    }
+
+    .cuadricula {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}

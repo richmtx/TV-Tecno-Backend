@@ -1,0 +1,95 @@
+<div class="modal-fondo" (click)="cerrar()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <h2 class="modal__titulo">{{ titulo() }}</h2>
+        <p class="modal__seccion">{{ seccion().nombre }}</p>
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        <!-- Años: solo en secciones cronológicas -->
+        @if (seccion().usaRangoAnios) {
+        <div class="campo-fila">
+            <label class="campo-grupo">
+                <span class="campo-grupo__etiqueta">Año inicial</span>
+                <input type="number" class="campo" min="1900" max="2200" placeholder="1951"
+                    [formControl]="formulario.controls.anioInicio" (blur)="alSalirDeAnios()" />
+            </label>
+
+            <label class="campo-grupo">
+                <span class="campo-grupo__etiqueta">Año final</span>
+                <input type="number" class="campo" min="1900" max="2200" placeholder="1980"
+                    [formControl]="formulario.controls.anioFin" [readOnly]="formulario.controls.esActual.value"
+                    (blur)="alSalirDeAnios()" />
+            </label>
+        </div>
+
+        <label class="casilla">
+            <input type="checkbox" [formControl]="formulario.controls.esActual" (change)="alCambiarActual()" />
+            <span>Esta época sigue vigente (hasta la actualidad)</span>
+        </label>
+
+        @if (avisoEpocaAbierta(); as aviso) {
+        <div class="alerta alerta--aviso">{{ aviso }}</div>
+        }
+        }
+
+        <!-- Datos -->
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Título</span>
+            <input type="text" class="campo" maxlength="120" [formControl]="formulario.controls.titulo"
+                placeholder="Crecimiento y formación" />
+        </label>
+
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">
+                Subtítulo <small>(opcional)</small>
+            </span>
+            <input type="text" class="campo" maxlength="120" [formControl]="formulario.controls.subtitulo"
+                placeholder="Expansión académica" />
+        </label>
+
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">
+                Descripción <small>(opcional)</small>
+            </span>
+            <textarea class="campo campo--area" maxlength="300" rows="3" [formControl]="formulario.controls.descripcion"
+                placeholder="Una época de expansión académica y desarrollo institucional."></textarea>
+        </label>
+
+        <!-- Categoría: solo donde la sección la usa -->
+        @if (seccion().usaCategorias) {
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">Categoría</span>
+            <select class="campo" [formControl]="formulario.controls.categoriaId">
+                <option [value]="0">Sin categoría</option>
+                @for (categoria of categorias(); track categoria.id) {
+                <option [value]="categoria.id">{{ categoria.nombre }}</option>
+                }
+            </select>
+        </label>
+        }
+
+        <!-- Slug: solo al editar, porque al crear se genera solo -->
+        @if (esEdicion()) {
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">
+                Dirección web <small>(cambiarla invalida los enlaces existentes)</small>
+            </span>
+            <input type="text" class="campo campo--slug" maxlength="80" [formControl]="formulario.controls.slug"
+                placeholder="crecimiento-formacion" />
+        </label>
+        }
+
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando()" (click)="cerrar()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : (esEdicion() ? 'Guardar cambios' : 'Crear colección') }}
+            </button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,329 @@
+:host {
+    display: block;
+    margin-bottom: 1.75rem;
+}
+
+.seccion {
+    overflow: hidden;
+}
+
+/* ===========================================
+   Cabecera
+   =========================================== */
+.seccion__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.15rem 1.35rem;
+    border-bottom: 1px solid var(--tv-border);
+}
+
+.seccion__identidad {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+    flex: 1;
+}
+
+.volver {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    cursor: pointer;
+    transition: var(--tv-transicion);
+}
+
+.volver:hover {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.volver svg {
+    width: 16px;
+    height: 16px;
+}
+
+.seccion__texto {
+    min-width: 0;
+}
+
+.seccion__ruta {
+    font-size: 0.76rem;
+    color: var(--tv-text-mute);
+    margin-bottom: 0.15rem;
+}
+
+.seccion__titulo {
+    font-size: 1.1rem;
+    color: var(--tv-text);
+}
+
+.seccion__descripcion {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.2rem;
+}
+
+.etiqueta {
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.seccion__acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.estado {
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(201, 130, 26, 0.14);
+    color: var(--tv-warn);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.estado--publicado {
+    background: rgba(30, 142, 90, 0.14);
+    color: var(--tv-ok);
+}
+
+/* ===========================================
+   Cuerpo
+   =========================================== */
+.seccion__cuerpo {
+    padding: 1.1rem 1.35rem 1.25rem;
+}
+
+.seccion__estado {
+    padding: 2.25rem 1rem;
+    text-align: center;
+    color: var(--tv-text-mute);
+    font-size: 0.9rem;
+}
+
+.seccion__pie {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.9rem;
+    font-size: 0.79rem;
+    color: var(--tv-text-mute);
+}
+
+.seccion__pie svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+}
+
+.fotos {
+    margin-top: 1.1rem;
+}
+
+/* ===========================================
+   Barra de acciones en lote
+   =========================================== */
+.lote {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--tv-wine);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-cream);
+}
+
+.lote__conteo {
+    flex: 1;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--tv-wine);
+}
+
+/* ===========================================
+   Modales
+   =========================================== */
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    z-index: 100;
+}
+
+.modal {
+    background: var(--tv-surface);
+    border-radius: var(--tv-radio-lg);
+    box-shadow: var(--tv-sombra-lg);
+    padding: 1.75rem;
+    width: min(480px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal--angosto {
+    width: min(400px, 100%);
+}
+
+.modal__titulo {
+    font-size: 1.2rem;
+    color: var(--tv-wine);
+}
+
+.modal__nota {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--tv-text-mute);
+    margin: 0.35rem 0 1.1rem;
+}
+
+.modal__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+/* ===========================================
+   Campos
+   =========================================== */
+.campo-grupo {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.campo-grupo__etiqueta {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+    margin-bottom: 0.35rem;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: var(--tv-transicion);
+}
+
+.campo:focus {
+    border-color: var(--tv-gold);
+    outline: none;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn--primario {
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+.btn--primario:hover:not(:disabled) {
+    background: var(--tv-wine-dark);
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.btn--peligro {
+    background: var(--tv-error);
+    color: var(--tv-text-invert);
+}
+
+.btn--peligro:hover:not(:disabled) {
+    filter: brightness(0.92);
+}
+
+.btn--texto {
+    background: transparent;
+    color: var(--tv-wine);
+    padding: 0.3rem 0.5rem;
+    font-size: 0.84rem;
+    text-decoration: underline;
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.btn--con-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn--con-icono svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+}
+
+/* ===========================================
+   Responsivo
+   =========================================== */
+@media (max-width: 640px) {
+    .seccion__acciones {
+        width: 100%;
+    }
+
+    .lote {
+        gap: 0.5rem;
+    }
+
+    .lote__conteo {
+        flex: 1 1 100%;
+    }
+}

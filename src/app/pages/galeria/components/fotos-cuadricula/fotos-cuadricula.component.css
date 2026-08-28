@@ -1,0 +1,206 @@
+:host {
+    display: block;
+}
+
+/* ===========================================
+   Barra de selección
+   =========================================== */
+.barra-seleccion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.casilla {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+    cursor: pointer;
+}
+
+.casilla input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--tv-wine);
+    cursor: pointer;
+}
+
+/* ===========================================
+   Cuadrícula
+   =========================================== */
+.cuadricula {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.7rem;
+}
+
+.celda {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    border-radius: var(--tv-radio-sm);
+    overflow: hidden;
+    transition: var(--tv-transicion);
+}
+
+.celda--seleccionada {
+    border-color: var(--tv-wine);
+}
+
+.celda--portada {
+    border-color: var(--tv-gold);
+}
+
+.celda--seleccionada.celda--portada {
+    border-color: var(--tv-wine);
+}
+
+/* ===========================================
+   Imagen
+   =========================================== */
+.celda__imagen {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    border: none;
+    background: var(--tv-card-head);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.celda__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.celda:hover .celda__imagen img {
+    transform: scale(1.04);
+}
+
+/* Marca de selección */
+.celda__marca {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.25);
+    color: transparent;
+    transition: var(--tv-transicion);
+}
+
+.celda--seleccionada .celda__marca {
+    background: var(--tv-wine);
+    color: #fff;
+}
+
+.celda__marca svg {
+    width: 12px;
+    height: 12px;
+}
+
+.celda__etiqueta {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--tv-gold);
+    color: var(--tv-gold-ink, #412402);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.celda__anio {
+    position: absolute;
+    bottom: 0.4rem;
+    left: 0.4rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+/* ===========================================
+   Acciones
+   =========================================== */
+.celda__acciones {
+    position: absolute;
+    bottom: 0.4rem;
+    right: 0.4rem;
+    display: flex;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: var(--tv-transicion);
+}
+
+.celda:hover .celda__acciones {
+    opacity: 1;
+}
+
+.celda__accion {
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-surface);
+    color: var(--tv-text-soft);
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: var(--tv-transicion);
+}
+
+.celda__accion:hover {
+    color: var(--tv-wine);
+}
+
+.celda__accion svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* ===========================================
+   Pie
+   =========================================== */
+.celda__pie {
+    padding: 0.4rem 0.5rem;
+    background: var(--tv-card);
+    font-size: 0.74rem;
+    line-height: 1.35;
+    color: var(--tv-text-mute);
+    overflow-wrap: anywhere;
+}
+
+@media (hover: none) {
+    .celda__acciones {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 560px) {
+    .cuadricula {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 0.5rem;
+    }
+}

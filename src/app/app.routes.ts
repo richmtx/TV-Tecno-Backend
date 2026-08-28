@@ -39,6 +39,22 @@ export const routes: Routes = [
         path: 'galeria',
         loadComponent: () =>
           import('./pages/galeria/galeria.component').then((m) => m.GaleriaComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import(
+                './pages/galeria/components/colecciones-lista/colecciones-lista.component'
+              ).then((m) => m.ColeccionesListaComponent),
+          },
+          {
+            path: 'coleccion/:id',
+            loadComponent: () =>
+              import(
+                './pages/galeria/components/coleccion-detalle/coleccion-detalle.component'
+              ).then((m) => m.ColeccionDetalleComponent),
+          },
+        ],
       },
       {
         path: 'usuarios',

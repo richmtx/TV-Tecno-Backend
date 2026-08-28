@@ -1,0 +1,215 @@
+:host {
+    display: block;
+}
+
+.tarjeta {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-md);
+    background: var(--tv-card);
+    overflow: hidden;
+    transition: var(--tv-transicion);
+}
+
+.tarjeta:hover {
+    border-color: var(--tv-wine);
+    box-shadow: var(--tv-sombra-lg);
+}
+
+/* Las colecciones sin publicar se atenúan para distinguirlas. */
+.tarjeta--borrador {
+    border-style: dashed;
+}
+
+/* ===========================================
+   Asa de arrastre
+   =========================================== */
+.tarjeta__arrastre {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 2;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-surface);
+    color: var(--tv-text-mute);
+    cursor: grab;
+    opacity: 0;
+    transition: var(--tv-transicion);
+}
+
+.tarjeta:hover .tarjeta__arrastre {
+    opacity: 1;
+}
+
+.tarjeta__arrastre:hover {
+    color: var(--tv-wine);
+}
+
+.tarjeta__arrastre:active {
+    cursor: grabbing;
+}
+
+.tarjeta__arrastre svg {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+/* ===========================================
+   Cuerpo
+   =========================================== */
+.tarjeta__cuerpo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.tarjeta__imagen {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    background: var(--tv-card-head);
+    overflow: hidden;
+}
+
+.tarjeta__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.tarjeta:hover .tarjeta__imagen img {
+    transform: scale(1.04);
+}
+
+.tarjeta__sin-imagen {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.35rem;
+    color: var(--tv-text-mute);
+    font-size: 0.76rem;
+}
+
+.tarjeta__sin-imagen svg {
+    width: 26px;
+    height: 26px;
+}
+
+.tarjeta__estado {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(201, 130, 26, 0.16);
+    color: var(--tv-warn);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.tarjeta__estado--publicado {
+    background: rgba(30, 142, 90, 0.14);
+    color: var(--tv-ok);
+}
+
+/* ===========================================
+   Datos
+   =========================================== */
+.tarjeta__datos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.75rem 0.85rem 0.9rem;
+}
+
+.tarjeta__titulo {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--tv-text);
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.tarjeta__categoria {
+    font-size: 0.78rem;
+    color: var(--tv-text-mute);
+}
+
+.tarjeta__fotos {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+}
+
+.tarjeta__fotos svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    color: var(--tv-wine);
+}
+
+/* ===========================================
+   Botón de edición
+   =========================================== */
+.tarjeta__editar {
+    position: absolute;
+    bottom: 0.7rem;
+    right: 0.7rem;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-surface);
+    color: var(--tv-text-soft);
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--tv-transicion);
+}
+
+.tarjeta:hover .tarjeta__editar {
+    opacity: 1;
+}
+
+.tarjeta__editar:hover {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.tarjeta__editar svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* En pantallas táctiles no hay hover: los controles se ven siempre. */
+@media (hover: none) {
+
+    .tarjeta__arrastre,
+    .tarjeta__editar {
+        opacity: 1;
+    }
+}
