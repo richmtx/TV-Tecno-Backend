@@ -54,6 +54,20 @@
                     (click)="cambiarEstado('borrador')">Borradores</button>
             </div>
 
+            @if (esAdmin()) {
+            <span class="herramientas__separador" aria-hidden="true"></span>
+
+            <button type="button" class="btn btn--secundario btn--con-icono" [class.btn--activo]="mostrarPapelera()"
+                (click)="alternarPapelera()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6" />
+                </svg>
+                Papelera
+            </button>
+            }
+
             <button type="button" class="btn btn--primario btn--con-icono" (click)="nuevaColeccion()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"
                     aria-hidden="true">
@@ -63,6 +77,10 @@
                 Nueva colección
             </button>
         </div>
+
+        @if (mostrarPapelera()) {
+        <app-papelera></app-papelera>
+        } @else {
 
         <!-- Cuadrícula -->
         @if (visibles().length > 0) {
@@ -107,6 +125,8 @@
             Todavía no hay colecciones en esta sección.
             }
         </p>
+        }
+
         }
 
         }

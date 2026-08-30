@@ -1,0 +1,302 @@
+:host {
+    display: block;
+}
+
+/* ===========================================
+   Estados
+   =========================================== */
+.papelera__estado {
+    padding: 2.25rem 1rem;
+    text-align: center;
+    color: var(--tv-text-mute);
+    font-size: 0.9rem;
+}
+
+.papelera__vacia {
+    display: grid;
+    place-items: center;
+    gap: 0.4rem;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.papelera__vacia-icono {
+    width: 40px;
+    height: 40px;
+    color: var(--tv-text-mute);
+    opacity: 0.5;
+    margin-bottom: 0.4rem;
+}
+
+.papelera__vacia-icono svg {
+    width: 100%;
+    height: 100%;
+}
+
+.papelera__vacia-titulo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--tv-text-soft);
+}
+
+.papelera__vacia-texto {
+    font-size: 0.84rem;
+    color: var(--tv-text-mute);
+}
+
+/* ===========================================
+   Aviso
+   =========================================== */
+.papelera__aviso {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card-head);
+    font-size: 0.81rem;
+    line-height: 1.5;
+    color: var(--tv-text-mute);
+}
+
+.papelera__aviso svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    margin-top: 0.1rem;
+}
+
+/* ===========================================
+   Lista
+   =========================================== */
+.lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.fila {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-md);
+    background: var(--tv-card);
+    transition: var(--tv-transicion);
+}
+
+.fila--ocupada {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* --- Miniatura --- */
+.fila__imagen {
+    flex: none;
+    width: 64px;
+    height: 48px;
+    border-radius: var(--tv-radio-sm);
+    overflow: hidden;
+    background: var(--tv-card-head);
+}
+
+.fila__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Lo eliminado se muestra apagado, como pista visual. */
+    filter: grayscale(0.6);
+    opacity: 0.8;
+}
+
+.fila__sin-imagen {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--tv-text-mute);
+}
+
+.fila__sin-imagen svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* --- Datos --- */
+.fila__datos {
+    flex: 1;
+    min-width: 0;
+}
+
+.fila__titulo {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--tv-text);
+    overflow-wrap: anywhere;
+}
+
+.fila__meta {
+    font-size: 0.78rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.1rem;
+}
+
+/* --- Plazo --- */
+.fila__plazo {
+    flex: none;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: var(--tv-card-head);
+    color: var(--tv-text-mute);
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.fila__plazo--urgente {
+    background: rgba(201, 130, 26, 0.14);
+    color: var(--tv-warn);
+}
+
+/* --- Acciones --- */
+.fila__acciones {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* ===========================================
+   Modal
+   =========================================== */
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    z-index: 110;
+}
+
+.modal {
+    background: var(--tv-surface);
+    border-radius: var(--tv-radio-lg);
+    box-shadow: var(--tv-sombra-lg);
+    padding: 1.75rem;
+    width: min(440px, 100%);
+}
+
+.modal__icono {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.85rem;
+    border-radius: var(--tv-radio-sm);
+    background: #fdecee;
+    color: var(--tv-error);
+}
+
+.modal__icono svg {
+    width: 20px;
+    height: 20px;
+}
+
+.modal__titulo {
+    font-size: 1.2rem;
+    color: var(--tv-text);
+}
+
+.modal__texto {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--tv-text-mute);
+    margin: 0.45rem 0 0;
+}
+
+.modal__texto strong {
+    color: var(--tv-text);
+    font-weight: 700;
+}
+
+.modal__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.5rem 0.9rem;
+    font-weight: 600;
+    font-size: 0.84rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn--secundario {
+    background: var(--tv-surface);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.btn--peligro {
+    background: var(--tv-error);
+    color: var(--tv-text-invert);
+}
+
+.btn--peligro:hover:not(:disabled) {
+    filter: brightness(0.92);
+}
+
+.btn--texto {
+    background: transparent;
+    color: var(--tv-wine);
+    padding: 0.3rem 0.5rem;
+    text-decoration: underline;
+}
+
+.btn--peligro-texto {
+    color: var(--tv-error);
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* ===========================================
+   Responsivo
+   =========================================== */
+@media (max-width: 720px) {
+    .fila {
+        flex-wrap: wrap;
+    }
+
+    .fila__datos {
+        flex: 1 1 60%;
+    }
+
+    .fila__acciones {
+        flex: 1 1 100%;
+        justify-content: flex-end;
+    }
+}

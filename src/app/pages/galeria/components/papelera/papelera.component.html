@@ -1,0 +1,138 @@
+<div class="papelera">
+
+    @if (cargando()) {
+    <p class="papelera__estado">Cargando papelera…</p>
+    } @else if (error()) {
+    <div class="papelera__estado">
+        <p>{{ error() }}</p>
+        <button type="button" class="btn btn--texto" (click)="cargar()">Reintentar</button>
+    </div>
+    } @else if (vacia()) {
+    <div class="papelera__vacia">
+        <span class="papelera__vacia-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6" />
+            </svg>
+        </span>
+        <p class="papelera__vacia-titulo">La papelera está vacía</p>
+        <p class="papelera__vacia-texto">
+            Las colecciones que elimines aparecerán aquí durante {{ diasEnPapelera }} días.
+        </p>
+    </div>
+    } @else {
+
+    <p class="papelera__aviso">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 11v5" stroke-linecap="round" />
+            <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+        </svg>
+        <span>
+            Aquí se reúne lo eliminado de todas las secciones. Se borra solo a los
+            {{ diasEnPapelera }} días, y al restaurar vuelve como borrador.
+        </span>
+    </p>
+
+    <ul class="lista">
+        @for (coleccion of colecciones(); track coleccion.id) {
+        <li class="fila" [class.fila--ocupada]="ocupada() === coleccion.id">
+
+            <span class="fila__imagen">
+                @if (portada(coleccion); as src) {
+                <img [src]="src" [alt]="coleccion.titulo" loading="lazy" />
+                } @else {
+                <span class="fila__sin-imagen" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+                        <circle cx="8.5" cy="9.5" r="1.5" />
+                        <path d="M3.5 17l5-5 4 4 3.5-3.5 4.5 4.5" />
+                    </svg>
+                </span>
+                }
+            </span>
+
+            <div class="fila__datos">
+                <p class="fila__titulo">{{ coleccion.titulo }}</p>
+                <p class="fila__meta">
+                    @if (coleccion.seccion; as seccion) {
+                    {{ seccion.nombre }} ·
+                    }
+                    {{ coleccion.totalFotos }}
+                    {{ coleccion.totalFotos === 1 ? 'fotografía' : 'fotografías' }} ·
+                    eliminada el {{ fecha(coleccion) }}
+                </p>
+            </div>
+
+            <span class="fila__plazo" [class.fila__plazo--urgente]="esUrgente(coleccion)">
+                @if (dias(coleccion) === 0) {
+                Se eliminará pronto
+                } @else if (dias(coleccion) === 1) {
+                Queda 1 día
+                } @else {
+                Quedan {{ dias(coleccion) }} días
+                }
+            </span>
+
+            <div class="fila__acciones">
+                <button type="button" class="btn btn--secundario" [disabled]="ocupada() !== null"
+                    (click)="restaurar(coleccion)">
+                    {{ ocupada() === coleccion.id ? 'Restaurando…' : 'Restaurar' }}
+                </button>
+
+                <button type="button" class="btn btn--texto btn--peligro-texto" [disabled]="ocupada() !== null"
+                    (click)="confirmarPurga(coleccion)">
+                    Eliminar ya
+                </button>
+            </div>
+
+        </li>
+        }
+    </ul>
+
+    }
+</div>
+
+<!-- ===========================================
+     Modal: eliminación definitiva
+     =========================================== -->
+@if (purgando(); as coleccion) {
+<div class="modal-fondo" (click)="cancelarPurga()">
+    <div class="modal" (click)="$event.stopPropagation()" role="alertdialog" aria-modal="true">
+
+        <span class="modal__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 9v4" />
+                <path d="M12 17h.01" />
+                <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
+            </svg>
+        </span>
+
+        <h2 class="modal__titulo">Eliminar definitivamente</h2>
+
+        <p class="modal__texto">
+            <strong>{{ coleccion.titulo }}</strong>
+
+            @if (coleccion.totalFotos > 0) {
+            y sus <strong>{{ coleccion.totalFotos }}
+                {{ coleccion.totalFotos === 1 ? 'fotografía' : 'fotografías' }}</strong>
+            }
+
+            se borrarán del servidor. <strong>Esta acción no se puede deshacer.</strong>
+        </p>
+
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="ocupada() !== null" (click)="cancelarPurga()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--peligro" [disabled]="ocupada() !== null" (click)="purgar()">
+                {{ ocupada() !== null ? 'Eliminando…' : 'Eliminar para siempre' }}
+            </button>
+        </div>
+
+    </div>
+</div>
+}

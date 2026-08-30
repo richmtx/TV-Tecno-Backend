@@ -6,11 +6,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ColeccionTarjetaComponent } from '../coleccion-tarjeta/coleccion-tarjeta.component';
 import { ColeccionFormularioComponent } from '../coleccion-formulario/coleccion-formulario.component';
 import { ConfirmarBorradoComponent } from '../confirmar-borrado/confirmar-borrado.component';
-import type {
-    Coleccion,
-    EstadoColeccion,
-    SeccionGaleria,
-} from '../../../../core/models/galeria.model';
+import { PapeleraComponent } from '../papelera/papelera.component';
+import type { Coleccion, EstadoColeccion, SeccionGaleria, } from '../../../../core/models/galeria.model';
 
 /**
  * Listado de colecciones del panel, agrupadas por sección.
@@ -27,6 +24,7 @@ import type {
         ColeccionTarjetaComponent,
         ColeccionFormularioComponent,
         ConfirmarBorradoComponent,
+        PapeleraComponent,
     ],
     templateUrl: './colecciones-lista.component.html',
     styleUrl: './colecciones-lista.component.css',
@@ -62,6 +60,9 @@ export class ColeccionesListaComponent implements OnInit {
     readonly indiceArrastrado = signal<number | null>(null);
     readonly puedeArrastrar = signal(false);
     readonly reordenando = signal(false);
+
+    /* --- Papelera --- */
+    readonly mostrarPapelera = signal(false);
 
     /** Orden previo al arrastre, para revertir si la API falla. */
     private ordenOriginal: Coleccion[] = [];
@@ -159,6 +160,10 @@ export class ColeccionesListaComponent implements OnInit {
        =========================================== */
 
     cambiarSeccion(seccion: SeccionGaleria): void {
+        // Cambiar de sección sale de la papelera: esta no pertenece a
+        // ninguna, así que dejarla abierta al navegar sería engañoso.
+        this.mostrarPapelera.set(false);
+
         if (seccion.id === this.seccionActiva()?.id) return;
 
         this.seccionActiva.set(seccion);
@@ -328,10 +333,22 @@ export class ColeccionesListaComponent implements OnInit {
        =========================================== */
 
     alBuscar(evento: Event): void {
+        this.mostrarPapelera.set(false);
         this.busqueda.set((evento.target as HTMLInputElement).value);
     }
 
     cambiarEstado(estado: EstadoColeccion | 'todos'): void {
+        this.mostrarPapelera.set(false);
         this.filtroEstado.set(estado);
+    }
+
+        /**
+     * Al salir de la papelera se recarga la sección: una colección
+     * restaurada debe aparecer de vuelta en el listado.
+     */
+    alternarPapelera(): void {
+        const abriendo = !this.mostrarPapelera();
+        this.mostrarPapelera.set(abriendo);
+        if (!abriendo) this.recargar();
     }
 }

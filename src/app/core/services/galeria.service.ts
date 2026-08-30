@@ -93,6 +93,25 @@ export class GaleriaService {
     }
 
     /* ===========================================
+   Papelera
+   =========================================== */
+
+    listarPapelera(): Observable<Coleccion[]> {
+        return this.http.get<Coleccion[]>(`${this.url}/colecciones/papelera`);
+    }
+
+    restaurarColeccion(id: number): Observable<Coleccion> {
+        return this.http.patch<Coleccion>(
+            `${this.url}/colecciones/${id}/restaurar`,
+            {},
+        );
+    }
+
+    purgarColeccion(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.url}/colecciones/${id}/purgar`);
+    }
+
+    /* ===========================================
        Fotografías
        =========================================== */
 
@@ -197,5 +216,19 @@ export class GaleriaService {
 
     estadoLegible(estado: EstadoColeccion): string {
         return estado === 'publicado' ? 'Publicado' : 'Borrador';
+    }
+
+    /**
+       * Días que le quedan a una colección antes de eliminarse sola.
+        * Devuelve cero cuando ya cumplió el plazo y está a la espera de
+        * la siguiente limpieza automática.
+    */
+    diasRestantes(eliminadoEn: string | null, plazo = 30): number {
+        if (!eliminadoEn) return plazo;
+
+        const transcurridos = Math.floor(
+            (Date.now() - new Date(eliminadoEn).getTime()) / 86400000,
+        );
+        return Math.max(0, plazo - transcurridos);
     }
 }

@@ -285,6 +285,43 @@
     flex: none;
 }
 
+/* El botón de papelera se marca mientras la vista está abierta. */
+/* Separa los filtros de las acciones que no filtran nada. */
+.herramientas__separador {
+    flex: none;
+    width: 1px;
+    height: 22px;
+    background: var(--tv-border);
+    margin: 0 0.15rem;
+}
+
+/* Con la papelera abierta el botón queda visiblemente hundido. */
+.btn--activo,
+.btn--activo:hover,
+.btn--activo:active,
+.btn--activo:focus {
+    border-color: var(--tv-wine) !important;
+    background: var(--tv-wine) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.btn--activo svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
 /* ===========================================
    Responsivo
    =========================================== */
