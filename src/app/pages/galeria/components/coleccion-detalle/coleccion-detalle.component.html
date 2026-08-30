@@ -97,9 +97,10 @@
         <!-- Fotografías -->
         @if (totalFotos() > 0) {
         <div class="fotos">
-            <app-fotos-cuadricula [fotos]="fotos()" [portadaId]="col.portadaFotoId"
+            <app-fotos-cuadricula [fotos]="fotos()" [portadaId]="col.portadaFotoId" [reordenando]="reordenandoFotos()"
                 (seleccionCambiada)="alCambiarSeleccion($event)" (editar)="abrirEditorFoto($event)"
-                (definirPortada)="definirPortada($event)"></app-fotos-cuadricula>
+                (definirPortada)="definirPortada($event)"
+                (ordenCambiado)="alReordenarFotos($event)"></app-fotos-cuadricula>
         </div>
 
         <p class="seccion__pie">
@@ -109,7 +110,8 @@
                 <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
             </svg>
             <span>
-                Haz clic para seleccionar. Con Mayúsculas presionada seleccionas un rango completo.
+                Haz clic para seleccionar; con Mayúsculas presionada, un rango completo.
+                Arrastra desde el asa para cambiar el orden.
             </span>
         </p>
         } @else {

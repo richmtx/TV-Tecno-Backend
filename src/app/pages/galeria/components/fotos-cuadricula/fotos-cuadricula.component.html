@@ -21,10 +21,12 @@
     </div>
     }
 
-    <ul class="cuadricula">
-        @for (foto of fotos(); track foto.id; let i = $index) {
+    <ul class="cuadricula" [class.cuadricula--ocupada]="reordenando()">
+        @for (foto of visibles(); track foto.id; let i = $index) {
         <li class="celda" [class.celda--seleccionada]="estaSeleccionada(foto.id)"
-            [class.celda--portada]="portadaId() === foto.id">
+            [class.celda--portada]="portadaId() === foto.id" [class.celda--arrastrando]="indiceArrastrado() === i"
+            [attr.draggable]="puedeArrastrar()" (dragstart)="alIniciarArrastre(i, $event)"
+            (dragover)="alPasarSobre(i, $event)" (drop)="alSoltar($event)" (dragend)="alTerminarArrastre()">
 
             <button type="button" class="celda__imagen" (click)="alternar(foto, i, $event)"
                 [attr.aria-pressed]="estaSeleccionada(foto.id)" [attr.aria-label]="foto.pie || 'Fotografía ' + (i + 1)">
@@ -48,6 +50,18 @@
                 <span class="celda__anio">{{ foto.anio }}</span>
                 }
             </button>
+
+            <span class="celda__arrastre" title="Arrastra para reordenar" aria-hidden="true"
+                (mousedown)="activarArrastre()" (touchstart)="activarArrastre()" (mouseup)="desactivarArrastre()">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="9" cy="6" r="1.4" />
+                    <circle cx="15" cy="6" r="1.4" />
+                    <circle cx="9" cy="12" r="1.4" />
+                    <circle cx="15" cy="12" r="1.4" />
+                    <circle cx="9" cy="18" r="1.4" />
+                    <circle cx="15" cy="18" r="1.4" />
+                </svg>
+            </span>
 
             <div class="celda__acciones">
                 <button type="button" class="celda__accion" title="Editar pie y año" (click)="onEditar(foto, $event)">

@@ -40,6 +40,12 @@
     gap: 0.7rem;
 }
 
+/* Mientras se guarda el nuevo orden, no se acepta más interacción. */
+.cuadricula--ocupada {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 .celda {
     position: relative;
     display: flex;
@@ -60,6 +66,16 @@
 
 .celda--seleccionada.celda--portada {
     border-color: var(--tv-wine);
+}
+
+/* La foto que se está moviendo se atenúa para que se note el hueco. */
+.celda--arrastrando {
+    opacity: 0.4;
+}
+
+.celda--arrastrando .celda__imagen {
+    outline: 2px dashed var(--tv-gold);
+    outline-offset: -2px;
 }
 
 /* ===========================================
@@ -118,7 +134,7 @@
 .celda__etiqueta {
     position: absolute;
     top: 0.4rem;
-    right: 0.4rem;
+    right: 2.3rem;
     padding: 0.15rem 0.5rem;
     border-radius: 999px;
     background: var(--tv-gold);
@@ -137,6 +153,47 @@
     color: #fff;
     font-size: 0.68rem;
     font-weight: 700;
+}
+
+/* ===========================================
+   Asa de arrastre
+   Vive fuera del botón de la imagen: si estuviera dentro, el clic
+   sobre ella también alternaría la selección.
+   =========================================== */
+.celda__arrastre {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    z-index: 2;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-surface);
+    color: var(--tv-text-mute);
+    cursor: grab;
+    opacity: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    transition: var(--tv-transicion);
+}
+
+.celda:hover .celda__arrastre {
+    opacity: 1;
+}
+
+.celda__arrastre:hover {
+    color: var(--tv-wine);
+}
+
+.celda__arrastre:active {
+    cursor: grabbing;
+}
+
+.celda__arrastre svg {
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
 }
 
 /* ===========================================
@@ -192,7 +249,10 @@
     overflow-wrap: anywhere;
 }
 
+/* En pantallas táctiles no hay hover: los controles se ven siempre. */
 @media (hover: none) {
+
+    .celda__arrastre,
     .celda__acciones {
         opacity: 1;
     }

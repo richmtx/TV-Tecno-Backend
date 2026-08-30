@@ -45,6 +45,7 @@ export class ColeccionDetalleComponent implements OnInit {
     readonly seccion = signal<SeccionGaleria | null>(null);
     readonly hermanas = signal<Coleccion[]>([]);
     readonly fotos = signal<FotoGaleria[]>([]);
+    readonly reordenandoFotos = signal(false);
 
     readonly cargando = signal(true);
     readonly error = signal<string | null>(null);
@@ -393,5 +394,39 @@ export class ColeccionDetalleComponent implements OnInit {
                 );
             },
         });
+    }
+
+    /* ===========================================
+   Reordenamiento de fotografías
+   =========================================== */
+
+    /**
+     * Guarda el orden nuevo.
+     * La cuadrícula ya muestra el resultado, así que se aplica de
+     * inmediato y se revierte solo si la API falla.
+     */
+    alReordenarFotos(nuevas: FotoGaleria[]): void {
+        const coleccion = this.coleccion();
+        if (!coleccion) return;
+
+        const previas = this.fotos();
+        this.fotos.set(nuevas);
+        this.reordenandoFotos.set(true);
+
+        this.service
+            .reordenarFotos(coleccion.id, nuevas.map((f) => f.id))
+            .subscribe({
+                next: () => {
+                    this.reordenandoFotos.set(false);
+                    this.avisos.exito('Se actualizó el orden de las fotografías.');
+                },
+                error: (e) => {
+                    this.reordenandoFotos.set(false);
+                    this.fotos.set(previas);
+                    this.avisos.error(
+                        this.service.mensajeDeError(e, 'No se pudo guardar el orden.'),
+                    );
+                },
+            });
     }
 }
