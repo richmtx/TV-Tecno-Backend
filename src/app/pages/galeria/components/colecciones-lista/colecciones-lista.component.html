@@ -74,7 +74,8 @@
                 (mousedown)="activarArrastre()" (mouseup)="desactivarArrastre()">
 
                 <app-coleccion-tarjeta [coleccion]="coleccion" [reordenable]="esReordenable()"
-                    (abrir)="abrirColeccion($event)" (editar)="editarColeccion($event)"></app-coleccion-tarjeta>
+                    [puedeEliminar]="esAdmin()" (abrir)="abrirColeccion($event)" (editar)="editarColeccion($event)"
+                    (eliminar)="confirmarBorrado($event)"></app-coleccion-tarjeta>
             </li>
             }
         </ul>
@@ -112,7 +113,18 @@
     </div>
 </section>
 
+<!-- ===========================================
+     Modal: crear o editar colección
+     =========================================== -->
 @if (mostrarFormulario() && seccionActiva(); as seccion) {
 <app-coleccion-formulario [seccion]="seccion" [coleccion]="coleccionEditando()" [hermanas]="colecciones()"
     (guardado)="alGuardarColeccion()" (cerrado)="cerrarFormulario()"></app-coleccion-formulario>
+}
+
+<!-- ===========================================
+     Modal: confirmar borrado
+     =========================================== -->
+@if (coleccionBorrando(); as coleccion) {
+<app-confirmar-borrado [coleccion]="coleccion" (eliminado)="alEliminarColeccion($event)"
+    (cerrado)="cerrarBorrado()"></app-confirmar-borrado>
 }

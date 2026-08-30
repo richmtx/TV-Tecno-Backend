@@ -3,14 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GaleriaService } from '../../../../core/services/galeria.service';
 import { NotificacionesService } from '../../../../core/services/notificaciones.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { FotosSubidaComponent } from '../fotos-subida/fotos-subida.component';
 import { FotosCuadriculaComponent } from '../fotos-cuadricula/fotos-cuadricula.component';
 import { ColeccionFormularioComponent } from '../coleccion-formulario/coleccion-formulario.component';
-import type {
-    Coleccion,
-    FotoGaleria,
-    SeccionGaleria,
-} from '../../../../core/models/galeria.model';
+import { ConfirmarBorradoComponent } from '../confirmar-borrado/confirmar-borrado.component';
+import type { Coleccion, FotoGaleria, SeccionGaleria, } from '../../../../core/models/galeria.model';
 
 /**
  * Detalle de una colección: sus datos, el gestor de fotografías y
@@ -28,6 +26,7 @@ import type {
         FotosSubidaComponent,
         FotosCuadriculaComponent,
         ColeccionFormularioComponent,
+        ConfirmarBorradoComponent,
     ],
     templateUrl: './coleccion-detalle.component.html',
     styleUrl: './coleccion-detalle.component.css',
@@ -35,6 +34,7 @@ import type {
 export class ColeccionDetalleComponent implements OnInit {
     private readonly service = inject(GaleriaService);
     private readonly avisos = inject(NotificacionesService);
+    private readonly auth = inject(AuthService);
     private readonly router = inject(Router);
     private readonly ruta = inject(ActivatedRoute);
     private readonly fb = inject(FormBuilder);
@@ -52,8 +52,12 @@ export class ColeccionDetalleComponent implements OnInit {
 
     readonly seleccionadas = signal<number[]>([]);
 
+    /** Solo el administrador puede eliminar. */
+    readonly esAdmin = this.auth.esAdmin;
+
     /* --- Modales --- */
     readonly mostrarFormulario = signal(false);
+    readonly mostrarBorrado = signal(false);
     readonly fotoEditando = signal<FotoGaleria | null>(null);
     readonly mostrarAnioLote = signal(false);
     readonly confirmandoBorrado = signal(false);
@@ -80,6 +84,16 @@ export class ColeccionDetalleComponent implements OnInit {
         const c = this.coleccion();
         return c ? this.service.periodo(c) : null;
     });
+
+    constructor() {
+        // El componente de subida necesita el identificador de la
+        // colección; se le pasa en cuanto termina de cargar.
+        effect(() => {
+            const componente = this.subida();
+            const id = this.coleccion()?.id;
+            if (componente && id) componente.coleccionId = id;
+        });
+    }
 
     ngOnInit(): void {
         const id = Number(this.ruta.snapshot.paramMap.get('id'));
@@ -154,16 +168,6 @@ export class ColeccionDetalleComponent implements OnInit {
     /* ===========================================
        Subida
        =========================================== */
-
-    constructor() {
-        // El componente de subida necesita el identificador de la
-        // colección; se le pasa en cuanto termina de cargar.
-        effect(() => {
-            const componente = this.subida();
-            const id = this.coleccion()?.id;
-            if (componente && id) componente.coleccionId = id;
-        });
-    }
 
     alSubirFotos(nuevas: FotoGaleria[]): void {
         this.fotos.update((lista) => [...lista, ...nuevas]);
@@ -241,6 +245,20 @@ export class ColeccionDetalleComponent implements OnInit {
     alGuardarDatos(actualizada: Coleccion): void {
         this.mostrarFormulario.set(false);
         this.coleccion.set({ ...actualizada, totalFotos: this.totalFotos() });
+    }
+
+    /* ===========================================
+       Borrado de la colección
+       =========================================== */
+
+    confirmarBorradoColeccion(): void {
+        this.mostrarBorrado.set(true);
+    }
+
+    /** Tras eliminar no queda nada que mostrar: se vuelve al listado. */
+    alEliminarColeccion(): void {
+        this.mostrarBorrado.set(false);
+        this.volver();
     }
 
     /* ===========================================

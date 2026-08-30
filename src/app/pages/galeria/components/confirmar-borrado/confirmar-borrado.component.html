@@ -1,0 +1,59 @@
+<div class="modal-fondo" (click)="cerrar()">
+    <div class="modal" (click)="$event.stopPropagation()" role="alertdialog" aria-modal="true">
+
+        <span class="modal__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6" />
+            </svg>
+        </span>
+
+        <h2 class="modal__titulo">Eliminar colección</h2>
+
+        <p class="modal__texto">
+            Se enviará <strong>{{ coleccion().titulo }}</strong> a la papelera
+
+            @if (coleccion().totalFotos > 0) {
+            junto con sus
+            <strong>{{ coleccion().totalFotos }}
+                {{ coleccion().totalFotos === 1 ? 'fotografía' : 'fotografías' }}</strong>.
+            } @else {
+            .
+            }
+
+            Podrás recuperarla durante 30 días.
+        </p>
+
+        @if (coleccion().estado === 'publicado') {
+        <div class="alerta alerta--aviso">
+            Esta colección está publicada: dejará de verse en el sitio de inmediato.
+        </div>
+        }
+
+        @if (error()) {
+        <div class="alerta alerta--error">{{ error() }}</div>
+        }
+
+        @if (exigeConfirmacion()) {
+        <label class="campo-grupo">
+            <span class="campo-grupo__etiqueta">
+                Escribe <strong>{{ coleccion().titulo }}</strong> para confirmar
+            </span>
+            <input type="text" class="campo" [formControl]="confirmacion" autocomplete="off"
+                [placeholder]="coleccion().titulo" />
+        </label>
+        }
+
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="eliminando()" (click)="cerrar()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--peligro" [disabled]="eliminando() || !puedeEliminar()"
+                (click)="eliminar()">
+                {{ eliminando() ? 'Eliminando…' : 'Eliminar' }}
+            </button>
+        </div>
+
+    </div>
+</div>

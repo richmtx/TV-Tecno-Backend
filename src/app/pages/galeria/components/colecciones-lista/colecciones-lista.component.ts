@@ -2,8 +2,10 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GaleriaService } from '../../../../core/services/galeria.service';
 import { NotificacionesService } from '../../../../core/services/notificaciones.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { ColeccionTarjetaComponent } from '../coleccion-tarjeta/coleccion-tarjeta.component';
 import { ColeccionFormularioComponent } from '../coleccion-formulario/coleccion-formulario.component';
+import { ConfirmarBorradoComponent } from '../confirmar-borrado/confirmar-borrado.component';
 import type {
     Coleccion,
     EstadoColeccion,
@@ -21,13 +23,18 @@ import type {
 @Component({
     selector: 'app-colecciones-lista',
     standalone: true,
-    imports: [ColeccionTarjetaComponent, ColeccionFormularioComponent],
+    imports: [
+        ColeccionTarjetaComponent,
+        ColeccionFormularioComponent,
+        ConfirmarBorradoComponent,
+    ],
     templateUrl: './colecciones-lista.component.html',
     styleUrl: './colecciones-lista.component.css',
 })
 export class ColeccionesListaComponent implements OnInit {
     private readonly service = inject(GaleriaService);
     private readonly avisos = inject(NotificacionesService);
+    private readonly auth = inject(AuthService);
     private readonly router = inject(Router);
     private readonly ruta = inject(ActivatedRoute);
 
@@ -41,14 +48,20 @@ export class ColeccionesListaComponent implements OnInit {
     readonly busqueda = signal('');
     readonly filtroEstado = signal<EstadoColeccion | 'todos'>('todos');
 
-    /* --- Reordenamiento --- */
-    readonly indiceArrastrado = signal<number | null>(null);
-    readonly puedeArrastrar = signal(false);
-    readonly reordenando = signal(false);
+    /** Solo el administrador puede eliminar colecciones. */
+    readonly esAdmin = this.auth.esAdmin;
 
     /* --- Formulario --- */
     readonly mostrarFormulario = signal(false);
     readonly coleccionEditando = signal<Coleccion | null>(null);
+
+    /* --- Borrado --- */
+    readonly coleccionBorrando = signal<Coleccion | null>(null);
+
+    /* --- Reordenamiento --- */
+    readonly indiceArrastrado = signal<number | null>(null);
+    readonly puedeArrastrar = signal(false);
+    readonly reordenando = signal(false);
 
     /** Orden previo al arrastre, para revertir si la API falla. */
     private ordenOriginal: Coleccion[] = [];
@@ -76,10 +89,6 @@ export class ColeccionesListaComponent implements OnInit {
             );
         });
     });
-
-    readonly totalFotos = computed(() =>
-        this.colecciones().reduce((suma, c) => suma + c.totalFotos, 0),
-    );
 
     readonly borradores = computed(
         () => this.colecciones().filter((c) => c.estado === 'borrador').length,
@@ -171,6 +180,10 @@ export class ColeccionesListaComponent implements OnInit {
         void this.router.navigate(['/galeria/coleccion', coleccion.id]);
     }
 
+    /* ===========================================
+       Formulario
+       =========================================== */
+
     editarColeccion(coleccion: Coleccion): void {
         this.coleccionEditando.set(coleccion);
         this.mostrarFormulario.set(true);
@@ -194,6 +207,29 @@ export class ColeccionesListaComponent implements OnInit {
     alGuardarColeccion(): void {
         this.cerrarFormulario();
         this.recargar();
+    }
+
+    /* ===========================================
+       Borrado
+       =========================================== */
+
+    confirmarBorrado(coleccion: Coleccion): void {
+        this.coleccionBorrando.set(coleccion);
+    }
+
+    cerrarBorrado(): void {
+        this.coleccionBorrando.set(null);
+    }
+
+    /**
+     * Quita la colección de la lista sin recargar: el resto de la
+     * sección no cambió, y una recarga completa se sentiría lenta.
+     */
+    alEliminarColeccion(eliminada: Coleccion): void {
+        this.colecciones.update((lista) =>
+            lista.filter((c) => c.id !== eliminada.id),
+        );
+        this.coleccionBorrando.set(null);
     }
 
     /* ===========================================

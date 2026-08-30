@@ -311,6 +311,11 @@
     flex: none;
 }
 
+.btn--peligro-texto:hover:not(:disabled) {
+    border-color: var(--tv-error);
+    color: var(--tv-error);
+}
+
 /* ===========================================
    Responsivo
    =========================================== */

@@ -41,6 +41,12 @@
                 Editar datos
             </button>
 
+            @if (esAdmin()) {
+            <button type="button" class="btn btn--secundario btn--peligro-texto" (click)="confirmarBorradoColeccion()">
+                Eliminar
+            </button>
+            }
+
             @if (col.estado === 'publicado') {
             <button type="button" class="btn btn--secundario" [disabled]="publicando()" (click)="despublicar()">
                 {{ publicando() ? 'Guardando…' : 'Despublicar' }}
@@ -214,4 +220,12 @@
         </div>
     </div>
 </div>
+}
+
+<!-- ===========================================
+     Modal: eliminar la colección
+     =========================================== -->
+@if (mostrarBorrado() && coleccion(); as col) {
+<app-confirmar-borrado [coleccion]="col" (eliminado)="alEliminarColeccion()"
+    (cerrado)="mostrarBorrado.set(false)"></app-confirmar-borrado>
 }

@@ -19,7 +19,7 @@
     box-shadow: var(--tv-sombra-lg);
 }
 
-/* Las colecciones sin publicar se atenúan para distinguirlas. */
+/* Las colecciones sin publicar se distinguen por el borde. */
 .tarjeta--borrador {
     border-style: dashed;
 }
@@ -171,12 +171,23 @@
 }
 
 /* ===========================================
-   Botón de edición
+   Acciones
    =========================================== */
-.tarjeta__editar {
+.tarjeta__acciones {
     position: absolute;
     bottom: 0.7rem;
     right: 0.7rem;
+    display: flex;
+    gap: 0.3rem;
+    opacity: 0;
+    transition: var(--tv-transicion);
+}
+
+.tarjeta:hover .tarjeta__acciones {
+    opacity: 1;
+}
+
+.tarjeta__accion {
     width: 30px;
     height: 30px;
     display: grid;
@@ -187,20 +198,20 @@
     background: var(--tv-surface);
     color: var(--tv-text-soft);
     cursor: pointer;
-    opacity: 0;
     transition: var(--tv-transicion);
 }
 
-.tarjeta:hover .tarjeta__editar {
-    opacity: 1;
-}
-
-.tarjeta__editar:hover {
+.tarjeta__accion:hover {
     border-color: var(--tv-wine);
     color: var(--tv-wine);
 }
 
-.tarjeta__editar svg {
+.tarjeta__accion--peligro:hover {
+    border-color: var(--tv-error);
+    color: var(--tv-error);
+}
+
+.tarjeta__accion svg {
     width: 15px;
     height: 15px;
 }
@@ -209,7 +220,7 @@
 @media (hover: none) {
 
     .tarjeta__arrastre,
-    .tarjeta__editar {
+    .tarjeta__acciones {
         opacity: 1;
     }
 }
