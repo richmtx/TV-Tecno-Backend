@@ -1,21 +1,8 @@
-import {
-    Component,
-    HostListener,
-    computed,
-    effect,
-    inject,
-    input,
-    output,
-    signal,
-} from '@angular/core';
+import { Component, HostListener, computed, effect, inject, input, output, signal, } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GaleriaService } from '../../../../core/services/galeria.service';
 import { NotificacionesService } from '../../../../core/services/notificaciones.service';
-import type {
-    CategoriaGaleria,
-    Coleccion,
-    SeccionGaleria,
-} from '../../../../core/models/galeria.model';
+import type { CategoriaGaleria, Coleccion, SeccionGaleria, } from '../../../../core/models/galeria.model';
 
 const ANIO_MINIMO = 1900;
 const ANIO_MAXIMO = 2200;
