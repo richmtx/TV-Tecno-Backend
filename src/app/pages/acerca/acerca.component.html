@@ -1,0 +1,36 @@
+<header class="pagina__cabecera">
+    <h1 class="pagina__titulo">Acerca de</h1>
+    <p class="pagina__descripcion">
+        Edita los textos e imágenes de la página institucional del canal.
+    </p>
+</header>
+
+@if (cargando()) {
+<div class="estado">
+    <p class="estado__texto">Cargando contenido…</p>
+</div>
+}
+
+@if (errorCarga(); as error) {
+<div class="estado estado--error">
+    <p class="estado__texto">{{ error }}</p>
+    <button type="button" class="btn btn--secundario" (click)="cargar()">
+        Reintentar
+    </button>
+</div>
+}
+
+@if (listo()) {
+<div class="acerca__secciones">
+    <app-acerca-hero [contenido]="contenido()!" [imagenes]="imagenesHero()" [guardarProsa]="guardarProsaFn"
+        (imagenGuardada)="actualizarImagenHero($event)" />
+
+    <app-acerca-mision-vision [contenido]="contenido()!" [valores]="valores()" [guardarProsa]="guardarProsaFn"
+        (valoresGuardados)="actualizarValores($event)" />
+
+    <app-acerca-cobertura [contenido]="contenido()!" [renglones]="cobertura()" [stats]="stats()"
+        [imagenes]="imagenesCobertura()" [guardarProsa]="guardarProsaFn"
+        (renglonesGuardados)="actualizarCobertura($event)" (statsGuardados)="actualizarStats($event)"
+        (imagenGuardada)="actualizarImagenCobertura($event)" />
+</div>
+}

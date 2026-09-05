@@ -1,0 +1,270 @@
+:host {
+    display: block;
+}
+
+.seccion {
+    overflow: hidden;
+}
+
+/* ===========================================
+   Cabecera de la sección
+   =========================================== */
+.seccion__cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.35rem;
+    border-bottom: 1px solid var(--tv-border);
+}
+
+.seccion__identidad {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.seccion__icono {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-cream);
+    color: var(--tv-wine);
+}
+
+.seccion__icono svg {
+    width: 17px;
+    height: 17px;
+}
+
+.seccion__titulo {
+    font-size: 1rem;
+    color: var(--tv-text);
+}
+
+.seccion__descripcion {
+    font-size: 0.82rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.1rem;
+}
+
+.seccion__herramientas {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: none;
+}
+
+.aviso-cambios {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--tv-warn);
+    background: rgba(201, 130, 26, 0.12);
+    border: 1px solid rgba(201, 130, 26, 0.3);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    white-space: nowrap;
+}
+
+/* ===========================================
+   Cuerpo
+   =========================================== */
+.seccion__cuerpo {
+    padding: 1.25rem 1.35rem 1.35rem;
+}
+
+.divisor {
+    border: none;
+    border-top: 1px solid var(--tv-border);
+    margin: 1.35rem 0 1.25rem;
+}
+
+.grupo__titulo {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--tv-text);
+    margin-bottom: 0.95rem;
+}
+
+.seccion__pie {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1.1rem;
+    font-size: 0.79rem;
+    color: var(--tv-text-mute);
+}
+
+.seccion__pie svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+}
+
+.seccion__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.1rem;
+}
+
+/* ===========================================
+   Mosaico
+   Cuatro tarjetas en rejilla. En pantallas anchas
+   caben las cuatro; luego baja a dos y a una.
+   =========================================== */
+.mosaico {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 1400px) {
+    .mosaico {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===========================================
+   Campos
+   =========================================== */
+.campo-grupo {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.campo-grupo__cabecera {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.campo-grupo__etiqueta {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+}
+
+.campo-grupo__etiqueta small {
+    font-weight: 500;
+    color: var(--tv-text-mute);
+}
+
+.campo-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.campo-fila .campo-grupo {
+    margin-bottom: 0;
+}
+
+.campo {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: var(--tv-transicion);
+}
+
+.campo:focus {
+    border-color: var(--tv-gold);
+    outline: none;
+}
+
+.campo.ng-invalid.ng-touched {
+    border-color: var(--tv-error);
+}
+
+/* ===========================================
+   Alertas
+   =========================================== */
+.alerta {
+    padding: 0.7rem 1rem;
+    border-radius: var(--tv-radio-sm);
+    font-size: 0.88rem;
+    margin-bottom: 1.1rem;
+}
+
+.alerta--error {
+    background: #fdecee;
+    color: var(--tv-error);
+    border: 1px solid #f5c6cb;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+}
+
+.btn--primario {
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+.btn--primario:hover:not(:disabled) {
+    background: var(--tv-wine-dark);
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.btn--primario:disabled,
+.btn--secundario:disabled {
+    opacity: 0.55;
+}
+
+/* ===========================================
+   Responsivo
+   =========================================== */
+@media (max-width: 860px) {
+    .campo-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .campo-fila .campo-grupo {
+        margin-bottom: 1rem;
+    }
+
+    .campo-fila .campo-grupo:last-child {
+        margin-bottom: 0;
+    }
+
+    .mosaico {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .seccion__cabecera {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

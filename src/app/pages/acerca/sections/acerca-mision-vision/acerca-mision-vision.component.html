@@ -1,0 +1,166 @@
+<section class="tv-panel seccion">
+
+    <header class="seccion__cabecera">
+        <div class="seccion__identidad">
+            <span class="seccion__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="4.5" />
+                    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+                </svg>
+            </span>
+            <div>
+                <h2 class="seccion__titulo">Misión, visión y valores</h2>
+                <p class="seccion__descripcion">
+                    Los textos que definen el propósito del canal.
+                </p>
+            </div>
+        </div>
+
+        <div class="seccion__herramientas">
+            @if (sucio()) {
+            <span class="aviso-cambios">Cambios sin guardar</span>
+            }
+        </div>
+    </header>
+
+    <div class="seccion__cuerpo">
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        <!-- Encabezado del bloque en el sitio -->
+        <div class="campo-fila">
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="mv-eyebrow">
+                        Texto superior <small>(sobre el título)</small>
+                    </label>
+                </div>
+                <input id="mv-eyebrow" type="text" class="campo" [maxlength]="maximos.eyebrow"
+                    [formControl]="formulario.controls.mvEyebrow" placeholder="QUIÉNES SOMOS" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="mv-titulo">Título del bloque</label>
+                </div>
+                <input id="mv-titulo" type="text" class="campo" [maxlength]="maximos.mvTitulo"
+                    [formControl]="formulario.controls.mvTitulo" placeholder="Misión y visión" />
+            </div>
+        </div>
+
+        <hr class="divisor" />
+
+        <!-- Misión y visión, lado a lado como en el sitio -->
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+                <p class="tarjeta__etiqueta">Misión</p>
+
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="mision-titulo">Título</label>
+                    </div>
+                    <input id="mision-titulo" type="text" class="campo" [maxlength]="maximos.titulo"
+                        [formControl]="formulario.controls.misionTitulo"
+                        placeholder="Contar el Tecnológico desde adentro" />
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="mision-texto">Texto</label>
+                        <span class="campo-grupo__contador"
+                            [class.campo-grupo__contador--tope]="largoMision() >= maximos.texto">
+                            {{ largoMision() }} / {{ maximos.texto }}
+                        </span>
+                    </div>
+                    <textarea id="mision-texto" class="campo campo--area" rows="7" [maxlength]="maximos.texto"
+                        [formControl]="formulario.controls.misionTexto"></textarea>
+                </div>
+            </div>
+
+            <div class="tarjeta">
+                <p class="tarjeta__etiqueta">Visión</p>
+
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="vision-titulo">Título</label>
+                    </div>
+                    <input id="vision-titulo" type="text" class="campo" [maxlength]="maximos.titulo"
+                        [formControl]="formulario.controls.visionTitulo"
+                        placeholder="Ser la referencia educativa del norte del país" />
+                </div>
+
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="vision-texto">Texto</label>
+                        <span class="campo-grupo__contador"
+                            [class.campo-grupo__contador--tope]="largoVision() >= maximos.texto">
+                            {{ largoVision() }} / {{ maximos.texto }}
+                        </span>
+                    </div>
+                    <textarea id="vision-texto" class="campo campo--area" rows="7" [maxlength]="maximos.texto"
+                        [formControl]="formulario.controls.visionTexto"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="divisor" />
+
+        <!-- Los tres valores -->
+        <p class="grupo__titulo">Valores</p>
+
+        <div class="campo-fila campo-fila--tres">
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="valor-1">Primero</label>
+                </div>
+                <input id="valor-1" type="text" class="campo" [maxlength]="maximos.valor"
+                    [formControl]="formulario.controls.valor1" placeholder="Identidad" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="valor-2">Segundo</label>
+                </div>
+                <input id="valor-2" type="text" class="campo" [maxlength]="maximos.valor"
+                    [formControl]="formulario.controls.valor2" placeholder="Colaboración" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="valor-3">Tercero</label>
+                </div>
+                <input id="valor-3" type="text" class="campo" [maxlength]="maximos.valor"
+                    [formControl]="formulario.controls.valor3" placeholder="Innovación" />
+            </div>
+        </div>
+
+        <p class="seccion__pie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v5" stroke-linecap="round" />
+                <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>
+                Los tres valores son fijos: se puede cambiar su texto, pero no
+                agregar ni quitar. Lo mismo aplica a la misión y la visión.
+            </span>
+        </p>
+
+        <div class="seccion__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando() || !sucio()"
+                (click)="descartar()">
+                Descartar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando() || !sucio()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+            </button>
+        </div>
+
+    </div>
+</section>

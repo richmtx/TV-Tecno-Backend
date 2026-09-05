@@ -1,0 +1,97 @@
+<section class="tv-panel seccion">
+
+    <header class="seccion__cabecera">
+        <div class="seccion__identidad">
+            <span class="seccion__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+                    <circle cx="8.5" cy="9.5" r="1.5" fill="currentColor" stroke="none" />
+                    <path d="M3.5 17l5-5 4 4 3.5-3.5 4.5 4.5" />
+                </svg>
+            </span>
+            <div>
+                <h2 class="seccion__titulo">Bienvenida</h2>
+                <p class="seccion__descripcion">
+                    El encabezado de la página y el mosaico de cuatro fotografías.
+                </p>
+            </div>
+        </div>
+
+        <div class="seccion__herramientas">
+            @if (sucio()) {
+            <span class="aviso-cambios">Cambios sin guardar</span>
+            }
+        </div>
+    </header>
+
+    <div class="seccion__cuerpo">
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        <div class="campo-fila">
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="hero-eyebrow">
+                        Texto superior <small>(sobre el título)</small>
+                    </label>
+                </div>
+                <input id="hero-eyebrow" type="text" class="campo" [maxlength]="maximos.eyebrow"
+                    [formControl]="formulario.controls.heroEyebrow" placeholder="XHITD 16.1" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="hero-titulo">Título principal</label>
+                </div>
+                <input id="hero-titulo" type="text" class="campo" [maxlength]="maximos.titulo"
+                    [formControl]="formulario.controls.heroTitulo" placeholder="Somos TV Tecno" />
+            </div>
+        </div>
+
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" for="hero-subtitulo">Subtítulo</label>
+            </div>
+            <input id="hero-subtitulo" type="text" class="campo" [maxlength]="maximos.subtitulo"
+                [formControl]="formulario.controls.heroSubtitulo"
+                placeholder="El canal oficial del Instituto Tecnológico de Durango" />
+        </div>
+
+        <div class="seccion__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando() || !sucio()"
+                (click)="descartar()">
+                Descartar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando() || !sucio()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : 'Guardar textos' }}
+            </button>
+        </div>
+
+        <hr class="divisor" />
+
+        <p class="grupo__titulo">Mosaico de fotografías</p>
+
+        <div class="mosaico">
+            @for (imagen of imagenes(); track imagen.clave) {
+            <app-imagen-tarjeta [imagen]="imagen" [posicion]="posicionDe(imagen.clave)"
+                (guardada)="imagenGuardada.emit($event)" />
+            }
+        </div>
+
+        <p class="seccion__pie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v5" stroke-linecap="round" />
+                <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>
+                Cada fotografía se guarda por separado. Las posiciones del mosaico
+                son fijas: la imagen se reemplaza, no se mueve de lugar.
+            </span>
+        </p>
+
+    </div>
+</section>

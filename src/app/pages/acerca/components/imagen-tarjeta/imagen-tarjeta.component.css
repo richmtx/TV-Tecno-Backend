@@ -1,0 +1,238 @@
+:host {
+    display: block;
+}
+
+.tarjeta {
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-md);
+    overflow: hidden;
+    background: var(--tv-card);
+    transition: border-color var(--tv-transicion);
+}
+
+/* Se resalta la que tiene ediciones sin guardar. */
+.tarjeta--sucia {
+    border-color: var(--tv-gold);
+}
+
+/* ===========================================
+   Vista previa
+   =========================================== */
+.tarjeta__vista {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--tv-cream);
+    overflow: hidden;
+}
+
+.tarjeta__imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tarjeta__vacia {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    font-size: 0.84rem;
+    color: var(--tv-text-mute);
+}
+
+/* Distingue la imagen elegida de la que ya está publicada. */
+.tarjeta__marca {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    background: var(--tv-gold);
+    color: var(--tv-gold-ink);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+}
+
+/* ===========================================
+   Cuerpo
+   =========================================== */
+.tarjeta__cuerpo {
+    padding: 1rem;
+}
+
+.tarjeta__posicion {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tv-wine);
+    margin-bottom: 0.8rem;
+}
+
+.tarjeta__archivo {
+    margin-bottom: 0.9rem;
+}
+
+.tarjeta__elegido {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    min-width: 0;
+}
+
+.tarjeta__nombre {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.78rem;
+    color: var(--tv-text-mute);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tarjeta__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--tv-border);
+}
+
+/* ===========================================
+   Campos
+   =========================================== */
+.campo-grupo {
+    display: block;
+    margin-bottom: 0.85rem;
+}
+
+.campo-grupo__cabecera {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.campo-grupo__etiqueta {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--tv-text-soft);
+}
+
+.campo-grupo__etiqueta small {
+    font-weight: 500;
+    color: var(--tv-text-mute);
+}
+
+.campo {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-sm);
+    background: var(--tv-card);
+    font-size: 0.86rem;
+    font-family: inherit;
+    transition: var(--tv-transicion);
+}
+
+.campo:focus {
+    border-color: var(--tv-gold);
+    outline: none;
+}
+
+.campo--area {
+    resize: vertical;
+    min-height: 56px;
+    line-height: 1.45;
+}
+
+.campo.ng-invalid.ng-touched {
+    border-color: var(--tv-error);
+}
+
+/* ===========================================
+   Alertas
+   =========================================== */
+.alerta {
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--tv-radio-sm);
+    font-size: 0.82rem;
+    margin-bottom: 0.85rem;
+}
+
+.alerta--error {
+    background: #fdecee;
+    color: var(--tv-error);
+    border: 1px solid #f5c6cb;
+}
+
+/* ===========================================
+   Botones
+   =========================================== */
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.48rem 0.9rem;
+    font-weight: 600;
+    font-size: 0.83rem;
+    transition: var(--tv-transicion);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn--primario {
+    background: var(--tv-wine);
+    color: var(--tv-text-invert);
+}
+
+.btn--primario:hover:not(:disabled) {
+    background: var(--tv-wine-dark);
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover:not(:disabled) {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+.btn--primario:disabled,
+.btn--secundario:disabled {
+    opacity: 0.55;
+}
+
+.btn--texto {
+    background: transparent;
+    color: var(--tv-wine);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.78rem;
+    text-decoration: underline;
+    flex: none;
+}
+
+.btn--con-icono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn--con-icono svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+}
+
+/* El input de archivo va oculto dentro del label, que es el que
+   se ve y recibe el clic. */
+.btn--archivo {
+    width: 100%;
+    justify-content: center;
+}

@@ -1,0 +1,83 @@
+:host {
+    display: block;
+    padding: 1.75rem 2rem;
+}
+
+/* Encabezado de página: vive sobre el fondo gris, fuera de los
+   paneles blancos, igual que en las demás secciones del panel. */
+.pagina__cabecera {
+    margin-bottom: 1.25rem;
+}
+
+.pagina__titulo {
+    font-size: 1.9rem;
+    color: var(--tv-wine);
+}
+
+.pagina__descripcion {
+    font-size: 0.9rem;
+    color: var(--tv-text-mute);
+    margin-top: 0.2rem;
+}
+
+/* ===========================================
+   Secciones
+   =========================================== */
+.acerca__secciones {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ===========================================
+   Estados de carga y error
+   =========================================== */
+.estado {
+    background: var(--tv-card);
+    border: 1px solid var(--tv-border);
+    border-radius: var(--tv-radio-lg);
+    box-shadow: var(--tv-sombra-sm);
+    padding: 2.5rem 1.75rem;
+    text-align: center;
+}
+
+.estado--error {
+    border-color: #f5c6cb;
+}
+
+.estado__texto {
+    font-size: 0.92rem;
+    color: var(--tv-text-mute);
+}
+
+.estado--error .estado__texto {
+    color: var(--tv-error);
+    margin-bottom: 1rem;
+}
+
+.btn {
+    border: none;
+    border-radius: var(--tv-radio-sm);
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    font-size: 0.86rem;
+    transition: var(--tv-transicion);
+    cursor: pointer;
+}
+
+.btn--secundario {
+    background: var(--tv-card);
+    color: var(--tv-text-soft);
+    border: 1px solid var(--tv-border);
+}
+
+.btn--secundario:hover {
+    border-color: var(--tv-wine);
+    color: var(--tv-wine);
+}
+
+@media (max-width: 640px) {
+    :host {
+        padding: 1.25rem 1rem;
+    }
+}

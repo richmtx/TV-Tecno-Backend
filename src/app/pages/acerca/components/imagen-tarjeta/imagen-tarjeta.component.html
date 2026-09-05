@@ -1,0 +1,79 @@
+<article class="tarjeta" [class.tarjeta--sucia]="sucio()">
+
+    <div class="tarjeta__vista">
+        @if (urlMostrada(); as url) {
+        <img class="tarjeta__imagen" [src]="url" [alt]="imagen().alt" />
+        } @else {
+        <div class="tarjeta__vacia">Sin imagen</div>
+        }
+
+        @if (vistaPrevia()) {
+        <span class="tarjeta__marca">Nueva</span>
+        }
+    </div>
+
+    <div class="tarjeta__cuerpo">
+
+        @if (posicion()) {
+        <p class="tarjeta__posicion">{{ posicion() }}</p>
+        }
+
+        @if (errorTarjeta()) {
+        <div class="alerta alerta--error">{{ errorTarjeta() }}</div>
+        }
+
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" [attr.for]="'etiqueta-' + imagen().clave">
+                    Etiqueta <small>(el badge sobre la foto)</small>
+                </label>
+            </div>
+            <input [id]="'etiqueta-' + imagen().clave" type="text" class="campo" [maxlength]="maximos.etiqueta"
+                [formControl]="formulario.controls.etiqueta" placeholder="Noticiero" />
+        </div>
+
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" [attr.for]="'alt-' + imagen().clave">
+                    Texto alternativo <small>(describe la foto)</small>
+                </label>
+            </div>
+            <textarea [id]="'alt-' + imagen().clave" class="campo campo--area" rows="2" [maxlength]="maximos.alt"
+                [formControl]="formulario.controls.alt"
+                placeholder="Set del noticiero con mapamundi al fondo"></textarea>
+        </div>
+
+        <div class="tarjeta__archivo">
+            <label class="btn btn--secundario btn--con-icono btn--archivo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 16V4M8 8l4-4 4 4" />
+                    <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+                </svg>
+                <span>{{ archivo() ? 'Cambiar archivo' : 'Reemplazar imagen' }}</span>
+                <input type="file" accept="image/*" class="tv-solo-lectores" [disabled]="guardando()"
+                    (change)="alElegirArchivo($event)" />
+            </label>
+
+            @if (archivo(); as elegido) {
+            <div class="tarjeta__elegido">
+                <span class="tarjeta__nombre" [title]="elegido.name">{{ elegido.name }}</span>
+                <button type="button" class="btn btn--texto" [disabled]="guardando()" (click)="quitarArchivo()">
+                    Quitar
+                </button>
+            </div>
+            }
+        </div>
+
+        <div class="tarjeta__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando() || !sucio()"
+                (click)="descartar()">
+                Descartar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando() || !sucio()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : 'Guardar' }}
+            </button>
+        </div>
+
+    </div>
+</article>

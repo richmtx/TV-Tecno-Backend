@@ -1,0 +1,192 @@
+<section class="tv-panel seccion">
+
+    <header class="seccion__cabecera">
+        <div class="seccion__identidad">
+            <span class="seccion__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" />
+                    <path d="M8.5 15.5a5 5 0 0 1 0-7M15.5 8.5a5 5 0 0 1 0 7" />
+                    <path d="M6 18a8.5 8.5 0 0 1 0-12M18 6a8.5 8.5 0 0 1 0 12" />
+                </svg>
+            </span>
+            <div>
+                <h2 class="seccion__titulo">Cobertura</h2>
+                <p class="seccion__descripcion">
+                    Por dónde se transmite la señal, con sus datos e imágenes.
+                </p>
+            </div>
+        </div>
+
+        <div class="seccion__herramientas">
+            @if (sucio()) {
+            <span class="aviso-cambios">Cambios sin guardar</span>
+            }
+        </div>
+    </header>
+
+    <div class="seccion__cuerpo">
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        <!-- Encabezado del bloque -->
+        <div class="campo-fila">
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="cob-eyebrow">
+                        Texto superior <small>(sobre el título)</small>
+                    </label>
+                </div>
+                <input id="cob-eyebrow" type="text" class="campo" [maxlength]="maximos.eyebrow"
+                    [formControl]="formulario.controls.coberturaEyebrow" placeholder="COBERTURA" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="cob-titulo">Título del bloque</label>
+                </div>
+                <input id="cob-titulo" type="text" class="campo" [maxlength]="maximos.titulo"
+                    [formControl]="formulario.controls.coberturaTitulo" placeholder="Transmitimos para todo Durango" />
+            </div>
+        </div>
+
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" for="cob-texto">Descripción</label>
+                <span class="campo-grupo__contador" [class.campo-grupo__contador--tope]="largoTexto() >= maximos.texto">
+                    {{ largoTexto() }} / {{ maximos.texto }}
+                </span>
+            </div>
+            <textarea id="cob-texto" class="campo campo--area" rows="3" [maxlength]="maximos.texto"
+                [formControl]="formulario.controls.coberturaTexto"></textarea>
+        </div>
+
+        <hr class="divisor" />
+
+        <!-- Los tres renglones de la lista -->
+        <p class="grupo__titulo">Medios de transmisión</p>
+
+        <div class="campo-fila campo-fila--tres">
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="renglon-1">Primero</label>
+                </div>
+                <input id="renglon-1" type="text" class="campo" [maxlength]="maximos.item"
+                    [formControl]="formulario.controls.renglon1" placeholder="Streaming en vivo" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="renglon-2">Segundo</label>
+                </div>
+                <input id="renglon-2" type="text" class="campo" [maxlength]="maximos.item"
+                    [formControl]="formulario.controls.renglon2" placeholder="Circuito interno del campus ITD" />
+            </div>
+
+            <div class="campo-grupo">
+                <div class="campo-grupo__cabecera">
+                    <label class="campo-grupo__etiqueta" for="renglon-3">Tercero</label>
+                </div>
+                <input id="renglon-3" type="text" class="campo" [maxlength]="maximos.item"
+                    [formControl]="formulario.controls.renglon3" placeholder="Contenido bajo demanda en redes" />
+            </div>
+        </div>
+
+        <hr class="divisor" />
+
+        <!-- Los tres indicadores -->
+        <p class="grupo__titulo">Indicadores</p>
+
+        <div class="stats">
+
+            <div class="stat">
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="stat-1">Dato</label>
+                    </div>
+                    <input id="stat-1" type="text" class="campo campo--dato" [maxlength]="maximos.item"
+                        [formControl]="formulario.controls.stat1" placeholder="16.1" />
+                </div>
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="stat-1-sub">Etiqueta</label>
+                    </div>
+                    <input id="stat-1-sub" type="text" class="campo" [maxlength]="maximos.subtitulo"
+                        [formControl]="formulario.controls.stat1Sub" placeholder="CANAL" />
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="stat-2">Dato</label>
+                    </div>
+                    <input id="stat-2" type="text" class="campo campo--dato" [maxlength]="maximos.item"
+                        [formControl]="formulario.controls.stat2" placeholder="24/7" />
+                </div>
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="stat-2-sub">Etiqueta</label>
+                    </div>
+                    <input id="stat-2-sub" type="text" class="campo" [maxlength]="maximos.subtitulo"
+                        [formControl]="formulario.controls.stat2Sub" placeholder="AL AIRE" />
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="stat-3">Dato</label>
+                    </div>
+                    <input id="stat-3" type="text" class="campo campo--dato" [maxlength]="maximos.item"
+                        [formControl]="formulario.controls.stat3" placeholder="HD" />
+                </div>
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="stat-3-sub">Etiqueta</label>
+                    </div>
+                    <input id="stat-3-sub" type="text" class="campo" [maxlength]="maximos.subtitulo"
+                        [formControl]="formulario.controls.stat3Sub" placeholder="SEÑAL" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="seccion__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando() || !sucio()"
+                (click)="descartar()">
+                Descartar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando() || !sucio()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : 'Guardar textos' }}
+            </button>
+        </div>
+
+        <hr class="divisor" />
+
+        <!-- Las dos imágenes -->
+        <p class="grupo__titulo">Fotografías</p>
+
+        <div class="imagenes">
+            @for (imagen of imagenes(); track imagen.clave) {
+            <app-imagen-tarjeta [imagen]="imagen" [posicion]="posicionDe(imagen.clave)"
+                (guardada)="imagenGuardada.emit($event)" />
+            }
+        </div>
+
+        <p class="seccion__pie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v5" stroke-linecap="round" />
+                <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>
+                Los íconos de los medios de transmisión son fijos y no se editan
+                desde aquí. Cada fotografía se guarda por separado.
+            </span>
+        </p>
+
+    </div>
+</section>
