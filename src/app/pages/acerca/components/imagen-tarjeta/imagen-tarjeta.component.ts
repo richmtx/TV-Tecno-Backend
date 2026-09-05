@@ -68,6 +68,9 @@ export class ImagenTarjetaComponent {
         return this.service.urlAbsoluta(this.imagen().urls.thumb);
     });
 
+    /** Proporción a la que se recorta el slot, para avisar al editor. */
+    readonly recorte = input<string>('');
+
     constructor() {
         // `untracked` evita que las lecturas de señales dentro de
         // limpiarSeleccion se registren como dependencias: sin él, elegir

@@ -18,6 +18,14 @@ const POSICIONES: Record<string, string> = {
     hero_foro: 'Inferior derecha',
 };
 
+/** Cómo se recorta cada hueco en el sitio público. */
+const RECORTES: Record<string, string> = {
+    hero_casa: 'Se recorta en formato vertical (3:4). Deja lo importante al centro.',
+    hero_noticiero: 'Se recorta en formato horizontal (16:9). Deja lo importante al centro.',
+    hero_entrevistas: 'Se recorta casi cuadrado (4:3). Deja lo importante al centro.',
+    hero_foro: 'Se recorta en formato horizontal (16:9). Deja lo importante al centro.',
+};
+
 /**
  * Encabezado de la página "Acerca de": los tres textos de entrada
  * y el mosaico de cuatro imágenes.
@@ -75,6 +83,11 @@ export class AcercaHeroComponent {
     /** Nombre del hueco que ocupa una imagen en el mosaico. */
     posicionDe(clave: string): string {
         return POSICIONES[clave] ?? '';
+    }
+
+    /** Aviso de recorte del hueco. */
+    recorteDe(clave: string): string {
+        return RECORTES[clave] ?? '';
     }
 
     async guardar(): Promise<void> {

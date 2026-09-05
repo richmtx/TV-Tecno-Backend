@@ -19,6 +19,12 @@ const POSICIONES: Record<string, string> = {
     cobertura_cabina: 'Imagen derecha',
 };
 
+/** Cómo se recorta cada hueco en el sitio público. */
+const RECORTES: Record<string, string> = {
+    cobertura_torre: 'Se recorta en formato vertical (3:4). Deja lo importante al centro.',
+    cobertura_cabina: 'Se recorta casi cuadrado (4:3). Deja lo importante al centro.',
+};
+
 /**
  * Bloque de cobertura de la página "Acerca de".
  *
@@ -120,6 +126,10 @@ export class AcercaCoberturaComponent {
 
     posicionDe(clave: string): string {
         return POSICIONES[clave] ?? '';
+    }
+
+    recorteDe(clave: string): string {
+        return RECORTES[clave] ?? '';
     }
 
     /* ===========================================

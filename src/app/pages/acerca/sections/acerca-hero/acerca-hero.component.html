@@ -77,7 +77,7 @@
         <div class="mosaico">
             @for (imagen of imagenes(); track imagen.clave) {
             <app-imagen-tarjeta [imagen]="imagen" [posicion]="posicionDe(imagen.clave)"
-                (guardada)="imagenGuardada.emit($event)" />
+                [recorte]="recorteDe(imagen.clave)" (guardada)="imagenGuardada.emit($event)" />
             }
         </div>
 
