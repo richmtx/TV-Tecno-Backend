@@ -1,0 +1,257 @@
+<section class="tv-panel seccion">
+
+    <header class="seccion__cabecera">
+        <div class="seccion__identidad">
+            <span class="seccion__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="6" cy="12" r="2.5" />
+                    <circle cx="17.5" cy="6" r="2.5" />
+                    <circle cx="17.5" cy="18" r="2.5" />
+                    <path d="M8.3 10.8l6.9-3.6M8.3 13.2l6.9 3.6" />
+                </svg>
+            </span>
+            <div>
+                <h2 class="seccion__titulo">Redes sociales</h2>
+                <p class="seccion__descripcion">
+                    Las cuentas que aparecen en Contacto y en el pie del sitio.
+                </p>
+            </div>
+        </div>
+
+        <div class="seccion__herramientas">
+            <span class="contador">{{ total() }} / {{ catalogo().length }}</span>
+            <button type="button" class="btn btn--secundario btn--con-icono" [disabled]="cargando() || sinDisponibles()"
+                [attr.title]="sinDisponibles() ? 'Ya registraste todas las plataformas disponibles' : null"
+                (click)="abrirModalCrear()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                    aria-hidden="true">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Agregar red
+            </button>
+        </div>
+    </header>
+
+    <div class="seccion__cuerpo">
+
+        @if (cargando()) {
+        <p class="seccion__estado">Cargando redes sociales…</p>
+        } @else if (error()) {
+        <div class="seccion__estado">
+            <p>{{ error() }}</p>
+            <button type="button" class="btn btn--texto" (click)="cargar()">Reintentar</button>
+        </div>
+        } @else if (total() === 0) {
+        <p class="seccion__estado">
+            Todavía no hay redes sociales registradas.
+        </p>
+        } @else {
+
+        <ul class="lista" [class.lista--ocupada]="reordenando()">
+            @for (red of redes(); track red.id; let i = $index) {
+            <li class="fila" [class.fila--arrastrando]="indiceArrastrado() === i" [class.fila--oculta]="!red.activo"
+                [attr.draggable]="puedeArrastrar()" (dragstart)="alIniciarArrastre(i, $event)"
+                (dragover)="alPasarSobre(i, $event)" (drop)="alSoltar($event)" (dragend)="alTerminarArrastre()">
+
+                <span class="fila__arrastre" title="Arrastra para reordenar" (mousedown)="activarArrastre()"
+                    (touchstart)="activarArrastre()" (mouseup)="desactivarArrastre()">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <circle cx="9" cy="6" r="1.4" />
+                        <circle cx="15" cy="6" r="1.4" />
+                        <circle cx="9" cy="12" r="1.4" />
+                        <circle cx="15" cy="12" r="1.4" />
+                        <circle cx="9" cy="18" r="1.4" />
+                        <circle cx="15" cy="18" r="1.4" />
+                    </svg>
+                </span>
+
+                <div class="fila__contenido">
+                    <div class="fila__cabecera">
+                        <span class="fila__nombre">{{ red.nombre }}</span>
+                        @if (!red.activo) {
+                        <span class="etiqueta etiqueta--oculta">Oculta</span>
+                        }
+                        @if (red.etiqueta) {
+                        <span class="fila__alias">{{ red.etiqueta }}</span>
+                        }
+                    </div>
+                    <a class="fila__url" [href]="red.url" target="_blank" rel="noopener noreferrer" [title]="red.url">{{
+                        red.url }}</a>
+                </div>
+
+                <div class="fila__acciones">
+                    <button type="button" class="icono-btn"
+                        [attr.title]="red.activo ? 'Ocultar del sitio' : 'Mostrar en el sitio'"
+                        [attr.aria-label]="red.activo ? 'Ocultar del sitio' : 'Mostrar en el sitio'"
+                        (click)="alternarVisibilidad(red)">
+                        @if (red.activo) {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z" />
+                            <circle cx="12" cy="12" r="2.8" />
+                        </svg>
+                        } @else {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 4l16 16" />
+                            <path d="M9.9 5.7A9.5 9.5 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a17 17 0 0 1-3.4 4.1" />
+                            <path d="M6.5 7.9A17 17 0 0 0 2 12s3.5 6.5 10 6.5c1 0 1.9-.15 2.7-.4" />
+                        </svg>
+                        }
+                    </button>
+
+                    <button type="button" class="icono-btn" title="Editar red" aria-label="Editar red"
+                        (click)="abrirModalEditar(red)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+                        </svg>
+                    </button>
+
+                    @if (esAdmin()) {
+                    <button type="button" class="icono-btn icono-btn--peligro" title="Eliminar red"
+                        aria-label="Eliminar red" (click)="pedirConfirmacionEliminar(red)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" />
+                            <path d="M10 11v6M14 11v6" />
+                        </svg>
+                    </button>
+                    }
+                </div>
+            </li>
+            }
+        </ul>
+
+        <p class="seccion__pie">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v5" stroke-linecap="round" />
+                <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span>
+                Arrastra para cambiar el orden en que se muestran. Ocultar una red
+                conserva su dirección; eliminarla la borra de forma definitiva.
+                Solo aparecen las plataformas que tienen ícono disponible.
+            </span>
+        </p>
+
+        }
+    </div>
+</section>
+
+<!-- ===========================================
+     Modal de creación / edición
+     =========================================== -->
+@if (modalAbierto()) {
+<div class="modal-fondo" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+        <h2 class="modal__titulo">
+            {{ editando() ? 'Editar red social' : 'Nueva red social' }}
+        </h2>
+        <p class="modal__texto">
+            Aparecerá en la página de Contacto y en el pie del sitio, con el
+            ícono de su plataforma.
+        </p>
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        <!-- La plataforma solo se elige al crear: cambiarla en una
+             cuenta existente equivale a otra cuenta distinta. -->
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" for="red-plataforma">Plataforma</label>
+            </div>
+
+            @if (editando(); as actual) {
+            <input id="red-plataforma" type="text" class="campo" [value]="actual.nombre" disabled />
+            <p class="campo-grupo__pista">
+                Para cambiar de plataforma, elimina esta cuenta y agrega la nueva.
+            </p>
+            } @else {
+            <select id="red-plataforma" class="campo" [formControl]="formulario.controls.catalogoId">
+                @for (plataforma of disponibles(); track plataforma.id) {
+                <option [value]="plataforma.id">{{ plataforma.nombre }}</option>
+                }
+            </select>
+            }
+        </div>
+
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" for="red-url">Dirección del perfil</label>
+            </div>
+            <input id="red-url" type="url" class="campo campo--mono" [maxlength]="maximos.url"
+                [formControl]="formulario.controls.url" placeholder="https://www.facebook.com/tvtecnoitd" />
+
+            @if (avisoDominio(); as aviso) {
+            <div class="alerta alerta--aviso">{{ aviso }}</div>
+            }
+        </div>
+
+        <div class="campo-grupo">
+            <div class="campo-grupo__cabecera">
+                <label class="campo-grupo__etiqueta" for="red-etiqueta">
+                    Nombre alterno <small>(opcional)</small>
+                </label>
+            </div>
+            <input id="red-etiqueta" type="text" class="campo" [maxlength]="maximos.etiqueta"
+                [formControl]="formulario.controls.etiqueta" placeholder="TV Tecno Noticias" />
+            <p class="campo-grupo__pista">
+                Solo si la cuenta se llama distinto a la plataforma. Se usa para
+                lectores de pantalla.
+            </p>
+        </div>
+
+        @if (editando()) {
+        <label class="casilla">
+            <input type="checkbox" [formControl]="formulario.controls.activo" />
+            <span>Mostrar esta red en el sitio</span>
+        </label>
+        }
+
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando()" (click)="cerrarModal()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : (editando() ? 'Guardar cambios' : 'Agregar red') }}
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+<!-- ===========================================
+     Confirmación de eliminación
+     =========================================== -->
+@if (confirmandoEliminacion(); as objetivo) {
+<div class="modal-fondo" (click)="cancelarEliminacion()">
+    <div class="modal modal--angosto" (click)="$event.stopPropagation()">
+        <h2 class="modal__titulo">Eliminar red social</h2>
+        <p class="modal__texto">
+            Se quitará del sitio de forma permanente:
+            <strong>{{ objetivo.nombre }}</strong>
+            <span class="modal__url">{{ objetivo.url }}</span>
+        </p>
+        <p class="modal__texto modal__texto--aviso">
+            Si solo quieres dejar de mostrarla por un tiempo, usa el botón de
+            ocultar en lugar de eliminarla.
+        </p>
+        <div class="modal__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="eliminando()" (click)="cancelarEliminacion()">
+                Cancelar
+            </button>
+            <button type="button" class="btn btn--peligro-solido" [disabled]="eliminando()"
+                (click)="confirmarEliminacion()">
+                {{ eliminando() ? 'Eliminando…' : 'Eliminar' }}
+            </button>
+        </div>
+    </div>
+</div>
+}

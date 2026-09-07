@@ -62,6 +62,11 @@ export const routes: Routes = [
           import('./pages/acerca/acerca.component').then((m) => m.AcercaComponent),
       },
       {
+        path: 'contacto',
+        loadComponent: () =>
+          import('./pages/contacto/contacto.component').then((m) => m.ContactoComponent),
+      },
+      {
         path: 'usuarios',
         loadComponent: () =>
           import('./pages/usuarios/usuarios.component').then((m) => m.UsuariosComponent),

@@ -1,0 +1,32 @@
+<header class="pagina__cabecera">
+    <h1 class="pagina__titulo">Contacto</h1>
+    <p class="pagina__descripcion">
+        Los medios por los que la comunidad puede comunicarse con el canal.
+        Se muestran en la página de Contacto y en el pie del sitio.
+    </p>
+</header>
+
+@if (cargando()) {
+<div class="estado">
+    <p class="estado__texto">Cargando información…</p>
+</div>
+}
+
+@if (errorCarga(); as error) {
+<div class="estado estado--error">
+    <p class="estado__texto">{{ error }}</p>
+    <button type="button" class="btn btn--secundario" (click)="cargar()">
+        Reintentar
+    </button>
+</div>
+}
+
+@if (listo()) {
+<div class="contacto__secciones">
+    <app-contacto-datos [datos]="datos()!" (guardados)="actualizarDatos($event)" />
+
+    <app-contacto-redes />
+
+    <app-contacto-egresados [imagenes]="imagenes()" (guardada)="actualizarImagen($event)" />
+</div>
+}

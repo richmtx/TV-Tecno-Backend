@@ -1,0 +1,125 @@
+<section class="tv-panel seccion">
+
+    <header class="seccion__cabecera">
+        <div class="seccion__identidad">
+            <span class="seccion__icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 4L2 9l10 5 10-5-10-5z" />
+                    <path d="M6 11.5V16c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.5" />
+                    <path d="M21 9.5V15" />
+                </svg>
+            </span>
+            <div>
+                <h2 class="seccion__titulo">Seguimiento de egresados</h2>
+                <p class="seccion__descripcion">
+                    La fotografía del bloque que invita a contestar el formulario.
+                </p>
+            </div>
+        </div>
+
+        <div class="seccion__herramientas">
+            @if (sucio()) {
+            <span class="aviso-cambios">Cambios sin guardar</span>
+            }
+        </div>
+    </header>
+
+    <div class="seccion__cuerpo">
+
+        @if (errorFormulario()) {
+        <div class="alerta alerta--error">{{ errorFormulario() }}</div>
+        }
+
+        @if (imagen()) {
+
+        <div class="egresados">
+
+            <div class="egresados__vista">
+                @if (urlMostrada(); as url) {
+                <img class="egresados__imagen" [src]="url" [alt]="imagen()!.alt" />
+                } @else {
+                <div class="egresados__vacia">Sin imagen</div>
+                }
+
+                @if (vistaPrevia()) {
+                <span class="egresados__marca">Nueva</span>
+                }
+            </div>
+
+            <div class="egresados__campos">
+
+                <div class="campo-grupo">
+                    <div class="campo-grupo__cabecera">
+                        <label class="campo-grupo__etiqueta" for="egresados-alt">
+                            Texto alternativo <small>(describe la foto)</small>
+                        </label>
+                    </div>
+                    <textarea id="egresados-alt" class="campo campo--area" rows="3" [maxlength]="maxAlt"
+                        [formControl]="formulario.controls.alt"
+                        placeholder="Egresados del Instituto Tecnológico de Durango"></textarea>
+                    <p class="campo-grupo__pista">
+                        Lo leen los lectores de pantalla y aparece si la imagen no
+                        carga. Describe qué se ve, no repitas el título del bloque.
+                    </p>
+                </div>
+
+                <div class="egresados__archivo">
+                    <label class="btn btn--secundario btn--con-icono btn--archivo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 16V4M8 8l4-4 4 4" />
+                            <path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
+                        </svg>
+                        <span>{{ archivo() ? 'Cambiar archivo' : 'Reemplazar imagen' }}</span>
+                        <input type="file" accept="image/*" class="tv-solo-lectores" [disabled]="guardando()"
+                            (change)="alElegirArchivo($event)" />
+                    </label>
+
+                    @if (archivo(); as elegido) {
+                    <div class="egresados__elegido">
+                        <span class="egresados__nombre" [title]="elegido.name">{{ elegido.name }}</span>
+                        <button type="button" class="btn btn--texto" [disabled]="guardando()" (click)="quitarArchivo()">
+                            Quitar
+                        </button>
+                    </div>
+                    }
+                </div>
+
+                <p class="egresados__nota">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 11v5" stroke-linecap="round" />
+                        <circle cx="12" cy="8" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span>
+                        Se recorta a un formato vertical dentro del bloque guinda.
+                        Deja lo importante al centro. El enlace del formulario se
+                        edita en Medios de contacto.
+                    </span>
+                </p>
+
+            </div>
+        </div>
+
+        <div class="seccion__acciones">
+            <button type="button" class="btn btn--secundario" [disabled]="guardando() || !sucio()"
+                (click)="descartar()">
+                Descartar
+            </button>
+            <button type="button" class="btn btn--primario" [disabled]="guardando() || !sucio()" (click)="guardar()">
+                {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+            </button>
+        </div>
+
+        } @else {
+
+        <p class="seccion__estado">
+            No se encontró la imagen del bloque de egresados. Verifica que las
+            migraciones se hayan ejecutado.
+        </p>
+
+        }
+
+    </div>
+</section>

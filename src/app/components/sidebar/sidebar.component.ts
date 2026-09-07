@@ -30,9 +30,9 @@ export class SidebarComponent {
     { label: 'Videoteca', route: '/videoteca', icon: 'video' },
     { label: 'Galería', route: '/galeria', icon: 'image' },
     { label: 'Acerca de', route: '/acerca', icon: 'info' },
+    { label: 'Contacto', route: '/contacto', icon: 'mail' },
     
     // Descomenta cada uno cuando crees su página y su ruta:
-    // { label: 'Contacto', route: '/contacto', icon: 'mail' },
     // { label: 'En Vivo Ahora', route: '/en-vivo', icon: 'live' },
   ];
 
